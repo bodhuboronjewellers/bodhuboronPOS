@@ -166,6 +166,86 @@ h2{margin:0 0 10px;font-size:18px;color:#ffdb95;border-bottom:1px solid #333;pad
 
         <button class="btn">➕ স্টক সেভ</button>
     </div>
+
+    <!-- ACTIVE MORTGAGE LIST -->
+    <div class="section">
+        <h2>📑 অ্যাকটিভ মর্টগেজ</h2>
+
+        <table width="100%" style="color:#fff;font-size:13px;">
+            <tr>
+                <th>নাম</th>
+                <th>ভরি</th>
+                <th>মূল্য</th>
+                <th>অ্যাকশন</th>
+            </tr>
+            <tbody id="mg_list">
+                <!-- JavaScript এ লিস্ট আসবে -->
+            </tbody>
+        </table>
+    </div>
+
+    <!-- ===================== CUSTOMERS ===================== -->
+<div id="customers" class="page">
+
+    <!-- CUSTOMER ENTRY -->
+    <div class="section">
+        <h2>👤 গ্রাহক এন্ট্রি</h2>
+
+        <label>নাম</label>
+        <input type="text" id="cus_name" placeholder="নাম">
+
+        <label>মোবাইল</label>
+        <input type="number" id="cus_mobile" placeholder="মোবাইল">
+
+        <label>ঠিকানা</label>
+        <input type="text" id="cus_address" placeholder="ঠিকানা">
+
+        <label>অগ্রিম / ডিউ</label>
+        <input type="number" id="cus_balance" placeholder="ব্যালেন্স">
+
+        <button class="btn">➕ গ্রাহক সেভ</button>
+    </div>
+
+
+    <!-- CUSTOMER LIST -->
+    <div class="section">
+        <h2>📑 গ্রাহক তালিকা</h2>
+
+        <table width="100%" style="color:#fff;font-size:13px;">
+            <tr>
+                <th>নাম</th>
+                <th>মোবাইল</th>
+                <th>ঠিকানা</th>
+                <th>ব্যালেন্স</th>
+            </tr>
+            <tbody id="cus_list">
+                <!-- JS লিস্ট আসবে -->
+            </tbody>
+        </table>
+    </div>
+
+</div>
+    <!-- ===================== PURCHASE PAGE ===================== -->
+    <div class="section">
+        <h2>📥 ক্রয় (Purchase)</h2>
+
+        <label>সাপ্লায়ার নাম</label>
+        <input type="text" id="pur_supplier" placeholder="Supplier নাম">
+
+        <label>পণ্যের নাম</label>
+        <input type="text" id="pur_item" placeholder="পণ্যের নাম">
+
+        <label>ভরি</label>
+        <input type="number" id="pur_vori" placeholder="ভরি">
+
+        <label>ভরি রেট</label>
+        <input type="number" id="pur_rate" placeholder="রেট">
+
+        <label>মোট ক্রয় দাম</label>
+        <input type="number" id="pur_total" placeholder="মোট দাম">
+
+        <button class="btn">✔ ক্রয় সেভ</button>
+    </div>
 <!-- ===================== MORTGAGE ===================== -->
 <div id="mortgage" class="page">
 
@@ -281,62 +361,6 @@ h2{margin:0 0 10px;font-size:18px;color:#ffdb95;border-bottom:1px solid #333;pad
             </tr>
             <tbody id="cus_list">
                 <!-- JS লিস্ট আসবে -->
-            </tbody>
-        </table>
-    </div>
-
-</div>
-    <!-- ===================== PURCHASE PAGE ===================== -->
-    <div class="section">
-        <h2>📥 ক্রয় (Purchase)</h2>
-
-        <label>সাপ্লায়ার নাম</label>
-        <input type="text" id="pur_supplier" placeholder="Supplier নাম">
-
-        <label>পণ্যের নাম</label>
-        <input type="text" id="pur_item" placeholder="পণ্যের নাম">
-
-        <label>ভরি</label>
-        <input type="number" id="pur_vori" placeholder="ভরি">
-
-        <label>ভরি রেট</label>
-        <input type="number" id="pur_rate" placeholder="রেট">
-
-        <label>মোট ক্রয় দাম</label>
-        <input type="number" id="pur_total" placeholder="মোট দাম">
-
-        <button class="btn">✔ ক্রয় সেভ</button>
-    </div>
-
-
-    <!-- ===================== SUPPLIER ===================== -->
-    <div class="section">
-        <h2>👷 Supplier এন্ট্রি</h2>
-
-        <label>সাপ্লায়ার নাম</label>
-        <input type="text" id="sup_name" placeholder="নাম">
-
-        <label>মোবাইল</label>
-        <input type="number" id="sup_mobile" placeholder="মোবাইল নম্বর">
-
-        <label>ঠিকানা</label>
-        <input type="text" id="sup_address" placeholder="ঠিকানা">
-
-        <button class="btn">➕ Supplier সেভ</button>
-    </div>
-
-    <!-- SUPPLIER LIST -->
-    <div class="section">
-        <h2>📑 Supplier তালিকা</h2>
-
-        <table width="100%" style="color:#fff;font-size:13px;">
-            <tr>
-                <th>নাম</th>
-                <th>মোবাইল</th>
-                <th>ঠিকানা</th>
-            </tr>
-            <tbody id="sup_list">
-                <!-- এখানে Supplier List আসবে PART–3 এ -->
             </tbody>
         </table>
     </div>
