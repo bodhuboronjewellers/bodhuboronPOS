@@ -167,7 +167,126 @@ h2{margin:0 0 10px;font-size:18px;color:#ffdb95;border-bottom:1px solid #333;pad
         <button class="btn">➕ স্টক সেভ</button>
     </div>
 
+<!-- ===================== MORTGAGE ===================== -->
+<div id="mortgage" class="page">
 
+    <!-- MORTGAGE ENTRY -->
+    <div class="section">
+        <h2>💰 মর্টগেজ এন্ট্রি (Advanced)</h2>
+
+        <label>কাস্টমার নির্বাচন</label>
+        <select id="mg_customer">
+            <option value="">কাস্টমার সিলেক্ট করুন</option>
+        </select>
+
+        <label>ভরি</label>
+        <input type="number" step="0.01" id="mg_vori" placeholder="ভরি">
+
+        <label>আনা</label>
+        <input type="number" step="0.01" id="mg_ana" placeholder="আনা">
+
+        <label>রতি</label>
+        <input type="number" step="0.01" id="mg_rati" placeholder="রতি">
+
+        <label>পয়েন্ট</label>
+        <input type="number" step="0.01" id="mg_point" placeholder="পয়েন্ট">
+
+        <label>ক্যারেট</label>
+        <select id="mg_karat">
+            <option value="22">22 ক্যারেট</option>
+            <option value="21">21 ক্যারেট</option>
+            <option value="18">18 ক্যারেট</option>
+        </select>
+
+        <label>বাজার রেট (প্রতি ভরি)</label>
+        <input type="number" id="mg_rate" placeholder="ভরি রেট">
+
+        <label>মর্টগেজ ভ্যালু</label>
+        <input type="number" id="mg_value" placeholder="মর্টগেজ মূল্য">
+
+        <label>সুদ (%) প্রতি মাস</label>
+        <input type="number" id="mg_interest" placeholder="মাসিক সুদ %">
+
+        <label>তারিখ</label>
+        <input type="date" id="mg_date">
+
+        <button class="btn">💾 মর্টগেজ সেভ</button>
+    </div>
+
+
+    <!-- ACTIVE MORTGAGE LIST -->
+    <div class="section">
+        <h2>📑 অ্যাকটিভ মর্টগেজ</h2>
+
+        <table width="100%" style="color:#fff;font-size:13px;">
+            <tr>
+                <th>নাম</th>
+                <th>ভরি</th>
+                <th>মূল্য</th>
+                <th>অ্যাকশন</th>
+            </tr>
+            <tbody id="mg_list">
+                <!-- JavaScript এ লিস্ট আসবে -->
+            </tbody>
+        </table>
+    </div>
+
+    <!-- MORTGAGE RETURN -->
+    <div class="section">
+        <h2>🔁 মর্টগেজ রিটার্ন</h2>
+
+        <label>মর্টগেজ আইডি</label>
+        <input type="text" id="mg_ret_id" placeholder="ID দিন">
+
+        <label>রিটার্ন পরিমাণ</label>
+        <input type="number" id="mg_ret_amount" placeholder="টাকা">
+
+        <button class="btn">✔ রিটার্ন সম্পন্ন করুন</button>
+    </div>
+
+</div>
+
+<!-- ===================== CUSTOMERS ===================== -->
+<div id="customers" class="page">
+
+    <!-- CUSTOMER ENTRY -->
+    <div class="section">
+        <h2>👤 গ্রাহক এন্ট্রি</h2>
+
+        <label>নাম</label>
+        <input type="text" id="cus_name" placeholder="নাম">
+
+        <label>মোবাইল</label>
+        <input type="number" id="cus_mobile" placeholder="মোবাইল">
+
+        <label>ঠিকানা</label>
+        <input type="text" id="cus_address" placeholder="ঠিকানা">
+
+        <label>অগ্রিম / ডিউ</label>
+        <input type="number" id="cus_balance" placeholder="ব্যালেন্স">
+
+        <button class="btn">➕ গ্রাহক সেভ</button>
+    </div>
+
+
+    <!-- CUSTOMER LIST -->
+    <div class="section">
+        <h2>📑 গ্রাহক তালিকা</h2>
+
+        <table width="100%" style="color:#fff;font-size:13px;">
+            <tr>
+                <th>নাম</th>
+                <th>মোবাইল</th>
+                <th>ঠিকানা</th>
+                <th>ব্যালেন্স</th>
+            </tr>
+            <tbody id="cus_list">
+                <!-- JS লিস্ট আসবে -->
+            </tbody>
+        </table>
+    </div>
+
+</div>
     <!-- ===================== PURCHASE PAGE ===================== -->
     <div class="section">
         <h2>📥 ক্রয় (Purchase)</h2>
@@ -224,31 +343,7 @@ h2{margin:0 0 10px;font-size:18px;color:#ffdb95;border-bottom:1px solid #333;pad
     </div>
 
 </div>
-<!-- ===================== MORTGAGE ===================== -->
-<div id="mortgage" class="page">
-    <div class="section">
-        <h2>💰 মর্টগেজ এন্ট্রি</h2>
-        <p>Advanced Mortgage ফর্ম PART–2 এ হবে</p>
-    </div>
 
-    <div class="section">
-        <h2>🔁 মর্টগেজ রিটার্ন</h2>
-        <p>Return System PART–2 এ যাবে</p>
-    </div>
-</div>
-
-<!-- ===================== CUSTOMERS ===================== -->
-<div id="customers" class="page">
-    <div class="section">
-        <h2>👤 গ্রাহক এন্ট্রি</h2>
-        <p>Customer Form PART–2 এ যাবে</p>
-    </div>
-
-    <div class="section">
-        <h2>📑 গ্রাহক তালিকা</h2>
-        <p>List PART–2 তে আসবে</p>
-    </div>
-</div>
 
 <!-- ===================== REPORTS ===================== -->
 <div id="reports" class="page">
