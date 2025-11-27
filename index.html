@@ -2,26 +2,35 @@
 <html lang="bn">
 <head>
 <meta charset="UTF-8">
-<title>Budh Baran Jewellers – POS V10 Final</title>
+<title>Budh Baran Jewellers – POS V11 PRO</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <style>
 body{margin:0;background:#000;font-family:'Segoe UI',sans-serif;color:#f5d186;}
 .header{text-align:center;padding:22px 10px 14px;border-bottom:1px solid #2c2c2c;background:#000;}
-.logo{width:120px;height:120px;border-radius:100px;object-fit:cover;margin-bottom:10px;}
-.title{font-size:28px;font-weight:700;}
-.tagline{font-family:'Georgia';font-style:italic;font-size:16px;margin-top:4px;color:#ffe6a8;}
-.info{margin-top:6px;font-size:12px;color:#e6c67a;}
-.section{background:#121212;margin:15px;border-radius:12px;padding:15px;border:1px solid #2c2c2c;}
-h2{margin:0 0 12px 0;font-size:18px;color:#ffdb95;border-bottom:1px solid #2c2c2c;padding-bottom:6px;}
-.row{display:flex;justify-content:space-between;padding:5px 0;font-size:14px;color:#ddb96f;}
-.value{color:#ffe8b2;font-weight:600;}
-input,select{width:100%;padding:10px;border-radius:8px;border:none;margin-bottom:10px;background:#222;color:#fff;}
-.btn{padding:12px;background:#d4a034;color:#000;font-weight:bold;border:none;border-radius:8px;width:100%;margin-top:10px;}
-.nav{position:fixed;bottom:0;left:0;right:0;background:#0a0a0a;border-top:1px solid #2c2c2c;display:flex;z-index:999;}
-.nav button{flex:1;padding:12px 5px;background:none;border:none;color:#d1b671;font-size:12px;}
-.nav button.active{color:#ffdb95;font-weight:bold;}
-.page{display:none;padding-bottom:90px;}
+.logo{width:100px;height:100px;border-radius:100px;object-fit:cover;margin-bottom:10px;}
+.title{font-size:26px;font-weight:700;}
+.tagline{font-style:italic;font-size:14px;color:#ffe6a8;}
+
+.page{display:none;padding:15px;padding-bottom:90px;}
 #home{display:block;}
+
+.section{
+ background:#121212;margin:10px 0;border-radius:10px;
+ padding:12px;border:1px solid #2c2c2c;
+}
+h2{margin:0 0 10px;font-size:18px;color:#ffdb95;border-bottom:1px solid #333;padding-bottom:5px;}
+
+/* NAVIGATION */
+.nav{
+ position:fixed;bottom:0;left:0;right:0;
+ background:#0a0a0a;border-top:1px solid #2c2c2c;
+ display:flex;z-index:999;
+}
+.nav button{
+ flex:1;padding:10px 5px;background:none;
+ border:none;color:#d1b671;font-size:11px;
+}
+.nav button.active{color:#ffdb95;font-weight:bold;}
 </style>
 </head>
 <body>
@@ -30,160 +39,107 @@ input,select{width:100%;padding:10px;border-radius:8px;border:none;margin-bottom
     <img src="logo.png" onerror="this.src='https://i.ibb.co/2y7HbY8/default-logo.png'" class="logo">
     <div class="title">বুধ বরন জুয়েলার্স</div>
     <div class="tagline">"Honestly is the best policy"</div>
-    <div class="info">📞 01713 612578 • 📍 চিটাগাং রোড, সিদ্দিরগঞ্জ, নারায়ণগঞ্জ</div>
 </div>
 
-<!-- ================ HOME PAGE ================ -->
+<!-- ===================== HOME ===================== -->
 <div id="home" class="page">
     <div class="section">
         <h2>📊 আজকের ড্যাশবোর্ড</h2>
-        <div class="row"><span>আজকের বিক্রি</span><span class="value" id="d_sale">৳ 0</span></div>
-        <div class="row"><span>Cash In – Out</span><span class="value" id="d_cash">৳ 0</span></div>
-        <div class="row"><span>নতুন মর্টগেজ</span><span class="value" id="d_mort">৳ 0</span></div>
-        <div class="row"><span>স্টক মোট গ্রাম</span><span class="value" id="d_stock">0 g</span></div>
-    </div>
-
-    <div class="section">
-        <h2>📅 মাসিক সারাংশ</h2>
-        <div class="row"><span>মাসিক বিক্রি</span><span class="value" id="m_sale">৳ 0</span></div>
-        <div class="row"><span>মাসিক Cash Net</span><span class="value" id="m_cash">৳ 0</span></div>
-        <div class="row"><span>Active মর্টগেজ</span><span class="value" id="m_actmort">৳ 0</span></div>
-        <div class="row"><span>মাসিক মর্টগেজ ডিউ</span><span class="value" id="m_due">৳ 0</span></div>
+        <p>এই অংশ PART–3 এ কাজ করবে</p>
     </div>
 </div>
 
-<!-- ================ SALES PAGE ================ -->
+<!-- ===================== SALES ===================== -->
 <div id="sales" class="page">
     <div class="section">
-        <h2>🧾 বিক্রি / অর্ডার</h2>
-        <input id="s_barcode" placeholder="বারকোড স্ক্যান করুন" onchange="loadStockToSale()">
-        <input id="s_customer" placeholder="কাস্টমার নাম লিখুন">
-        <input id="s_item" placeholder="আইটেম কোড">
+        <h2>🧾 বিক্রি</h2>
+        <p>PART–2 এ Form + Billing যাবে</p>
     </div>
 
     <div class="section">
-        <h2>⚖️ ওজন হিসাব</h2>
-        <input id="w_vori" type="number" step="0.01" placeholder="ভরি">
-        <input id="w_ana"  type="number" step="0.01" placeholder="আনা">
-        <input id="w_roti" type="number" step="0.01" placeholder="রতি">
-        <input id="w_point"type="number" step="0.01" placeholder="পয়েন্ট">
-        <input id="w_gram" type="number" step="0.001" placeholder="গ্রাম (যদি দেন)">
-        <button class="btn" onclick="calcGram()">গ্রাম কনভার্ট করুন</button>
-        <div class="row"><span>মোট গ্রাম:</span><span class="value" id="w_total">0.000 g</span></div>
+        <h2>↩️ বিক্রি রিটার্ন (Sales Return)</h2>
+        <p>Return সিস্টেম PART–2 এ যোগ হবে</p>
     </div>
-
-    <div class="section">
-        <h2>✨ গোল্ড রেট</h2>
-        <button class="btn" onclick="setRate(22)">২২ ক্যারেট</button>
-        <button class="btn" onclick="setRate(21)">২১ ক্যারেট</button>
-        <button class="btn" onclick="setRate(18)">১৮ ক্যারেট</button>
-        <input id="r_gram" type="number" step="0.01" placeholder="গ্রাম রেট">
-    </div>
-
-    <div class="section">
-        <h2>💰 হিসাব</h2>
-        <input id="c_making" type="number" placeholder="মেকিং (প্রতি গ্রাম)">
-        <input id="c_waste"  type="number" placeholder="ওয়েস্টেজ %">
-        <input id="c_stone"  type="number" placeholder="স্টোন দাম">
-        <input id="c_disc"   type="number" placeholder="ডিসকাউন্ট">
-        <input id="c_paid"   type="number" placeholder="নগদ">
-        <button class="btn" onclick="calcBill()">নেট দাম হিসাব</button>
-        <div class="row"><span>নেট:</span><span class="value" id="c_net">৳ 0</span></div>
-        <div class="row"><span>বাকি:</span><span class="value" id="c_due">৳ 0</span></div>
-    </div>
-
-    <button class="btn" onclick="saveSale()">✔ বিক্রি সেভ</button>
-    <button class="btn" onclick="printBill()">🖨 প্রিন্ট বিল</button>
 </div>
 
-<!-- ================= NAVIGATION ================= -->
+<!-- ===================== STOCK ===================== -->
+<div id="stock" class="page">
+    <div class="section">
+        <h2>📦 স্টক এন্ট্রি</h2>
+        <p>Advanced Form PART–2 এ যাবে</p>
+    </div>
+
+    <div class="section">
+        <h2>📥 ক্রয় (Purchase)</h2>
+        <p>Purchase ফর্ম PART–2 এ যুক্ত হবে</p>
+    </div>
+
+    <div class="section">
+        <h2>👷 Supplier</h2>
+        <p>Supplier ফর্ম LIST PART–2 এ যাবে</p>
+    </div>
+</div>
+
+<!-- ===================== MORTGAGE ===================== -->
+<div id="mortgage" class="page">
+    <div class="section">
+        <h2>💰 মর্টগেজ এন্ট্রি</h2>
+        <p>Advanced Mortgage ফর্ম PART–2 এ হবে</p>
+    </div>
+
+    <div class="section">
+        <h2>🔁 মর্টগেজ রিটার্ন</h2>
+        <p>Return System PART–2 এ যাবে</p>
+    </div>
+</div>
+
+<!-- ===================== CUSTOMERS ===================== -->
+<div id="customers" class="page">
+    <div class="section">
+        <h2>👤 গ্রাহক এন্ট্রি</h2>
+        <p>Customer Form PART–2 এ যাবে</p>
+    </div>
+
+    <div class="section">
+        <h2>📑 গ্রাহক তালিকা</h2>
+        <p>List PART–2 তে আসবে</p>
+    </div>
+</div>
+
+<!-- ===================== REPORTS ===================== -->
+<div id="reports" class="page">
+    <div class="section">
+        <h2>📅 রিপোর্ট</h2>
+        <p>Daily/Monthly Report PART–3 এ আসবে</p>
+    </div>
+
+    <div class="section">
+        <h2>⚙️ Settings</h2>
+        <p>App Setup PART–3 এ হবে</p>
+    </div>
+
+    <div class="section">
+        <h2>📤 Backup / Restore</h2>
+        <p>Backup System PART–3 এ যোগ হবে</p>
+    </div>
+</div>
+
+<!-- ===================== NAVIGATION ===================== -->
 <div class="nav">
-    <button onclick="showPage('home', this)" class="active">হোম</button>
-    <button onclick="showPage('sales', this)">বিক্রি</button>
-    <button onclick="alert('মর্টগেজ ফিচার এখনো সেট করা হয়নি')">মর্টগেজ</button>
-    <button onclick="alert('স্টক পেজ তৈরি হয়নি')">স্টক</button>
-    <button onclick="alert('রিপোর্ট পেজ তৈরি হয়নি')">রিপোর্ট</button>
+    <button class="active" onclick="showPage('home',this)">হোম</button>
+    <button onclick="showPage('sales',this)">বিক্রি</button>
+    <button onclick="showPage('stock',this)">স্টক</button>
+    <button onclick="showPage('mortgage',this)">মর্গেজ</button>
+    <button onclick="showPage('customers',this)">গ্রাহক</button>
+    <button onclick="showPage('reports',this)">রিপোর্ট</button>
 </div>
 
 <script>
 function showPage(id,btn){
- document.querySelectorAll('.page').forEach(p=>p.style.display='none');
+ document.querySelectorAll('.page').forEach(x=>x.style.display='none');
  document.getElementById(id).style.display='block';
-
  document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));
  btn.classList.add('active');
-}
-
-/* Your full JS logic below unchanged */
-let DB={
- sales:JSON.parse(localStorage.getItem("BB_sales")||"[]"),
- stock:JSON.parse(localStorage.getItem("BB_stock")||"[]")
-};
-
-function saveDB(){
- localStorage.setItem("BB_sales",JSON.stringify(DB.sales));
- localStorage.setItem("BB_stock",JSON.stringify(DB.stock));
-}
-
-function calcGram(){
- let v=parseFloat(w_vori.value)||0;
- let a=parseFloat(w_ana.value)||0;
- let r=parseFloat(w_roti.value)||0;
- let p=parseFloat(w_point.value)||0;
- let g=parseFloat(w_gram.value)||0;
- let t=(v*11.664)+(a*0.729)+(r*0.1215)+(p*0.01)+g;
- w_total.innerHTML=t.toFixed(3)+" g";return t;
-}
-function setRate(k){
- let base=k==22?105000:k==21?100000:80000;
- r_gram.value=(base/11.664).toFixed(2);
-}
-function calcBill(){
- let gram=calcGram();
- let rate=parseFloat(r_gram.value)||0;
- let mk=parseFloat(c_making.value)||0;
- let ws=parseFloat(c_waste.value)||0;
- let st=parseFloat(c_stone.value)||0;
- let dc=parseFloat(c_disc.value)||0;
- let pd=parseFloat(c_paid.value)||0;
- let gold=gram*rate;
- let wv=gold*(ws/100);
- let mkv=gram*mk;
- let net=gold+wv+mkv+st-dc;
- let due=net-pd;
- c_net.innerHTML="৳ "+net.toFixed(2);
- c_due.innerHTML="৳ "+due.toFixed(2);
- return {net,paid:pd,due,gram};
-}
-function loadByBarcode(bc){
- return DB.stock.find(x=>x.barcode==bc)||null;
-}
-function loadStockToSale(){
- let bc=s_barcode.value;if(!bc)return;
- let it=loadByBarcode(bc);
- if(it){
-  s_item.value=it.code;
-  w_gram.value=it.gram;
-  w_total.innerHTML=it.gram+" g";
-  if(it.karat==22) setRate(22);
-  if(it.karat==21) setRate(21);
-  if(it.karat==18) setRate(18);
-  alert("✔ স্টক থেকে লোড হয়েছে");
- }else alert("❌ বারকোড পাওয়া যায়নি");
-}
-function saveSale(){
- let bill=calcBill();
- let e={
-  date:new Date().toISOString(),
-  customer:s_customer.value,
-  item:s_item.value,
-  barcode:s_barcode.value,
-  net:bill.net,paid:bill.paid,due:bill.due,
-  gram:bill.gram
- };
- DB.sales.push(e);
- saveDB();
- alert("✔ বিক্রি সেভ হয়েছে");
 }
 </script>
 
