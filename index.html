@@ -3,40 +3,84 @@
 <head>
 <meta charset="UTF-8">
 <title>Budh Baran Jewellers – POS V11 PRO</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<style>
-body{margin:0;background:#000;font-family:'Segoe UI',sans-serif;color:#f5d186;}
-.header{text-align:center;padding:22px 10px 14px;border-bottom:1px solid #2c2c2c;background:#000;}
-.logo{width:100px;height:100px;border-radius:100px;object-fit:cover;margin-bottom:10px;}
-.title{font-size:26px;font-weight:700;}
-.tagline{font-style:italic;font-size:14px;color:#ffe6a8;}
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-.page{display:none;padding:15px;padding-bottom:90px;}
+<style>
+body{
+   margin:0;
+   background:#000;
+   font-family:'Segoe UI',sans-serif;
+   color:#f5d186;
+}
+
+/* HEADER */
+.header{
+   text-align:center;
+   padding:20px 10px;
+   background:#000;
+   border-bottom:1px solid #333;
+}
+.logo{
+   width:90px;height:90px;border-radius:50%;margin-bottom:8px;
+}
+.title{
+   font-size:26px;font-weight:700;
+}
+.tagline{
+   font-style:italic;font-size:13px;color:#ffe6a8;
+}
+
+/* PAGES */
+.page{
+   display:none;
+   padding:15px;
+   padding-bottom:90px;
+}
 #home{display:block;}
 
 .section{
- background:#121212;margin:10px 0;border-radius:10px;
- padding:12px;border:1px solid #2c2c2c;
+   background:#121212;
+   padding:12px;
+   margin:10px 0;
+   border-radius:10px;
+   border:1px solid #333;
 }
-h2{margin:0 0 10px;font-size:18px;color:#ffdb95;border-bottom:1px solid #333;padding-bottom:5px;}
+h2{
+   margin:0 0 10px;
+   font-size:18px;
+   color:#ffdb95;
+   border-bottom:1px solid #333;
+   padding-bottom:5px;
+}
 
 /* NAVIGATION */
 .nav{
- position:fixed;bottom:0;left:0;right:0;
- background:#0a0a0a;border-top:1px solid #2c2c2c;
- display:flex;z-index:999;
+   position:fixed;
+   bottom:0;left:0;right:0;
+   background:#0a0a0a;
+   border-top:1px solid #333;
+   display:flex;
+   z-index:999;
 }
 .nav button{
- flex:1;padding:10px 5px;background:none;
- border:none;color:#d1b671;font-size:11px;
+   flex:1;
+   padding:10px;
+   color:#d1b671;
+   background:none;
+   border:none;
+   font-size:12px;
 }
-.nav button.active{color:#ffdb95;font-weight:bold;}
+.nav button.active{
+   color:#ffdb95;
+   font-weight:bold;
+}
 </style>
+
 </head>
 <body>
 
 <div class="header">
-    <img src="logo.png" onerror="this.src='https://i.ibb.co/2y7HbY8/default-logo.png'" class="logo">
+    <img src="logo.png" class="logo" onerror="this.src='https://i.ibb.co/2y7HbY8/default-logo.png'">
     <div class="title">বুধ বরন জুয়েলার্স</div>
     <div class="tagline">"Honestly is the best policy"</div>
 </div>
@@ -45,348 +89,39 @@ h2{margin:0 0 10px;font-size:18px;color:#ffdb95;border-bottom:1px solid #333;pad
 <div id="home" class="page">
     <div class="section">
         <h2>📊 আজকের ড্যাশবোর্ড</h2>
-        <p>এই অংশ PART–3 এ কাজ করবে</p>
+        <p>Dashboard will load after PART–C</p>
     </div>
 </div>
 
+<!-- ===================== SALES ===================== -->
 <div id="sales" class="page">
-
-    <!-- SALES ENTRY -->
-    <div class="section">
-        <h2>🧾 বিক্রি এন্ট্রি</h2>
-
-        <label>বারকোড</label>
-        <input type="text" id="sale_barcode" placeholder="বারকোড দিন">
-
-        <label>কাস্টমার</label>
-        <input type="text" id="sale_customer" placeholder="কাস্টমারের নাম">
-
-        <label>পণ্যের নাম</label>
-        <input type="text" id="sale_item" placeholder="আইটেম নাম বা কোড">
-
-        <label>ভরি</label>
-        <input type="number" step="0.01" id="sale_vori" placeholder="ভরি">
-
-        <label>আনা</label>
-        <input type="number" step="0.01" id="sale_ana" placeholder="আনা">
-
-        <label>রতি</label>
-        <input type="number" step="0.01" id="sale_rati" placeholder="রতি">
-
-        <label>পয়েন্ট</label>
-        <input type="number" step="0.01" id="sale_point" placeholder="পয়েন্ট">
-
-        <label>ক্যারেট</label>
-        <select id="sale_karat">
-            <option value="22">22 ক্যারেট</option>
-            <option value="21">21 ক্যারেট</option>
-            <option value="18">18 ক্যারেট</option>
-        </select>
-
-        <label>ভরি রেট</label>
-        <input type="number" step="0.01" id="sale_rate" placeholder="ভরি রেট">
-
-        <label>মেকিং (প্রতি ভরি)</label>
-        <input type="number" step="0.01" id="sale_making" placeholder="মেকিং">
-
-        <label>স্টোন দাম</label>
-        <input type="number" id="sale_stone" placeholder="স্টোন">
-
-        <label>ডিসকাউন্ট</label>
-        <input type="number" id="sale_disc" placeholder="ডিসকাউন্ট">
-
-        <label>নগদ</label>
-        <input type="number" id="sale_paid" placeholder="নগদ প্রদান">
-
-        <button class="btn">✔ হিসাব করুন</button>
-    </div>
-
-    <!-- SALES RETURN -->
-    <div class="section">
-        <h2>↩️ বিক্রি রিটার্ন</h2>
-
-        <label>বারকোড</label>
-        <input type="text" id="sale_ret_barcode" placeholder="রিটার্ন বারকোড">
-
-        <label>ভরি</label>
-        <input type="number" id="sale_ret_vori" placeholder="ভরি">
-
-        <label>ডিসকাউন্ট (যদি থাকে)</label>
-        <input type="number" id="sale_ret_disc" placeholder="রিটার্ন ডিসকাউন্ট">
-
-        <button class="btn">↩️ রিটার্ন সেভ করুন</button>
-    </div>
-
+    <!-- PART–B এ পূর্ণ ডিজাইন যোগ হবে -->
 </div>
+
+<!-- ===================== STOCK ===================== -->
 <div id="stock" class="page">
-
-    <!-- ===================== STOCK ENTRY ===================== -->
-    <div class="section">
-        <h2>📦 স্টক এন্ট্রি (Advanced)</h2>
-
-        <label>পণ্যের নাম</label>
-        <input type="text" id="st_name" placeholder="পণ্যের নাম">
-
-        <label>ক্যাটাগরি</label>
-        <select id="st_cat">
-            <option value="Ring">Ring</option>
-            <option value="Chain">Chain</option>
-            <option value="Necklace">Necklace</option>
-            <option value="Bala">Bala</option>
-            <option value="Others">Others</option>
-        </select>
-
-        <label>ক্যারেট</label>
-        <select id="st_karat">
-            <option value="22">22 ক্যারেট</option>
-            <option value="21">21 ক্যারেট</option>
-            <option value="18">18 ক্যারেট</option>
-        </select>
-
-        <label>ভরি</label>
-        <input type="number" step="0.01" id="st_vori" placeholder="ভরি">
-
-        <label>আনা</label>
-        <input type="number" step="0.01" id="st_ana" placeholder="আনা">
-
-        <label>রতি</label>
-        <input type="number" step="0.01" id="st_rati" placeholder="রতি">
-
-        <label>পয়েন্ট</label>
-        <input type="number" step="0.01" id="st_point" placeholder="পয়েন্ট">
-
-        <label>ভরি রেট (ক্রয়)</label>
-        <input type="number" id="st_rate" placeholder="প্রতি ভরি রেট">
-
-        <label>মেকিং (প্রতি ভরি)</label>
-        <input type="number" id="st_making" placeholder="মেকিং">
-
-        <label>ক্রয় দাম (স্টোনসহ)</label>
-        <input type="number" id="st_buy" placeholder="মোট ক্রয় দাম">
-
-        <button class="btn">➕ স্টক সেভ</button>
-    </div>
-
-    <!-- ACTIVE MORTGAGE LIST -->
-    <div class="section">
-        <h2>📑 অ্যাকটিভ মর্টগেজ</h2>
-
-        <table width="100%" style="color:#fff;font-size:13px;">
-            <tr>
-                <th>নাম</th>
-                <th>ভরি</th>
-                <th>মূল্য</th>
-                <th>অ্যাকশন</th>
-            </tr>
-            <tbody id="mg_list">
-                <!-- JavaScript এ লিস্ট আসবে -->
-            </tbody>
-        </table>
-    </div>
-
-    <!-- ===================== CUSTOMERS ===================== -->
-<div id="customers" class="page">
-
-    <!-- CUSTOMER ENTRY -->
-    <div class="section">
-        <h2>👤 গ্রাহক এন্ট্রি</h2>
-
-        <label>নাম</label>
-        <input type="text" id="cus_name" placeholder="নাম">
-
-        <label>মোবাইল</label>
-        <input type="number" id="cus_mobile" placeholder="মোবাইল">
-
-        <label>ঠিকানা</label>
-        <input type="text" id="cus_address" placeholder="ঠিকানা">
-
-        <label>অগ্রিম / ডিউ</label>
-        <input type="number" id="cus_balance" placeholder="ব্যালেন্স">
-
-        <button class="btn">➕ গ্রাহক সেভ</button>
-    </div>
-
-
-    <!-- CUSTOMER LIST -->
-    <div class="section">
-        <h2>📑 গ্রাহক তালিকা</h2>
-
-        <table width="100%" style="color:#fff;font-size:13px;">
-            <tr>
-                <th>নাম</th>
-                <th>মোবাইল</th>
-                <th>ঠিকানা</th>
-                <th>ব্যালেন্স</th>
-            </tr>
-            <tbody id="cus_list">
-                <!-- JS লিস্ট আসবে -->
-            </tbody>
-        </table>
-    </div>
-
+    <!-- PART–B এ স্টক UI যোগ হবে -->
 </div>
-    <!-- ===================== PURCHASE PAGE ===================== -->
-    <div class="section">
-        <h2>📥 ক্রয় (Purchase)</h2>
 
-        <label>সাপ্লায়ার নাম</label>
-        <input type="text" id="pur_supplier" placeholder="Supplier নাম">
-
-        <label>পণ্যের নাম</label>
-        <input type="text" id="pur_item" placeholder="পণ্যের নাম">
-
-        <label>ভরি</label>
-        <input type="number" id="pur_vori" placeholder="ভরি">
-
-        <label>ভরি রেট</label>
-        <input type="number" id="pur_rate" placeholder="রেট">
-
-        <label>মোট ক্রয় দাম</label>
-        <input type="number" id="pur_total" placeholder="মোট দাম">
-
-        <button class="btn">✔ ক্রয় সেভ</button>
-    </div>
-
- 
- <!-- ===================== MORTGAGE ===================== -->
+<!-- ===================== MORTGAGE ===================== -->
 <div id="mortgage" class="page">
-
-    <!-- MORTGAGE ENTRY -->
-    <div class="section">
-        <h2>💰 মর্টগেজ এন্ট্রি (Advanced)</h2>
-
-        <label>কাস্টমার নির্বাচন</label>
-        <select id="mg_customer">
-            <option value="">কাস্টমার সিলেক্ট করুন</option>
-        </select>
-
-        <label>ভরি</label>
-        <input type="number" step="0.01" id="mg_vori" placeholder="ভরি">
-
-        <label>আনা</label>
-        <input type="number" step="0.01" id="mg_ana" placeholder="আনা">
-
-        <label>রতি</label>
-        <input type="number" step="0.01" id="mg_rati" placeholder="রতি">
-
-        <label>পয়েন্ট</label>
-        <input type="number" step="0.01" id="mg_point" placeholder="পয়েন্ট">
-
-        <label>ক্যারেট</label>
-        <select id="mg_karat">
-            <option value="22">22 ক্যারেট</option>
-            <option value="21">21 ক্যারেট</option>
-            <option value="18">18 ক্যারেট</option>
-        </select>
-
-        <label>বাজার রেট (প্রতি ভরি)</label>
-        <input type="number" id="mg_rate" placeholder="ভরি রেট">
-
-        <label>মর্টগেজ ভ্যালু</label>
-        <input type="number" id="mg_value" placeholder="মর্টগেজ মূল্য">
-
-        <label>সুদ (%) প্রতি মাস</label>
-        <input type="number" id="mg_interest" placeholder="মাসিক সুদ %">
-
-        <label>তারিখ</label>
-        <input type="date" id="mg_date">
-
-        <button class="btn">💾 মর্টগেজ সেভ</button>
-    </div>
-
-
-    <!-- ACTIVE MORTGAGE LIST -->
-    <div class="section">
-        <h2>📑 অ্যাকটিভ মর্টগেজ</h2>
-
-        <table width="100%" style="color:#fff;font-size:13px;">
-            <tr>
-                <th>নাম</th>
-                <th>ভরি</th>
-                <th>মূল্য</th>
-                <th>অ্যাকশন</th>
-            </tr>
-            <tbody id="mg_list">
-                <!-- JavaScript এ লিস্ট আসবে -->
-            </tbody>
-        </table>
-    </div>
-
-    <!-- MORTGAGE RETURN -->
-    <div class="section">
-        <h2>🔁 মর্টগেজ রিটার্ন</h2>
-
-        <label>মর্টগেজ আইডি</label>
-        <input type="text" id="mg_ret_id" placeholder="ID দিন">
-
-        <label>রিটার্ন পরিমাণ</label>
-        <input type="number" id="mg_ret_amount" placeholder="টাকা">
-
-        <button class="btn">✔ রিটার্ন সম্পন্ন করুন</button>
-    </div>
-
+    <!-- PART–B এ মর্টগেজ UI যোগ হবে -->
 </div>
 
 <!-- ===================== CUSTOMERS ===================== -->
 <div id="customers" class="page">
-
-    <!-- CUSTOMER ENTRY -->
-    <div class="section">
-        <h2>👤 গ্রাহক এন্ট্রি</h2>
-
-        <label>নাম</label>
-        <input type="text" id="cus_name" placeholder="নাম">
-
-        <label>মোবাইল</label>
-        <input type="number" id="cus_mobile" placeholder="মোবাইল">
-
-        <label>ঠিকানা</label>
-        <input type="text" id="cus_address" placeholder="ঠিকানা">
-
-        <label>অগ্রিম / ডিউ</label>
-        <input type="number" id="cus_balance" placeholder="ব্যালেন্স">
-
-        <button class="btn">➕ গ্রাহক সেভ</button>
-    </div>
-
-
-    <!-- CUSTOMER LIST -->
-    <div class="section">
-        <h2>📑 গ্রাহক তালিকা</h2>
-
-        <table width="100%" style="color:#fff;font-size:13px;">
-            <tr>
-                <th>নাম</th>
-                <th>মোবাইল</th>
-                <th>ঠিকানা</th>
-                <th>ব্যালেন্স</th>
-            </tr>
-            <tbody id="cus_list">
-                <!-- JS লিস্ট আসবে -->
-            </tbody>
-        </table>
-    </div>
-
+    <!-- PART–B এ কাস্টমার UI যোগ হবে -->
 </div>
- <!-- ===================== REPORTS ===================== -->
+
+<!-- ===================== REPORTS ===================== -->
 <div id="reports" class="page">
     <div class="section">
         <h2>📅 রিপোর্ট</h2>
-        <p>Daily/Monthly Report PART–3 এ আসবে</p>
-    </div>
-
-    <div class="section">
-        <h2>⚙️ Settings</h2>
-        <p>App Setup PART–3 এ হবে</p>
-    </div>
-
-    <div class="section">
-        <h2>📤 Backup / Restore</h2>
-        <p>Backup System PART–3 এ যোগ হবে</p>
+        <p>Reports will load after PART–C</p>
     </div>
 </div>
 
-<!-- ===================== NAVIGATION ===================== -->
+<!-- NAVIGATION -->
 <div class="nav">
     <button class="active" onclick="showPage('home',this)">হোম</button>
     <button onclick="showPage('sales',this)">বিক্রি</button>
@@ -398,9 +133,9 @@ h2{margin:0 0 10px;font-size:18px;color:#ffdb95;border-bottom:1px solid #333;pad
 
 <script>
 function showPage(id,btn){
- document.querySelectorAll('.page').forEach(x=>x.style.display='none');
+ document.querySelectorAll('.page').forEach(p=>p.style.display='none');
  document.getElementById(id).style.display='block';
- document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));
+ document.querySelectorAll('.nav button').forEach(x=>x.classList.remove('active'));
  btn.classList.add('active');
 }
 </script>
