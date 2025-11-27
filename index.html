@@ -118,24 +118,112 @@ h2{margin:0 0 10px;font-size:18px;color:#ffdb95;border-bottom:1px solid #333;pad
     </div>
 
 </div>
-<!-- ===================== STOCK ===================== -->
 <div id="stock" class="page">
+
+    <!-- ===================== STOCK ENTRY ===================== -->
     <div class="section">
-        <h2>📦 স্টক এন্ট্রি</h2>
-        <p>Advanced Form PART–2 এ যাবে</p>
+        <h2>📦 স্টক এন্ট্রি (Advanced)</h2>
+
+        <label>পণ্যের নাম</label>
+        <input type="text" id="st_name" placeholder="পণ্যের নাম">
+
+        <label>ক্যাটাগরি</label>
+        <select id="st_cat">
+            <option value="Ring">Ring</option>
+            <option value="Chain">Chain</option>
+            <option value="Necklace">Necklace</option>
+            <option value="Bala">Bala</option>
+            <option value="Others">Others</option>
+        </select>
+
+        <label>ক্যারেট</label>
+        <select id="st_karat">
+            <option value="22">22 ক্যারেট</option>
+            <option value="21">21 ক্যারেট</option>
+            <option value="18">18 ক্যারেট</option>
+        </select>
+
+        <label>ভরি</label>
+        <input type="number" step="0.01" id="st_vori" placeholder="ভরি">
+
+        <label>আনা</label>
+        <input type="number" step="0.01" id="st_ana" placeholder="আনা">
+
+        <label>রতি</label>
+        <input type="number" step="0.01" id="st_rati" placeholder="রতি">
+
+        <label>পয়েন্ট</label>
+        <input type="number" step="0.01" id="st_point" placeholder="পয়েন্ট">
+
+        <label>ভরি রেট (ক্রয়)</label>
+        <input type="number" id="st_rate" placeholder="প্রতি ভরি রেট">
+
+        <label>মেকিং (প্রতি ভরি)</label>
+        <input type="number" id="st_making" placeholder="মেকিং">
+
+        <label>ক্রয় দাম (স্টোনসহ)</label>
+        <input type="number" id="st_buy" placeholder="মোট ক্রয় দাম">
+
+        <button class="btn">➕ স্টক সেভ</button>
     </div>
 
+
+    <!-- ===================== PURCHASE PAGE ===================== -->
     <div class="section">
         <h2>📥 ক্রয় (Purchase)</h2>
-        <p>Purchase ফর্ম PART–2 এ যুক্ত হবে</p>
+
+        <label>সাপ্লায়ার নাম</label>
+        <input type="text" id="pur_supplier" placeholder="Supplier নাম">
+
+        <label>পণ্যের নাম</label>
+        <input type="text" id="pur_item" placeholder="পণ্যের নাম">
+
+        <label>ভরি</label>
+        <input type="number" id="pur_vori" placeholder="ভরি">
+
+        <label>ভরি রেট</label>
+        <input type="number" id="pur_rate" placeholder="রেট">
+
+        <label>মোট ক্রয় দাম</label>
+        <input type="number" id="pur_total" placeholder="মোট দাম">
+
+        <button class="btn">✔ ক্রয় সেভ</button>
     </div>
 
+
+    <!-- ===================== SUPPLIER ===================== -->
     <div class="section">
-        <h2>👷 Supplier</h2>
-        <p>Supplier ফর্ম LIST PART–2 এ যাবে</p>
-    </div>
-</div>
+        <h2>👷 Supplier এন্ট্রি</h2>
 
+        <label>সাপ্লায়ার নাম</label>
+        <input type="text" id="sup_name" placeholder="নাম">
+
+        <label>মোবাইল</label>
+        <input type="number" id="sup_mobile" placeholder="মোবাইল নম্বর">
+
+        <label>ঠিকানা</label>
+        <input type="text" id="sup_address" placeholder="ঠিকানা">
+
+        <button class="btn">➕ Supplier সেভ</button>
+    </div>
+
+    <!-- SUPPLIER LIST -->
+    <div class="section">
+        <h2>📑 Supplier তালিকা</h2>
+
+        <table width="100%" style="color:#fff;font-size:13px;">
+            <tr>
+                <th>নাম</th>
+                <th>মোবাইল</th>
+                <th>ঠিকানা</th>
+            </tr>
+            <tbody id="sup_list">
+                <!-- এখানে Supplier List আসবে PART–3 এ -->
+            </tbody>
+        </table>
+    </div>
+
+</div>
 <!-- ===================== MORTGAGE ===================== -->
 <div id="mortgage" class="page">
     <div class="section">
