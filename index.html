@@ -293,7 +293,80 @@ h2{
 <div id="mortgage" class="page">
     <div class="section">
         <h2>💰 মর্টগেজ</h2>
-        <!-- PART-B will insert Mortgage UI here -->
+        <script>
+
+// Local Database
+let DB = {
+    stock: JSON.parse(localStorage.getItem("BB_stock") || "[]")
+};
+
+function saveDB(){
+    localStorage.setItem("BB_stock", JSON.stringify(DB.stock));
+}
+
+// Gram Calculation
+function calcGramStock(){
+    let v = parseFloat(document.getElementById("st_vori").value) || 0;
+    let a = parseFloat(document.getElementById("st_ana").value) || 0;
+    let r = parseFloat(document.getElementById("st_roti").value) || 0;
+    let p = parseFloat(document.getElementById("st_point").value) || 0;
+
+    let total = (v * 11.664) + (a * 0.729) + (r * 0.1215) + (p * 0.01);
+    document.getElementById("st_gram").value = total.toFixed(3);
+}
+
+// Save Stock Entry
+function saveStock(){
+    let name = document.getElementById("st_name").value;
+    let karat = document.getElementById("st_karat").value;
+    let gram = parseFloat(document.getElementById("st_gram").value) || 0;
+    let cost = parseFloat(document.getElementById("st_cost").value) || 0;
+
+    if(name=="" || karat=="" || gram==0){
+        alert("⚠ সব তথ্য পূরণ করুন!");
+        return;
+    }
+
+    let id = "P" + String(Date.now()).slice(-6);
+
+    let entry = {
+        id:id,
+        name:name,
+        karat:karat,
+        gram:gram,
+        cost:cost
+    };
+
+    DB.stock.push(entry);
+    saveDB();
+
+    alert("✔ স্টক সফলভাবে সংরক্ষণ হয়েছে!");
+
+    loadStockTable();
+}
+
+// Load Stock Table
+function loadStockTable(){
+    let body = document.getElementById("stock_table_body");
+    body.innerHTML = "";
+
+    DB.stock.forEach(st=>{
+        body.innerHTML += `
+            <tr>
+                <td>${st.id}</td>
+                <td>${st.name}</td>
+                <td>${st.karat}</td>
+                <td>${st.gram} g</td>
+                <td>৳ ${st.cost}</td>
+            </tr>
+        `;
+    });
+}
+
+window.onload = loadStockTable;
+
+</script>
+
     </div>
 </div>
 
@@ -497,6 +570,79 @@ function loadStockList(){
 
 // FIRST LOAD
 loadStockList();
+
+</script>
+<script>
+
+// Local Database
+let DB = {
+    stock: JSON.parse(localStorage.getItem("BB_stock") || "[]")
+};
+
+function saveDB(){
+    localStorage.setItem("BB_stock", JSON.stringify(DB.stock));
+}
+
+// Gram Calculation
+function calcGramStock(){
+    let v = parseFloat(document.getElementById("st_vori").value) || 0;
+    let a = parseFloat(document.getElementById("st_ana").value) || 0;
+    let r = parseFloat(document.getElementById("st_roti").value) || 0;
+    let p = parseFloat(document.getElementById("st_point").value) || 0;
+
+    let total = (v * 11.664) + (a * 0.729) + (r * 0.1215) + (p * 0.01);
+    document.getElementById("st_gram").value = total.toFixed(3);
+}
+
+// Save Stock Entry
+function saveStock(){
+    let name = document.getElementById("st_name").value;
+    let karat = document.getElementById("st_karat").value;
+    let gram = parseFloat(document.getElementById("st_gram").value) || 0;
+    let cost = parseFloat(document.getElementById("st_cost").value) || 0;
+
+    if(name=="" || karat=="" || gram==0){
+        alert("⚠ সব তথ্য পূরণ করুন!");
+        return;
+    }
+
+    let id = "P" + String(Date.now()).slice(-6);
+
+    let entry = {
+        id:id,
+        name:name,
+        karat:karat,
+        gram:gram,
+        cost:cost
+    };
+
+    DB.stock.push(entry);
+    saveDB();
+
+    alert("✔ স্টক সফলভাবে সংরক্ষণ হয়েছে!");
+
+    loadStockTable();
+}
+
+// Load Stock Table
+function loadStockTable(){
+    let body = document.getElementById("stock_table_body");
+    body.innerHTML = "";
+
+    DB.stock.forEach(st=>{
+        body.innerHTML += `
+            <tr>
+                <td>${st.id}</td>
+                <td>${st.name}</td>
+                <td>${st.karat}</td>
+                <td>${st.gram} g</td>
+                <td>৳ ${st.cost}</td>
+            </tr>
+        `;
+    });
+}
+
+window.onload = loadStockTable;
 
 </script>
 
