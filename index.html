@@ -2,254 +2,1426 @@
 <html lang="bn">
 <head>
 <meta charset="UTF-8">
-<title>Budh Baran Jewellers – POS PRO</title>
+<title>Budh Baran Jewellers – POS V12 (হিসাব নিকাশ)</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<!-- ICONS & Tailwind -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<script src="https://cdn.tailwindcss.com"></script>
 
 <style>
+/* Custom Styles for Gold Theme */
+:root {
+    --gold: #ffdb95;
+    --dark: #0a0a0a;
+    --medium-dark: #1f1f1f;
+    --light-gold: #ffe6a8;
+}
+
 body{
-  margin:0;background:#000;color:#f5d186;
-  font-family:'Segoe UI',sans-serif;
+    margin:0;
+    background: var(--dark);
+    font-family:'Inter', sans-serif;
+    color: var(--gold);
 }
 
 /* HEADER */
 .header{
-  text-align:center;padding:15px;background:#0a0a0a;
-  border-bottom:1px solid #333;
+    text-align:center;
+    padding:20px 10px;
+    background: var(--dark);
+    border-bottom:1px solid #333;
 }
 .logo{
-  width:80px;height:80px;border-radius:50%;
-  border:3px solid #ffdb95;
+    width:90px;height:90px;border-radius:50%;
+    border:3px solid var(--gold);
+    margin-bottom:10px;
 }
-.title{font-size:22px;font-weight:700;color:#ffdb95;margin-top:5px;}
-.tagline{font-size:12px;font-style:italic;color:#e6c67a;}
+.title{
+    font-size:28px;
+    font-weight:700;
+    color: var(--gold);
+}
+.tagline{
+    font-style:italic;
+    font-size:13px;
+    color: var(--light-gold);
+}
 
-/* PAGE */
-.page{display:none;padding:15px;padding-bottom:90px;}
+/* SECTION */
+.page{
+    display:none;
+    padding:15px;
+    padding-bottom:90px;
+}
 #home{display:block;}
 
 .section{
-  background:#121212;padding:15px;margin:12px 0;
-  border-radius:10px;border:1px solid #333;
+    background: var(--medium-dark);
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+    border: 1px solid #333;
 }
+
 h2{
-  margin:0 0 10px;padding-bottom:5px;
-  border-bottom:1px solid #333;color:#ffdb95;
-  font-size:18px;
+    font-size: 1.5rem;
+    color: var(--light-gold);
+    border-bottom: 2px solid #333;
+    padding-bottom: 5px;
+    margin-top: 0;
+    margin-bottom: 15px;
+}
+
+/* INPUT FORM STYLES */
+.form-group{
+    margin-bottom: 10px;
+}
+.form-group label{
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 600;
+    color: var(--light-gold);
+}
+.form-group input, .form-group select, .form-group textarea{
+    width: 100%;
+    padding: 10px;
+    background: #000;
+    border: 1px solid #444;
+    border-radius: 4px;
+    color: var(--gold);
+    box-sizing: border-box;
+}
+
+.primary-btn {
+    background: #ffc84d; /* Brighter gold for button */
+    color: #000;
+    padding: 10px 15px;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.1s;
+    width: 100%;
+}
+.primary-btn:hover {
+    background: #ffdb95;
+}
+.primary-btn:active {
+    transform: scale(0.99);
+}
+
+/* TABLE STYLES */
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+    font-size: 14px;
+}
+.data-table th, .data-table td {
+    padding: 10px;
+    border: 1px solid #333;
+    text-align: left;
+}
+.data-table th {
+    background: #2a2a2a;
+    color: var(--gold);
+    font-weight: 700;
+    position: sticky;
+    top: 0;
+}
+.data-table tbody tr:nth-child(even) {
+    background: #181818;
+}
+.data-table tbody tr:hover {
+    background: #222;
 }
 
 /* NAVIGATION */
-.nav{
-  position:fixed;bottom:0;left:0;right:0;
-  background:#0a0a0a;border-top:1px solid #333;
-  display:flex;z-index:999;
+.nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    background: #111;
+    border-top: 1px solid #333;
+    padding: 5px 0;
+    z-index: 1000;
 }
-.nav button{
-  flex:1;padding:10px 5px;background:none;border:none;
-  color:#d1b671;font-size:12px;
+.nav button {
+    background: none;
+    border: none;
+    color: #888;
+    cursor: pointer;
+    padding: 8px 5px;
+    font-size: 12px;
+    transition: color 0.2s, background 0.2s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    flex: 1;
 }
-.nav button.active{color:#ffdb95;font-weight:bold;}
-.nav i{display:block;font-size:17px;margin-bottom:3px;}
+.nav button i {
+    font-size: 18px;
+}
+.nav button.active {
+    color: var(--gold);
+}
+.nav button:not(.active):hover {
+    color: #aaa;
+}
+
+/* Report Cards */
+.report-card {
+    padding: 12px;
+    border-radius: 6px;
+    margin-bottom: 10px;
+    font-size: 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-left: 5px solid;
+}
+.card-value {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+/* Custom Admin Panel Style */
+#admin-panel {
+    background: rgba(0, 100, 150, 0.2);
+    border: 1px solid #0077b6;
+}
 </style>
 </head>
-
 <body>
 
-<!-- HEADER -->
-<div class="header">
-  <img src="logo.png" onerror="this.src='https://i.ibb.co/2y7HbY8/default-logo.png'" class="logo">
-  <div class="title">বুধ বরন জুয়েলার্স</div>
-  <div class="tagline">"Honestly is the best policy"</div>
-</div>
+<header class="header">
+    <img src="https://placehold.co/90x90/ffdb95/0a0a0a?text=BB" alt="Logo" class="logo">
+    <h1 class="title">বুধ বরণ জুয়েলার্স</h1>
+    <p class="tagline">রিয়েল-টাইম হিসাব নিকাশ এবং ইনভেন্টরি ম্যানেজমেন্ট</p>
+</header>
 
-<!-- ================= HOME ================= -->
+<!-- =================== HOME =================== -->
 <div id="home" class="page">
-  <div class="section">
-    <h2>📊 আজকের ড্যাশবোর্ড</h2>
+    <div class="section">
+        <h2>📊 ড্যাশবোর্ড ওভারভিউ</h2>
+        <div class="text-xs mb-3 p-2 rounded bg-gray-900 border border-gray-700">
+            <p id="auth-status" class="text-red-400">অপেক্ষা করুন: ডেটাবেসের সাথে যুক্ত হচ্ছে...</p>
+            <p class="mt-1 flex items-center justify-between">
+                ইউজার আইডি: <span id="user-id-display" class="font-mono text-gray-500 text-[10px] ml-2"></span>
+                <span id="user-role-display" class="font-bold px-2 py-1 rounded-full text-xs"></span>
+            </p>
+        </div>
+        
+        <!-- NEW ADMIN/MANAGER INFO PANEL -->
+        <div id="admin-panel" class="section hidden">
+            <h3 class="text-lg font-semibold mb-2 text-blue-300">⚙️ অ্যাডমিন কনফিগারেশন</h3>
+            <p class="text-sm text-blue-400 mb-3">শুধুমাত্র অ্যাডমিনরা এই ইউজার আইডিটি এখানে দেখতে পাবেন।</p>
+            <div class="form-group">
+                <label for="new-manager-id">নতুন ম্যানেজার/অ্যাডমিন ইউজার আইডি যোগ করুন</label>
+                <div class="flex gap-2">
+                    <input type="text" id="new-manager-id" placeholder="এখানে ইউজার আইডি পেস্ট করুন" class="flex-grow">
+                    <button onclick="addManagerId()" class="bg-blue-600 hover:bg-blue-500 text-white p-2 rounded-lg font-bold w-1/3">যোগ করুন</button>
+                </div>
+            </div>
+            <p class="text-xs text-gray-400 mt-2">বর্তমান ম্যানেজার ইউজার আইডি: <span id="manager-ids-list" class="font-mono text-[10px]"></span></p>
+        </div>
+        
+        <div class="grid grid-cols-2 gap-4">
+            <div class="p-4 bg-green-900/50 rounded-lg border border-green-700">
+                <p class="text-sm">মোট ক্যাশ (নগদ)</p>
+                <p class="text-2xl font-bold mt-1" id="total-cash-display">৳ 0.00</p>
+            </div>
+            <div class="p-4 bg-yellow-900/50 rounded-lg border border-yellow-700">
+                <p class="text-sm">স্টক ইনভেস্টমেন্ট</p>
+                <p class="text-2xl font-bold mt-1" id="total-stock-value">৳ 0.00</p>
+            </div>
+            <div class="p-4 bg-blue-900/50 rounded-lg border border-blue-700">
+                <p class="text-sm">মোট অর্ডার বকেয়া</p>
+                <p class="text-2xl font-bold mt-1" id="total-order-due">৳ 0.00</p>
+            </div>
+            <div class="p-4 bg-red-900/50 rounded-lg border border-red-700">
+                <p class="text-sm">মোট বন্ধক (Outstanding Mortgage)</p>
+                <p class="text-2xl font-bold mt-1" id="total-mortgage-value">৳ 0.00</p>
+            </div>
+        </div>
+        
+        <div class="section mt-4">
+            <h3 class="text-lg font-semibold mb-3 text-light-gold">সাম্প্রতিক নগদ লেনদেন (Cash Ledger)</h3>
+            <div class="overflow-x-auto">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>তারিখ</th>
+                            <th>বিবরণ</th>
+                            <th>প্রকার</th>
+                            <th>পরিমাণ (৳)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="cash-ledger-body">
+                        <!-- Cash Ledger Data will be populated here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
 
-    <div id="home_summary">
-      লোড হচ্ছে...
     </div>
-
-  </div>
 </div>
 
-<!-- EMPTY MODULES (B–C–D তে পূরণ হবে) -->
-<div id="sales" class="page"></div>
-<!-- ================= STOCK MODULE ================= -->
+<!-- =================== SALES (নগদ লেনদেন) =================== -->
+<div id="sales" class="page">
+    <div class="section">
+        <h2>💸 নতুন নগদ লেনদেন (Cash Transaction)</h2>
+        <p class="text-sm text-gray-400">স্টক বিক্রয়, অর্ডার অ্যাডভান্স গ্রহণ অথবা যেকোনো নগদ প্রাপ্তি/প্রদান রেকর্ড করুন।</p>
+        
+        <form id="cash-transaction-form" class="bg-gray-800 p-4 rounded-lg mt-4 border border-gray-700">
+            <h3 class="text-lg font-semibold mb-3 text-light-gold">লেনদেনের তথ্য</h3>
+            
+            <div class="form-group">
+                <label for="transaction-type">লেনদেনের প্রকার</label>
+                <select id="transaction-type" required>
+                    <option value="inflow">নগদ আগমন (Cash In)</option>
+                    <option value="outflow">নগদ বহির্গমন (Cash Out)</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="transaction-amount">পরিমাণ (৳)</label>
+                <input type="number" step="1" id="transaction-amount" placeholder="পরিমাণ (টাকা)" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="transaction-description">বিবরণ</label>
+                <textarea id="transaction-description" placeholder="যেমন: স্বর্ণের চুড়ি বিক্রয়, দোকান ভাড়া প্রদান, অ্যাডভান্স গ্রহণ..." required></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label for="customer-name">গ্রাহক/পক্ষ (ঐচ্ছিক)</label>
+                <input type="text" id="customer-name" placeholder="গ্রাহকের নাম/অন্যান্য পক্ষ">
+            </div>
+            
+            <div class="form-group mt-3">
+                <button type="submit" class="primary-btn">লেনদেন সংরক্ষণ করুন</button>
+            </div>
+        </form>
+        
+    </div>
+</div>
+
+<!-- =================== STOCK (ইনভেস্ট ও ইনভেন্টরি) =================== -->
 <div id="stock" class="page">
-
     <div class="section">
-        <h2>📦 নতুন স্টক এন্ট্রি</h2>
+        <h2>✨ ইনভেন্টরি ও ইনভেস্টমেন্ট (স্টক)</h2>
+        <p class="text-sm text-gray-400 mb-4">এখানে আপনার জুয়েলারির বর্তমান ইনভেস্টমেন্ট বা স্টক সংরক্ষণ করা হয়।</p>
 
-        <div class="form-group">
-            <label>পণ্যের নাম:</label>
-            <input type="text" id="st_name" placeholder="যেমন: গোল্ড রিং G101">
+        <!-- Stock Input Form -->
+        <form id="stock-form" class="bg-gray-800 p-4 rounded-lg mb-6 border border-gray-700">
+            <h3 class="text-lg font-semibold mb-3 text-light-gold">নতুন স্টক আইটেম যোগ করুন (ইনভেস্টমেন্ট)</h3>
+
+            <div class="grid grid-cols-2 gap-3">
+                <div class="form-group">
+                    <label for="item-name">নাম/বিবরণ</label>
+                    <input type="text" id="item-name" placeholder="যেমন: চুড়ি, আংটি, চেন" required>
+                </div>
+                <div class="form-group">
+                    <label for="gold-weight">সোনার ওজন (গ্রাম)</label>
+                    <input type="number" step="0.01" id="gold-weight" placeholder="10.50" required>
+                </div>
+                <div class="form-group">
+                    <label for="purity">ক্যারেট</label>
+                    <select id="purity" required>
+                        <option value="">ক্যারেট বাছুন</option>
+                        <option value="24">24K</option>
+                        <option value="22">22K</option>
+                        <option value="21">21K</option>
+                        <option value="18">18K</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="purchase-price">ক্রয় মূল্য (৳)</label>
+                    <input type="number" step="1" id="purchase-price" placeholder="মোট খরচ" required>
+                </div>
+            </div>
+            <div class="form-group mt-3">
+                <button type="submit" class="primary-btn">স্টকে আইটেম যোগ করুন</button>
+            </div>
+        </form>
+
+        <!-- Stock List -->
+        <h3 class="text-lg font-semibold mb-3 text-light-gold">বর্তমান ইনভেন্টরি</h3>
+        <div class="overflow-x-auto">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>নাম</th>
+                        <th>ওজন (gm)</th>
+                        <th>ক্যারেট</th>
+                        <th>ক্রয় মূল্য (৳)</th>
+                        <th>কার্যক্রম</th>
+                    </tr>
+                </thead>
+                <tbody id="stock-list-body">
+                    <!-- Data will be populated here -->
+                </tbody>
+            </table>
         </div>
-
-        <div class="form-group">
-            <label>ক্যারেট (Kt):</label>
-            <select id="st_karat">
-                <option value="">ক্যারেট বাছাই করুন</option>
-                <option value="22">22K</option>
-                <option value="21">21K</option>
-                <option value="18">18K</option>
-                <option value="92.5">92.5 Silver</option>
-            </select>
-        </div>
-
-        <div class="form-group">
-            <label>ওজন (ভরি / আনা / রতি / পয়েন্ট):</label>
-            <input type="number" step="0.01" id="st_vori" placeholder="ভরি">
-            <input type="number" step="0.01" id="st_ana" placeholder="আনা">
-            <input type="number" step="0.01" id="st_roti" placeholder="রতি">
-            <input type="number" step="0.01" id="st_point" placeholder="পয়েন্ট">
-        </div>
-
-        <button class="btn-primary" onclick="st_calcGram()">গ্রাম ক্যালকুলেট</button>
-
-        <div class="form-group">
-            <label>মোট গ্রাম:</label>
-            <input type="number" id="st_gram" placeholder="0.000" readonly>
-        </div>
-
-        <div class="form-group">
-            <label>বারকোড (Auto):</label>
-            <input type="text" id="st_barcode" readonly>
-        </div>
-
-        <div class="form-group">
-            <label>ক্রয় মূল্য:</label>
-            <input type="number" id="st_price" placeholder="ক্রয় মূল্য দিন...">
-        </div>
-
-        <button class="btn-primary" onclick="saveStock()">✔ স্টক সেভ করুন</button>
     </div>
-
-    <div class="section">
-        <h2>📋 স্টক তালিকা</h2>
-
-        <table class="data-table">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>পণ্য</th>
-                    <th>গ্রাম</th>
-                    <th>Kt</th>
-                    <th>ক্রয় মূল্য</th>
-                </tr>
-            </thead>
-            <tbody id="stock_list"></tbody>
-        </table>
-    </div>
-
 </div>
-<div id="mortgage" class="page"></div>
-<div id="customers" class="page"></div>
-<div id="reports" class="page"></div>
 
-<!-- NAVIGATION -->
+<!-- =================== MORTGAGE (বন্ধক) =================== -->
+<div id="mortgage" class="page">
+    <div class="section">
+        <h2>🤝 নতুন বন্ধক গ্রহণ (New Mortgage)</h2>
+        <p class="text-sm text-gray-400">গ্রাহকের কাছ থেকে গহনা বন্ধক রেখে ঋণ প্রদান এবং তা ক্যাশ লেজারে যোগ করুন।</p>
+
+        <!-- Mortgage Input Form -->
+        <form id="mortgage-form" class="bg-gray-800 p-4 rounded-lg mt-4 border border-gray-700">
+            <h3 class="text-lg font-semibold mb-3 text-light-gold">বন্ধকের বিবরণ</h3>
+
+            <div class="form-group">
+                <label for="mortgage-customer-name">গ্রাহকের নাম</label>
+                <input type="text" id="mortgage-customer-name" placeholder="গ্রাহকের সম্পূর্ণ নাম" required>
+            </div>
+            <div class="form-group">
+                <label for="mortgage-item-description">বন্ধকের গহনা (বিবরণ)</label>
+                <input type="text" id="mortgage-item-description" placeholder="যেমন: ১টি সোনার হার, ২টা বালা" required>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3">
+                <div class="form-group">
+                    <label for="mortgage-gold-weight">ওজন (গ্রাম)</label>
+                    <input type="number" step="0.01" id="mortgage-gold-weight" placeholder="15.00" required>
+                </div>
+                <div class="form-group">
+                    <label for="mortgage-purity">ক্যারেট</label>
+                    <select id="mortgage-purity" required>
+                        <option value="">ক্যারেট বাছুন</option>
+                        <option value="24">24K</option>
+                        <option value="22">22K</option>
+                        <option value="21">21K</option>
+                        <option value="18">18K</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="mortgage-principal-amount">ঋণের মূল পরিমাণ (৳)</label>
+                <input type="number" step="1" id="mortgage-principal-amount" placeholder="যেমন: 50000" required>
+            </div>
+            
+            <div class="grid grid-cols-2 gap-3">
+                <div class="form-group">
+                    <label for="mortgage-interest-rate">সুদের হার (% মাসিক)</label>
+                    <input type="number" step="0.1" id="mortgage-interest-rate" placeholder="যেমন: 2.0" required>
+                </div>
+                <div class="form-group">
+                    <label for="mortgage-term-months">মেয়াদ (মাস)</label>
+                    <input type="number" step="1" id="mortgage-term-months" placeholder="যেমন: 6" required>
+                </div>
+            </div>
+
+            <div class="form-group mt-3">
+                <button type="submit" class="primary-btn bg-red-600 hover:bg-red-500">বন্ধক গ্রহণ ও ক্যাশ প্রদান</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="section">
+        <h2>📜 বর্তমান বন্ধকের তালিকা</h2>
+        <div class="overflow-x-auto">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>গ্রাহক</th>
+                        <th>ওজন (gm)</th>
+                        <th>ঋণ (৳)</th>
+                        <th>সুদ (%)</th>
+                        <th>স্থিতি</th>
+                        <th>কার্যক্রম</th>
+                    </tr>
+                </thead>
+                <tbody id="mortgage-list-body">
+                    <!-- Mortgage Data will be populated here -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- =================== ORDERS (অর্ডার ব্যবস্থাপনা) =================== -->
+<div id="orders" class="page">
+    <div class="section">
+        <h2>🛍️ নতুন অর্ডার গ্রহণ (Custom Order)</h2>
+        <p class="text-sm text-gray-400">গ্রাহকের কাছ থেকে নতুন গহনা তৈরির অর্ডার এবং অ্যাডভান্স পেমেন্ট রেকর্ড করুন।</p>
+
+        <!-- New Order Form -->
+        <form id="order-form" class="bg-gray-800 p-4 rounded-lg mt-4 border border-gray-700">
+            <h3 class="text-lg font-semibold mb-3 text-light-gold">অর্ডারের বিবরণ</h3>
+
+            <div class="form-group">
+                <label for="order-customer-name">গ্রাহকের নাম</label>
+                <input type="text" id="order-customer-name" placeholder="গ্রাহকের সম্পূর্ণ নাম" required>
+            </div>
+            <div class="form-group">
+                <label for="order-item-description">অর্ডারের আইটেম</label>
+                <input type="text" id="order-item-description" placeholder="যেমন: নকশা করা সোনার আংটি" required>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3">
+                <div class="form-group">
+                    <label for="order-required-gold">প্রয়োজনীয় সোনা (গ্রাম)</label>
+                    <input type="number" step="0.01" id="order-required-gold" placeholder="5.50" required>
+                </div>
+                <div class="form-group">
+                    <label for="order-purity">ক্যারেট</label>
+                    <select id="order-purity" required>
+                        <option value="">ক্যারেট বাছুন</option>
+                        <option value="24">24K</option>
+                        <option value="22">22K</option>
+                        <option value="21">21K</option>
+                        <option value="18">18K</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3">
+                <div class="form-group">
+                    <label for="order-making-charge">মজুরি/বানানোর খরচ (৳)</label>
+                    <input type="number" step="1" id="order-making-charge" placeholder="যেমন: 5000" required>
+                </div>
+                <div class="form-group">
+                    <label for="order-advance-payment">অ্যাডভান্স পেমেন্ট (৳)</label>
+                    <input type="number" step="1" id="order-advance-payment" placeholder="যেমন: 10000" value="0">
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="order-delivery-date">সম্ভাব্য ডেলিভারির তারিখ</label>
+                <input type="date" id="order-delivery-date" required>
+            </div>
+
+            <div class="form-group mt-3">
+                <button type="submit" class="primary-btn bg-blue-600 hover:bg-blue-500">অর্ডার সংরক্ষণ করুন ও অ্যাডভান্স নিন</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="section">
+        <h2>📝 বর্তমান অর্ডারের তালিকা</h2>
+        <div class="overflow-x-auto">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>গ্রাহক</th>
+                        <th>আইটেম</th>
+                        <th>প্রয়োজনীয় সোনা (gm)</th>
+                        <th>মজুরি (৳)</th>
+                        <th>অ্যাডভান্স (৳)</th>
+                        <th>স্থিতি</th>
+                        <th>কার্যক্রম</th>
+                    </tr>
+                </thead>
+                <tbody id="order-list-body">
+                    <tr><td colspan="7" class="text-center text-gray-500">অর্ডারের ডেটা লোড হচ্ছে...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- =================== CUSTOMERS =================== -->
+<div id="customers" class="page">
+    <div class="section">
+        <h2>👥 গ্রাহক ব্যবস্থাপনা</h2>
+        <p class="text-sm text-gray-400">নতুন গ্রাহকের তথ্য সংরক্ষণ এবং বর্তমান গ্রাহকদের তালিকা দেখুন।</p>
+
+        <!-- Add Customer Form -->
+        <form id="customer-form" class="bg-gray-800 p-4 rounded-lg mb-6 border border-gray-700">
+            <h3 class="text-lg font-semibold mb-3 text-light-gold">নতুন গ্রাহক যোগ করুন</h3>
+
+            <div class="form-group">
+                <label for="customer-name-input">নাম</label>
+                <input type="text" id="customer-name-input" placeholder="গ্রাহকের সম্পূর্ণ নাম" required>
+            </div>
+            <div class="form-group">
+                <label for="customer-phone-input">ফোন নম্বর</label>
+                <input type="tel" id="customer-phone-input" placeholder="01XXXXXXXXX" required>
+            </div>
+            <div class="form-group">
+                <label for="customer-address-input">ঠিকানা (সংক্ষিপ্ত)</label>
+                <textarea id="customer-address-input" placeholder="গ্রাম/শহর, জেলা"></textarea>
+            </div>
+
+            <div class="form-group mt-3">
+                <button type="submit" class="primary-btn">গ্রাহক সংরক্ষণ করুন</button>
+            </div>
+        </form>
+
+        <!-- Customer List -->
+        <h3 class="text-lg font-semibold mb-3 mt-5 text-light-gold border-b border-gray-700 pb-1">সক্রিয় গ্রাহকের তালিকা</h3>
+        <div class="overflow-x-auto">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>নাম</th>
+                        <th>ফোন</th>
+                        <th>ঠিকানা</th>
+                        <th>কার্যক্রম</th>
+                    </tr>
+                </thead>
+                <tbody id="customer-list-body">
+                    <tr><td colspan="4" class="text-center text-gray-500">গ্রাহকের ডেটা লোড হচ্ছে...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- =================== REPORTS =================== -->
+<div id="reports" class="page">
+    <div class="section">
+        <h2>📅 রিপোর্ট ও আর্থিক বিশ্লেষণ (A to Z হিসাব)</h2>
+        <p class="text-sm text-gray-400 mb-4">আপনার ব্যবসার বর্তমান আর্থিক অবস্থা এক নজরে দেখুন।</p>
+
+        <!-- Financial Summary -->
+        <h3 class="text-lg font-semibold mb-3 text-light-gold border-b border-gray-700 pb-1">১. আর্থিক সারসংক্ষেপ</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <div class="report-card" style="border-color: #38a169; background-color: rgba(56, 161, 105, 0.2);">
+                <span class="font-medium">মোট ক্যাশ ব্যালেন্স (নগদ)</span>
+                <span class="card-value" id="report-total-cash">৳ 0.00</span>
+            </div>
+            <div class="report-card" style="border-color: #ecc94b; background-color: rgba(236, 201, 75, 0.2);">
+                <span class="font-medium">মোট স্টক ইনভেস্টমেন্ট</span>
+                <span class="card-value" id="report-total-stock">৳ 0.00</span>
+            </div>
+             <div class="report-card" style="border-color: #3182ce; background-color: rgba(49, 130, 206, 0.2);">
+                <span class="font-medium">মোট অর্ডার বকেয়া</span>
+                <span class="card-value" id="report-total-order-due">৳ 0.00</span>
+            </div>
+            <div class="report-card" style="border-color: #e53e3e; background-color: rgba(229, 62, 62, 0.2);">
+                <span class="font-medium">মোট বন্ধক বকেয়া (ঋণ)</span>
+                <span class="card-value" id="report-total-mortgage">৳ 0.00</span>
+            </div>
+        </div>
+
+        <!-- Cash Flow Analysis -->
+        <h3 class="text-lg font-semibold mb-3 mt-5 text-light-gold border-b border-gray-700 pb-1">২. নগদ প্রবাহ (Cash Flow) বিশ্লেষণ</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <div class="report-card" style="border-color: #3182ce; background-color: rgba(49, 130, 206, 0.2);">
+                <span class="font-medium">মোট নগদ আগমন (Cash Inflow)</span>
+                <span class="card-value" id="report-inflow-total">৳ 0.00</span>
+            </div>
+            <div class="report-card" style="border-color: #f6ad55; background-color: rgba(246, 173, 85, 0.2);">
+                <span class="font-medium">মোট নগদ বহির্গমন (Cash Outflow)</span>
+                <span class="card-value" id="report-outflow-total">৳ 0.00</span>
+            </div>
+            <div class="report-card col-span-full" style="border-color: #38a169; background-color: rgba(56, 161, 105, 0.2);">
+                <span class="font-medium">নিট নগদ প্রবাহ (Net Cash Flow)</span>
+                <span class="card-value" id="report-net-cashflow">৳ 0.00</span>
+            </div>
+        </div>
+        
+        <!-- Detailed Stock Report -->
+        <h3 class="text-lg font-semibold mb-3 mt-5 text-light-gold border-b border-gray-700 pb-1">৩. বিস্তারিত স্টক ইনভেন্টরি</h3>
+        <div class="overflow-x-auto">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>নাম</th>
+                        <th>ওজন (gm)</th>
+                        <th>ক্যারেট</th>
+                        <th>ক্রয় মূল্য (৳)</th>
+                    </tr>
+                </thead>
+                <tbody id="report-stock-list">
+                    <tr><td colspan="4" class="text-center text-gray-500">স্টক ডেটা লোড হচ্ছে...</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</div>
+
+<!-- =================== NAVIGATION =================== -->
 <div class="nav">
-  <button class="active" onclick="showPage('home',this)"><i class="fa-solid fa-house"></i>হোম</button>
-  <button onclick="showPage('sales',this)"><i class="fa-solid fa-cart-shopping"></i>বিক্রি</button>
-  <button onclick="showPage('stock',this)"><i class="fa-solid fa-boxes-stacked"></i>স্টক</button>
-  <button onclick="showPage('mortgage',this)"><i class="fa-solid fa-handshake"></i>মর্গেজ</button>
-  <button onclick="showPage('customers',this)"><i class="fa-solid fa-users"></i>গ্রাহক</button>
-  <button onclick="showPage('reports',this)"><i class="fa-solid fa-chart-line"></i>রিপোর্ট</button>
+    <button class="active" onclick="showPage('home',this)">
+        <i class="fa-solid fa-house"></i>হোম
+    </button>
+    <button onclick="showPage('sales',this)">
+        <i class="fa-solid fa-money-bill-transfer"></i>নগদ
+    </button>
+    <button onclick="showPage('stock',this)">
+        <i class="fa-solid fa-boxes-stacked"></i>স্টক
+    </button>
+    <button onclick="showPage('mortgage',this)">
+        <i class="fa-solid fa-handshake"></i>বন্ধক
+    </button>
+    <button onclick="showPage('orders',this)">
+        <i class="fa-solid fa-receipt"></i>অর্ডার
+    </button>
+    <button onclick="showPage('customers',this)">
+        <i class="fa-solid fa-users"></i>গ্রাহক
+    </button>
+    <button onclick="showPage('reports',this)">
+        <i class="fa-solid fa-chart-line"></i>রিপোর্ট
+    </button>
 </div>
 
-<script>
-/* PAGE SWITCH */
-function showPage(id,btn){
-  document.querySelectorAll('.page').forEach(p=>p.style.display='none');
-  document.getElementById(id).style.display='block';
-  document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
+<!-- =================== SCRIPT =================== -->
+<script type="module">
+// Firebase Imports
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+import { getFirestore, doc, setDoc, onSnapshot, collection, addDoc, serverTimestamp, setLogLevel, deleteDoc, query } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+// Global Variables
+let app, db, auth;
+let userId = 'anonymous'; // Default user ID
+let isAdmin = false; // NEW: Role variable
+const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+const firebaseConfig = JSON.parse(typeof __firebase_config !== 'undefined' ? __firebase_config : '{}');
+
+// Mandatory Firebase Initialization
+if (Object.keys(firebaseConfig).length > 0) {
+    try {
+        app = initializeApp(firebaseConfig);
+        db = getFirestore(app);
+        auth = getAuth(app);
+        setLogLevel('Debug'); // Enable debug logging for Firestore
+
+        // Step 1: Authentication and User ID Setup
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                userId = user.uid;
+                document.getElementById('user-id-display').textContent = userId;
+                document.getElementById('auth-status').textContent = '✅ ডেটাবেস সংযুক্ত (লগইন সফল)';
+                console.log("Authentication successful. User ID:", userId);
+                
+                // Start listening to roles first, then other data
+                startRoleListener();
+            } else {
+                // Sign in anonymously or with custom token
+                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                    await signInWithCustomToken(auth, __initial_auth_token);
+                } else {
+                    await signInAnonymously(auth);
+                }
+                document.getElementById('auth-status').textContent = '⚠️ লগইন প্রক্রিয়া চলছে...';
+            }
+        });
+
+    } catch (error) {
+        console.error("Firebase Initialization Error:", error);
+        document.getElementById('auth-status').textContent = '❌ ডেটাবেস সংযোগ ব্যর্থ: ' + error.message;
+    }
+} else {
+    console.error("Firebase Config Missing: Cannot initialize Firebase.");
+    document.getElementById('auth-status').textContent = '❌ Firebase কনফিগারেশন পাওয়া যায়নি।';
 }
 
-/* UNIFIED DATABASE */
-let DB = {
-  sales: JSON.parse(localStorage.getItem("BB_sales") || "[]"),
-  stock: JSON.parse(localStorage.getItem("BB_stock") || "[]"),
-  mortgage: JSON.parse(localStorage.getItem("BB_mortgage") || "[]"),
-  customers: JSON.parse(localStorage.getItem("BB_customers") || "[]"),
-  cashbook: JSON.parse(localStorage.getItem("BB_cash") || "[]")
+// Helper for formatting currency
+const formatCurrency = (amount) => {
+    return '৳ ' + (amount || 0).toLocaleString('bn-BD', { maximumFractionDigits: 0 });
 };
 
-function saveDB(){
-  localStorage.setItem("BB_sales", JSON.stringify(DB.sales));
-  localStorage.setItem("BB_stock", JSON.stringify(DB.stock));
-  localStorage.setItem("BB_mortgage", JSON.stringify(DB.mortgage));
-  localStorage.setItem("BB_customers", JSON.stringify(DB.customers));
-  localStorage.setItem("BB_cash", JSON.stringify(DB.cashbook));
-}
-</script>
-<script>
-// ====== GRAM CALCULATION ======
-function st_calcGram(){
-    let v = parseFloat(st_vori.value) || 0;
-    let a = parseFloat(st_ana.value) || 0;
-    let r = parseFloat(st_roti.value) || 0;
-    let p = parseFloat(st_point.value) || 0;
+// --- FIREBASE COLLECTION REFERENCES ---
+const getStockCollectionRef = () => {
+    return collection(db, `artifacts/${appId}/users/${userId}/jewelry_stock`);
+};
 
-    let total = (v * 11.664) + (a * 0.729) + (r * 0.1215) + (p * 0.01);
+const getCashLedgerCollectionRef = () => {
+    return collection(db, `artifacts/${appId}/users/${userId}/cash_ledger`);
+};
 
-    st_gram.value = total.toFixed(3);
+const getMortgageCollectionRef = () => {
+    return collection(db, `artifacts/${appId}/users/${userId}/jewelry_mortgages`);
+};
 
-    // Auto Barcode
-    st_barcode.value = "P" + String(Date.now()).slice(-6);
+const getCustomerCollectionRef = () => {
+    return collection(db, `artifacts/${appId}/users/${userId}/jewelry_customers`);
+};
 
-    return total;
-}
+const getOrderCollectionRef = () => {
+    return collection(db, `artifacts/${appId}/users/${userId}/jewelry_orders`);
+};
 
-// ====== SAVE STOCK DATA ======
-function saveStock(){
-    let name = st_name.value;
-    let karat = st_karat.value;
-    let gram = parseFloat(st_gram.value) || 0;
-    let price = parseFloat(st_price.value) || 0;
-    let barcode = st_barcode.value;
+// NEW: PUBLIC Collection for Roles (Accessible to all users under this app)
+const getRolesCollectionRef = () => {
+    // We use a specific, known ID 'user_roles' for the document containing the list
+    return doc(db, `artifacts/${appId}/public/data/roles/user_roles`);
+};
 
-    if(!name || !karat || gram <= 0){
-        alert("⚠️ সব তথ্য পূরণ করুন!");
-        return;
-    }
 
-    let item = {
-        id: barcode,
-        name,
-        karat,
-        gram,
-        price
-    };
+// --- ADMIN/ROLE LOGIC (NEW) ---
 
-    DB.stock.push(item);
-    saveDB();
+let managerIds = []; // Stores the array of manager/admin User IDs
 
-    alert("✔ স্টক সফলভাবে সংরক্ষণ হয়েছে!");
+function startRoleListener() {
+    // Listen to the single document holding all manager IDs
+    onSnapshot(getRolesCollectionRef(), (docSnapshot) => {
+        const rolesData = docSnapshot.data();
+        managerIds = rolesData?.managers || [];
+        
+        // Check if the current user is an admin
+        isAdmin = managerIds.includes(userId);
+        
+        // Update UI based on role
+        updateRoleUI();
 
-    loadStockList();
-}
+        // After roles are loaded, start listening to user-specific data
+        startFirestoreListeners();
 
-// ====== LOAD STOCK LIST ======
-function loadStockList(){
-    stock_list.innerHTML = "";
-
-    DB.stock.forEach(item=>{
-        stock_list.innerHTML += `
-            <tr>
-                <td>${item.id}</td>
-                <td>${item.name}</td>
-                <td>${item.gram} g</td>
-                <td>${item.karat}</td>
-                <td>৳ ${item.price}</td>
-            </tr>
-        `;
+    }, (error) => {
+        console.error("Error fetching role data:", error);
+        // Still start other listeners even if role fetching failed
+        startFirestoreListeners();
     });
 }
 
-// FIRST TIME LOAD
-loadStockList();
 
+function updateRoleUI() {
+    const roleDisplay = document.getElementById('user-role-display');
+    const adminPanel = document.getElementById('admin-panel');
+    const managerIdsList = document.getElementById('manager-ids-list');
+
+    if (isAdmin) {
+        roleDisplay.textContent = 'অ্যাডমিন';
+        roleDisplay.className = 'font-bold px-2 py-1 rounded-full text-xs bg-red-800 text-red-300';
+        adminPanel.classList.remove('hidden');
+        managerIdsList.textContent = managerIds.join(', ');
+        
+        // Ensure the current Admin ID is in the list display if not already added
+        if (!managerIds.includes(userId)) {
+             managerIdsList.textContent = `${userId} (বর্তমান) | ${managerIds.join(', ')}`;
+        }
+
+    } else {
+        roleDisplay.textContent = 'ম্যানেজার নেই'; // Assuming all users are 'manager' or 'admin' in this context
+        roleDisplay.className = 'font-bold px-2 py-1 rounded-full text-xs bg-gray-700 text-gray-400';
+        adminPanel.classList.add('hidden');
+    }
+}
+
+// Function to add a new manager ID
+const addManagerId = async () => {
+    const newManagerId = document.getElementById('new-manager-id').value.trim();
+    if (!newManagerId) return;
+
+    if (!isAdmin) {
+        console.error("Only an Admin can add new managers.");
+        return;
+    }
+
+    if (managerIds.includes(newManagerId)) {
+        console.log("This User ID is already a manager.");
+        document.getElementById('new-manager-id').value = '';
+        return;
+    }
+
+    try {
+        const newManagerList = [...managerIds, newManagerId];
+        await setDoc(getRolesCollectionRef(), { managers: newManagerList }, { merge: true });
+        console.log(`User ID ${newManagerId} added as a manager.`);
+        document.getElementById('new-manager-id').value = '';
+
+    } catch (error) {
+        console.error("Error adding manager ID:", error);
+    }
+}
+window.addManagerId = addManagerId; // Make it globally accessible for the onclick event
+
+
+// --- ORDER LOGIC (অর্ডার) ---
+
+// Function to handle new order submission (Access: All users can create)
+document.getElementById('order-form')?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const customerName = document.getElementById('order-customer-name').value.trim();
+    const itemDescription = document.getElementById('order-item-description').value.trim();
+    const requiredGold = parseFloat(document.getElementById('order-required-gold').value);
+    const purity = document.getElementById('order-purity').value;
+    const makingCharge = parseFloat(document.getElementById('order-making-charge').value);
+    const advancePayment = parseFloat(document.getElementById('order-advance-payment').value) || 0;
+    const deliveryDate = document.getElementById('order-delivery-date').value;
+    
+    if (!customerName || !itemDescription || isNaN(requiredGold) || !purity || isNaN(makingCharge) || makingCharge < 0 || requiredGold <= 0) {
+        console.error('অনুগ্রহ করে সমস্ত ফিল্ড সঠিক ভাবে পূরণ করুন।');
+        return;
+    }
+
+    const totalDue = makingCharge - advancePayment;
+
+    const newOrder = {
+        customer: customerName,
+        itemDescription: itemDescription,
+        requiredGold: requiredGold, 
+        purity: purity,
+        makingCharge: makingCharge,
+        advancePayment: advancePayment,
+        totalDue: totalDue,
+        deliveryDate: deliveryDate,
+        orderDate: serverTimestamp(),
+        status: 'Pending',
+        createdBy: userId, // New field for accountability
+    };
+
+    try {
+        const orderDocRef = await addDoc(getOrderCollectionRef(), newOrder);
+        
+        if (advancePayment > 0) {
+            const cashInTransaction = {
+                amount: advancePayment,
+                type: 'inflow',
+                description: `অর্ডার অ্যাডভান্স: ${customerName} - ${itemDescription}`,
+                party: customerName,
+                relatedOrderId: orderDocRef.id,
+                timestamp: serverTimestamp(),
+            };
+            await addDoc(getCashLedgerCollectionRef(), cashInTransaction);
+        }
+        
+        e.target.reset();
+        console.log(`অর্ডার সফলভাবে সংরক্ষণ করা হয়েছে। ৳${advancePayment} অ্যাডভান্স হিসাবে রেকর্ড করা হয়েছে।`);
+
+    } catch (error) {
+        console.error("Error adding order:", error);
+    }
+});
+
+// Function to mark an order as Delivered (Access: All users can finalize)
+const finalizeOrder = async (orderId, customerName, totalDue) => {
+    if (totalDue > 0) {
+        // Use custom message box instead of confirm()
+        if (!window.confirm(`আপনি কি নিশ্চিত অর্ডারটি ডেলিভারি দিতে চান? গ্রাহকের কাছে ৳${totalDue.toLocaleString('bn-BD')} বকেয়া রয়েছে।`)) return;
+
+        const cashInTransaction = {
+            amount: totalDue,
+            type: 'inflow',
+            description: `অর্ডার ফাইনাল পেমেন্ট: ${customerName} এর অর্ডারের বকেয়া`,
+            party: customerName,
+            relatedOrderId: orderId,
+            timestamp: serverTimestamp(),
+            collectedBy: userId, // New field
+        };
+        await addDoc(getCashLedgerCollectionRef(), cashInTransaction);
+    } else {
+        if (!window.confirm(`আপনি কি নিশ্চিত অর্ডারটি ডেলিভারি দিতে চান? বকেয়া: ${formatCurrency(totalDue)}`)) return;
+    }
+    
+    try {
+        await setDoc(doc(db, getOrderCollectionRef().path, orderId), {
+            status: 'Delivered',
+            deliveryDateFinal: serverTimestamp(),
+            finalDueCollected: totalDue,
+            finalizedBy: userId, // New field
+        }, { merge: true }); 
+        console.log("Order successfully finalized and delivered:", orderId);
+        
+    } catch (error) {
+        console.error("Error finalizing order:", error);
+    }
+}
+window.finalizeOrder = finalizeOrder;
+
+
+// --- CUSTOMER LOGIC (গ্রাহক) ---
+// (No change in access control needed here)
+
+document.getElementById('customer-form')?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const name = document.getElementById('customer-name-input').value.trim();
+    const phone = document.getElementById('customer-phone-input').value.trim();
+    const address = document.getElementById('customer-address-input').value.trim();
+    
+    if (!name || !phone) {
+        console.error('অনুগ্রহ করে নাম এবং ফোন নম্বর পূরণ করুন।');
+        return;
+    }
+
+    const newCustomer = {
+        name: name,
+        phone: phone,
+        address: address,
+        createdDate: serverTimestamp(),
+    };
+
+    try {
+        await addDoc(getCustomerCollectionRef(), newCustomer);
+        e.target.reset();
+        console.log(`গ্রাহক ${name} সফলভাবে সংরক্ষণ করা হয়েছে।`);
+
+    } catch (error) {
+        console.error("Error adding customer:", error);
+    }
+});
+
+// Function to delete a customer (Access: Restricted to Admin)
+const deleteCustomer = async (docId, name) => {
+    if (!isAdmin) {
+        // Use custom message box instead of confirm()
+        console.error("⚠️ শুধুমাত্র অ্যাডমিন এই কাজটি করতে পারবেন।");
+        return;
+    }
+
+    if (!window.confirm(`[অ্যাডমিন অ্যাকশন] আপনি কি নিশ্চিত গ্রাহক ${name} কে মুছে ফেলতে চান?`)) return; 
+
+    try {
+        await deleteDoc(doc(db, getCustomerCollectionRef().path, docId));
+        console.log("Customer successfully deleted:", docId);
+    } catch (error) {
+        console.error("Error deleting customer:", error);
+    }
+}
+window.deleteCustomer = deleteCustomer; 
+
+
+// --- MORTGAGE LOGIC (বন্ধক) ---
+// (No change in access control needed here)
+
+document.getElementById('mortgage-form')?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const customerName = document.getElementById('mortgage-customer-name').value;
+    const itemDescription = document.getElementById('mortgage-item-description').value;
+    const goldWeight = parseFloat(document.getElementById('mortgage-gold-weight').value);
+    const purity = document.getElementById('mortgage-purity').value;
+    const principalAmount = parseFloat(document.getElementById('mortgage-principal-amount').value);
+    const interestRate = parseFloat(document.getElementById('mortgage-interest-rate').value);
+    const termMonths = parseInt(document.getElementById('mortgage-term-months').value, 10);
+    
+    if (!customerName || !itemDescription || isNaN(goldWeight) || !purity || isNaN(principalAmount) || isNaN(interestRate) || isNaN(termMonths) || principalAmount <= 0) {
+        console.error('অনুগ্রহ করে সমস্ত ফিল্ড সঠিক ভাবে পূরণ করুন।');
+        return;
+    }
+
+    const newMortgage = {
+        customer: customerName,
+        itemDescription: itemDescription,
+        weight: goldWeight,
+        purity: purity,
+        principalAmount: principalAmount,
+        interestRate: interestRate,
+        termMonths: termMonths,
+        startDate: serverTimestamp(),
+        status: 'Active',
+        createdBy: userId, // New field
+        repaymentHistory: [], 
+    };
+
+    try {
+        const mortgageDocRef = await addDoc(getMortgageCollectionRef(), newMortgage);
+        
+        const cashOutTransaction = {
+            amount: -principalAmount,
+            type: 'outflow',
+            description: `বন্ধক প্রদান - ${customerName} কে ঋণ`,
+            party: customerName,
+            relatedMortgageId: mortgageDocRef.id,
+            timestamp: serverTimestamp(),
+        };
+        await addDoc(getCashLedgerCollectionRef(), cashOutTransaction);
+        
+        e.target.reset();
+        console.log(`বন্ধক সফলভাবে সংরক্ষণ করা হয়েছে। ৳${principalAmount} ক্যাশ বহির্গমন হিসাবে রেকর্ড করা হয়েছে।`);
+
+    } catch (error) {
+        console.error("Error adding mortgage:", error);
+    }
+});
+
+
+// Function to simulate repayment (Access: All users can redeem)
+const redeemMortgage = async (mortgageId, principal, rate, description) => {
+    
+    if (!window.confirm(`আপনি কি নিশ্চিত এই বন্ধকটি পরিশোধ হয়েছে? (${description})`)) return;
+
+    // Simplified calculation for demonstration.
+    const monthsPassed = 1; 
+    const interestDue = (principal * rate / 100) * monthsPassed;
+    const totalRepayment = principal + interestDue;
+
+    try {
+        // 1. Update the Mortgage Status
+        await setDoc(doc(db, getMortgageCollectionRef().path, mortgageId), {
+            status: 'Redeemed',
+            redemptionDate: serverTimestamp(),
+            totalRepaymentReceived: totalRepayment,
+            finalInterest: interestDue,
+            redeemedBy: userId, // New field
+        }, { merge: true }); 
+        
+        // 2. Record the Cash Inflow (Repayment)
+        const cashInTransaction = {
+            amount: totalRepayment,
+            type: 'inflow',
+            description: `বন্ধক পরিশোধ (মূল: ${principal.toLocaleString('bn-BD')}, সুদ: ${interestDue.toLocaleString('bn-BD')}) - ${description}`,
+            party: 'Mortgage Redemption',
+            relatedMortgageId: mortgageId,
+            timestamp: serverTimestamp(),
+        };
+        await addDoc(getCashLedgerCollectionRef(), cashInTransaction);
+
+    } catch (error) {
+        console.error("Error redeeming mortgage:", error);
+    }
+}
+window.redeemMortgage = redeemMortgage;
+
+// --- CASH TRANSACTION LOGIC (নগদ লেনদেন) ---
+// (No change in access control needed here)
+
+document.getElementById('cash-transaction-form')?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const type = document.getElementById('transaction-type').value;
+    const amount = parseFloat(document.getElementById('transaction-amount').value);
+    const description = document.getElementById('transaction-description').value;
+    const customer = document.getElementById('customer-name').value || 'N/A';
+    
+    if (isNaN(amount) || amount <= 0 || !description) {
+        console.error('অনুগ্রহ করে সঠিক পরিমাণ ও বিবরণ দিন।');
+        return;
+    }
+    
+    const signedAmount = type === 'inflow' ? amount : -amount;
+
+    const newTransaction = {
+        amount: signedAmount,
+        type: type,
+        description: description,
+        party: customer,
+        timestamp: serverTimestamp(),
+        recordedBy: userId, // New field
+    };
+
+    try {
+        await addDoc(getCashLedgerCollectionRef(), newTransaction);
+        console.log("New Cash Transaction added:", newTransaction);
+        e.target.reset();
+    } catch (error) {
+        console.error("Error adding cash transaction:", error);
+    }
+});
+
+
+// --- CORE STOCK LOGIC (ইনভেস্টমেন্ট/ইনভেন্টরি ম্যানেজমেন্ট) ---
+
+// Function to add a new stock item (Investment) (Access: All users can add)
+document.getElementById('stock-form')?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const itemName = document.getElementById('item-name').value;
+    const goldWeight = parseFloat(document.getElementById('gold-weight').value);
+    const purity = document.getElementById('purity').value;
+    const purchasePrice = parseFloat(document.getElementById('purchase-price').value);
+
+    if (!itemName || isNaN(goldWeight) || !purity || isNaN(purchasePrice)) {
+        console.error('অনুগ্রহ করে সমস্ত ফিল্ড সঠিক ভাবে পূরণ করুন।'); 
+        return;
+    }
+
+    const newItem = {
+        name: itemName,
+        weight: goldWeight,
+        purity: purity,
+        purchasePrice: purchasePrice,
+        timestamp: serverTimestamp(),
+        status: 'In Stock',
+        recordedBy: userId, // New field
+    };
+
+    try {
+        const docRef = await addDoc(getStockCollectionRef(), newItem);
+        
+        const investmentTransaction = {
+            amount: -purchasePrice,
+            type: 'outflow',
+            description: `নতুন স্টক ক্রয়: ${itemName} (${goldWeight}gm)`,
+            party: 'Supplier/Self-Investment',
+            relatedStockId: docRef.id, 
+            timestamp: serverTimestamp(),
+        };
+        await addDoc(getCashLedgerCollectionRef(), investmentTransaction);
+
+        e.target.reset();
+        
+    } catch (error) {
+        console.error("Error adding stock item:", error);
+    }
+});
+
+// Function to delete a stock item (Access: Restricted to Admin)
+const deleteStockItem = async (docId) => {
+    if (!isAdmin) {
+        console.error("⚠️ শুধুমাত্র অ্যাডমিন এই কাজটি করতে পারবেন।");
+        return;
+    }
+    
+    if (!window.confirm("[অ্যাডমিন অ্যাকশন] আপনি কি নিশ্চিত এই স্টক আইটেমটি মুছে ফেলতে চান?")) return; 
+
+    try {
+        await deleteDoc(doc(db, getStockCollectionRef().path, docId));
+        console.log("Stock Item successfully deleted:", docId);
+    } catch (error) {
+        console.error("Error deleting stock item:", error);
+    }
+}
+window.deleteStockItem = deleteStockItem; 
+
+
+// --- REAL-TIME LISTENERS & DASHBOARD/REPORT UPDATES ---
+
+function startFirestoreListeners() {
+    if (!db || userId === 'anonymous') {
+        console.error("Database or User ID is not ready.");
+        return;
+    }
+
+    // 1. Customer Listener
+    onSnapshot(query(getCustomerCollectionRef()), (snapshot) => {
+        const customerListBody = document.getElementById('customer-list-body');
+        const customerList = [];
+
+        snapshot.forEach((doc) => {
+            customerList.push({ id: doc.id, ...doc.data() });
+        });
+        
+        customerList.sort((a, b) => b.createdDate?.toMillis() - a.createdDate?.toMillis());
+
+        customerListBody.innerHTML = customerList.map(customer => `
+            <tr class="text-sm">
+                <td class="font-semibold">${customer.name}</td>
+                <td>${customer.phone}</td>
+                <td class="text-xs text-gray-400">${customer.address || 'N/A'}</td>
+                <td>
+                    <button onclick="deleteCustomer('${customer.id}', '${customer.name}')" 
+                            class="font-bold p-1 rounded transition ${isAdmin ? 'text-red-500 hover:text-red-300' : 'text-gray-600 cursor-not-allowed'}"
+                            ${isAdmin ? '' : 'disabled'} title="${isAdmin ? 'মুছে ফেলুন' : 'অ্যাডমিন প্রয়োজন'}">
+                        <i class="fa-solid fa-trash"></i>
+                    </button>
+                </td>
+            </tr>
+        `).join('');
+        
+        if (customerList.length === 0) {
+            customerListBody.innerHTML = '<tr><td colspan="4" class="text-center text-gray-500 py-4">কোন গ্রাহক সংরক্ষিত নেই।</td></tr>';
+        }
+
+    }, (error) => {
+        console.error("Error fetching customer data:", error);
+    });
+
+    // 2. Order Listener
+    onSnapshot(query(getOrderCollectionRef()), (snapshot) => {
+        const orderListBody = document.getElementById('order-list-body');
+        const orders = [];
+        let totalDue = 0;
+
+        snapshot.forEach((doc) => {
+            const data = doc.data();
+            orders.push({ id: doc.id, ...data });
+            if (data.status === 'Pending' || data.status === 'Completed') {
+                totalDue += data.totalDue || 0; 
+            }
+        });
+        
+        document.getElementById('total-order-due').textContent = formatCurrency(totalDue);
+        document.getElementById('report-total-order-due').textContent = formatCurrency(totalDue);
+        
+        orders.sort((a, b) => b.orderDate?.toMillis() - a.orderDate?.toMillis());
+
+        orderListBody.innerHTML = orders.map(order => {
+            const statusColor = order.status === 'Delivered' ? 'text-green-400' : (order.status === 'Pending' ? 'text-yellow-400' : 'text-blue-400');
+            
+            const actionButton = order.status !== 'Delivered' ? 
+                `<button onclick="finalizeOrder('${order.id}', '${order.customer}', ${order.totalDue})" 
+                        class="bg-green-700 text-white text-xs p-1 rounded hover:bg-green-600">
+                    ডেলিভারি দিন
+                </button>` : 
+                `<span class="text-xs text-gray-500">সম্পূর্ণ</span>`;
+
+            return `
+                <tr class="text-sm">
+                    <td>${order.customer}</td>
+                    <td>${order.itemDescription}</td>
+                    <td>${order.requiredGold ? order.requiredGold.toFixed(2) : 'N/A'}</td>
+                    <td>${formatCurrency(order.makingCharge)}</td>
+                    <td>${formatCurrency(order.advancePayment)}</td>
+                    <td class="${statusColor} font-semibold">${order.status}</td>
+                    <td>${actionButton}</td>
+                </tr>
+            `;
+        }).join('');
+
+        if (orders.length === 0) {
+            orderListBody.innerHTML = '<tr><td colspan="7" class="text-center text-gray-500 py-4">কোন অর্ডার সংরক্ষিত নেই।</td></tr>';
+        }
+
+    }, (error) => {
+        console.error("Error fetching order data:", error);
+    });
+
+
+    // 3. Stock Listener
+    onSnapshot(getStockCollectionRef(), (snapshot) => {
+        const stockListBody = document.getElementById('stock-list-body');
+        const reportStockList = document.getElementById('report-stock-list');
+        const stockList = [];
+        let totalInvestmentValue = 0;
+
+        snapshot.forEach((doc) => {
+            const data = doc.data();
+            stockList.push({ id: doc.id, ...data });
+            totalInvestmentValue += data.purchasePrice || 0;
+        });
+
+        stockList.sort((a, b) => b.timestamp?.toMillis() - a.timestamp?.toMillis());
+
+        // Update Stock List UI (STOCK page) - Deletion restricted to Admin
+        stockListBody.innerHTML = stockList.map(item => `
+            <tr class="text-sm">
+                <td>${item.name}</td>
+                <td>${item.weight ? item.weight.toFixed(2) : 'N/A'}</td>
+                <td>${item.purity}K</td>
+                <td>${formatCurrency(item.purchasePrice)}</td>
+                <td>
+                    <button onclick="deleteStockItem('${item.id}')" 
+                            class="font-bold p-1 rounded transition ${isAdmin ? 'text-red-500 hover:text-red-300' : 'text-gray-600 cursor-not-allowed'}"
+                            ${isAdmin ? '' : 'disabled'} title="${isAdmin ? 'মুছে ফেলুন' : 'অ্যাডমিন প্রয়োজন'}">
+                        <i class="fa-solid fa-trash"></i>
+                    </button>
+                </td>
+            </tr>
+        `).join('');
+        
+        // Update Stock Report UI (REPORTS page)
+        reportStockList.innerHTML = stockList.map(item => `
+            <tr class="text-sm">
+                <td>${item.name}</td>
+                <td>${item.weight ? item.weight.toFixed(2) : 'N/A'}</td>
+                <td>${item.purity}K</td>
+                <td>${formatCurrency(item.purchasePrice)}</td>
+            </tr>
+        `).join('');
+
+        // Update Dashboard & Report Stock Value
+        document.getElementById('total-stock-value').textContent = formatCurrency(totalInvestmentValue);
+        document.getElementById('report-total-stock').textContent = formatCurrency(totalInvestmentValue);
+
+
+    }, (error) => {
+        console.error("Error fetching stock data:", error);
+    });
+    
+    // 4. Cash Ledger Listener
+    onSnapshot(getCashLedgerCollectionRef(), (snapshot) => {
+        const ledgerBody = document.getElementById('cash-ledger-body');
+        const transactions = [];
+        let totalCash = 0;
+        let totalInflow = 0;
+        let totalOutflow = 0;
+
+        snapshot.forEach((doc) => {
+            const data = doc.data();
+            const amount = data.amount || 0;
+            transactions.push({ id: doc.id, ...data });
+            totalCash += amount;
+            
+            if (amount > 0) {
+                totalInflow += amount;
+            } else {
+                totalOutflow += Math.abs(amount);
+            }
+        });
+
+        transactions.sort((a, b) => b.timestamp?.toMillis() - a.timestamp?.toMillis());
+        
+        // --- Dashboard Updates ---
+        document.getElementById('total-cash-display').textContent = formatCurrency(totalCash);
+        document.getElementById('total-cash-display').classList.toggle('text-red-500', totalCash < 0);
+        document.getElementById('total-cash-display').classList.toggle('text-green-500', totalCash >= 0);
+
+        // --- Report Updates (Cash Flow Analysis) ---
+        document.getElementById('report-total-cash').textContent = formatCurrency(totalCash);
+        document.getElementById('report-inflow-total').textContent = formatCurrency(totalInflow);
+        document.getElementById('report-outflow-total').textContent = formatCurrency(totalOutflow);
+        document.getElementById('report-net-cashflow').textContent = formatCurrency(totalInflow - totalOutflow);
+        document.getElementById('report-net-cashflow').style.borderColor = (totalInflow - totalOutflow) >= 0 ? '#38a169' : '#e53e3e';
+
+
+        // Update Cash Ledger UI (Displaying only the last 10 for brevity)
+        ledgerBody.innerHTML = transactions.slice(0, 10).map(tx => {
+            const date = tx.timestamp ? new Date(tx.timestamp.toDate()).toLocaleDateString('bn-BD') : 'N/A';
+            const signClass = tx.amount > 0 ? 'text-green-400' : 'text-red-400';
+            const amountDisplay = Math.abs(tx.amount).toLocaleString('bn-BD', { maximumFractionDigits: 0 });
+            
+            return `
+                <tr class="text-xs">
+                    <td>${date}</td>
+                    <td>${tx.description}</td>
+                    <td class="${signClass}">${tx.type === 'inflow' ? 'আগমন' : 'বহির্গমন'}</td>
+                    <td class="font-bold ${signClass}">৳ ${amountDisplay}</td>
+                </tr>
+            `;
+        }).join('');
+
+    }, (error) => {
+        console.error("Error fetching cash ledger data:", error);
+    });
+    
+    // 5. Mortgage Listener
+    onSnapshot(query(getMortgageCollectionRef()), (snapshot) => {
+        const mortgageListBody = document.getElementById('mortgage-list-body');
+        const activeMortgages = [];
+        let totalOutstandingMortgage = 0;
+
+        snapshot.forEach((doc) => {
+            const data = doc.data();
+            if (data.status === 'Active') {
+                activeMortgages.push({ id: doc.id, ...data });
+                totalOutstandingMortgage += data.principalAmount || 0; 
+            }
+        });
+        
+        document.getElementById('total-mortgage-value').textContent = formatCurrency(totalOutstandingMortgage);
+        document.getElementById('report-total-mortgage').textContent = formatCurrency(totalOutstandingMortgage);
+        
+        // Update Mortgage List UI
+        mortgageListBody.innerHTML = activeMortgages.map(m => `
+            <tr class="text-sm">
+                <td>${m.customer}</td>
+                <td>${m.weight ? m.weight.toFixed(2) : 'N/A'} gm</td>
+                <td>${formatCurrency(m.principalAmount)}</td>
+                <td>${m.interestRate}%</td>
+                <td class="text-red-400 font-semibold">${m.status}</td>
+                <td>
+                    <button onclick="redeemMortgage('${m.id}', ${m.principalAmount}, ${m.interestRate}, '${m.customer} এর বন্ধক')" 
+                            class="bg-green-700 text-white text-xs p-1 rounded hover:bg-green-600">
+                        পরিশোধ
+                    </button>
+                </td>
+            </tr>
+        `).join('');
+
+    }, (error) => {
+        console.error("Error fetching mortgage data:", error);
+    });
+}
+
+// --- UI Navigation Logic ---
+function showPage(id, btn) {
+    document.querySelectorAll('.page').forEach(p => p.style.display = 'none');
+    document.getElementById(id).style.display = 'block';
+
+    document.querySelectorAll('.nav button').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+}
+window.showPage = showPage;
 </script>
+
