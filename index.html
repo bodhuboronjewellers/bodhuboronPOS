@@ -1,1 +1,166 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<title>Budh Baran Jewellers – POS V12</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<!-- ICONS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+<style>
+
+body{
+    margin:0;
+    background:#000;
+    font-family:'Segoe UI',sans-serif;
+    color:#f5d186;
+}
+
+/* HEADER */
+.header{
+    text-align:center;
+    padding:20px 10px;
+    background:#0a0a0a;
+    border-bottom:1px solid #333;
+}
+.logo{
+    width:90px;height:90px;border-radius:50%;
+    border:3px solid #ffdb95;
+    margin-bottom:10px;
+}
+.title{
+    font-size:28px;
+    font-weight:700;
+    color:#ffdb95;
+}
+.tagline{
+    font-style:italic;
+    font-size:13px;
+    color:#ffe6a8;
+}
+
+/* SECTION */
+.page{
+    display:none;
+    padding:15px;
+    padding-bottom:90px;
+}
+#home{display:block;}
+
+.section{
+    background:#121212;
+    padding:15px;
+    margin:15px 0;
+    border-radius:10px;
+    border:1px solid #333;
+}
+h2{
+    margin:0 0 10px 0;
+    border-bottom:1px solid #333;
+    padding-bottom:5px;
+    font-size:18px;
+}
+
+/* NAVIGATION */
+.nav{
+    position:fixed;bottom:0;left:0;right:0;
+    background:#0a0a0a;border-top:1px solid #333;
+    display:flex;z-index:999;
+}
+.nav button{
+    flex:1;padding:10px 5px;
+    background:none;border:none;
+    color:#d1b671;
+    font-size:12px;
+}
+.nav button i{
+    display:block;margin-bottom:3px;
+    font-size:16px;
+}
+.nav button.active{
+    color:#ffdb95;font-weight:bold;
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- =================== HEADER =================== -->
+<div class="header">
+    <img src="logo.png" class="logo" onerror="this.src='https://i.ibb.co/2y7HbY8/default-logo.png'">
+    <div class="title">বুধ বরন জুয়েলার্স</div>
+    <div class="tagline">"Honestly is the best policy"</div>
+</div>
+
+<!-- =================== HOME =================== -->
+<div id="home" class="page">
+    <div class="section">
+        <h2>📊 আজকের ড্যাশবোর্ড</h2>
+        <p>Dashboard will load after PART–3</p>
+    </div>
+</div>
+
+<!-- =================== SALES =================== -->
+<div id="sales" class="page">
+    <!-- PART–2 will insert Sales UI here -->
+</div>
+
+<!-- =================== STOCK =================== -->
+<div id="stock" class="page">
+    <!-- PART–2 will insert Stock UI -->
+</div>
+
+<!-- =================== MORTGAGE =================== -->
+<div id="mortgage" class="page">
+    <!-- PART–2 will insert Mortgage UI -->
+</div>
+
+<!-- =================== CUSTOMERS =================== -->
+<div id="customers" class="page">
+    <!-- PART–2 will insert Customer UI -->
+</div>
+
+<!-- =================== REPORTS =================== -->
+<div id="reports" class="page">
+    <div class="section">
+        <h2>📅 রিপোর্ট</h2>
+        <p>Report Engine will load after PART–3</p>
+    </div>
+</div>
+
+<!-- =================== NAVIGATION =================== -->
+<div class="nav">
+    <button class="active" onclick="showPage('home',this)">
+        <i class="fa-solid fa-house"></i>হোম
+    </button>
+    <button onclick="showPage('sales',this)">
+        <i class="fa-solid fa-cart-shopping"></i>বিক্রি
+    </button>
+    <button onclick="showPage('stock',this)">
+        <i class="fa-solid fa-boxes-stacked"></i>স্টক
+    </button>
+    <button onclick="showPage('mortgage',this)">
+        <i class="fa-solid fa-handshake"></i>মর্গেজ
+    </button>
+    <button onclick="showPage('customers',this)">
+        <i class="fa-solid fa-users"></i>গ্রাহক
+    </button>
+    <button onclick="showPage('reports',this)">
+        <i class="fa-solid fa-chart-line"></i>রিপোর্ট
+    </button>
+</div>
+
+<!-- =================== SCRIPT =================== -->
+<script>
+function showPage(id,btn){
+    document.querySelectorAll('.page').forEach(p=>p.style.display='none');
+    document.getElementById(id).style.display='block';
+    document.querySelectorAll('.nav button').forEach(a=>a.classList.remove('active'));
+    btn.classList.add('active');
+}
+</script>
+
+</body>
+</html>
