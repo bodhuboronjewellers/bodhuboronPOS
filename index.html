@@ -185,4 +185,71 @@ function saveDB(){
   localStorage.setItem("BB_cash", JSON.stringify(DB.cashbook));
 }
 </script>
+<script>
+// ====== GRAM CALCULATION ======
+function st_calcGram(){
+    let v = parseFloat(st_vori.value) || 0;
+    let a = parseFloat(st_ana.value) || 0;
+    let r = parseFloat(st_roti.value) || 0;
+    let p = parseFloat(st_point.value) || 0;
 
+    let total = (v * 11.664) + (a * 0.729) + (r * 0.1215) + (p * 0.01);
+
+    st_gram.value = total.toFixed(3);
+
+    // Auto Barcode
+    st_barcode.value = "P" + String(Date.now()).slice(-6);
+
+    return total;
+}
+
+// ====== SAVE STOCK DATA ======
+function saveStock(){
+    let name = st_name.value;
+    let karat = st_karat.value;
+    let gram = parseFloat(st_gram.value) || 0;
+    let price = parseFloat(st_price.value) || 0;
+    let barcode = st_barcode.value;
+
+    if(!name || !karat || gram <= 0){
+        alert("⚠️ সব তথ্য পূরণ করুন!");
+        return;
+    }
+
+    let item = {
+        id: barcode,
+        name,
+        karat,
+        gram,
+        price
+    };
+
+    DB.stock.push(item);
+    saveDB();
+
+    alert("✔ স্টক সফলভাবে সংরক্ষণ হয়েছে!");
+
+    loadStockList();
+}
+
+// ====== LOAD STOCK LIST ======
+function loadStockList(){
+    stock_list.innerHTML = "";
+
+    DB.stock.forEach(item=>{
+        stock_list.innerHTML += `
+            <tr>
+                <td>${item.id}</td>
+                <td>${item.name}</td>
+                <td>${item.gram} g</td>
+                <td>${item.karat}</td>
+                <td>৳ ${item.price}</td>
+            </tr>
+        `;
+    });
+}
+
+// FIRST TIME LOAD
+loadStockList();
+
+</script>
