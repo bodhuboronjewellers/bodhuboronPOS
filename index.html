@@ -116,7 +116,7 @@ h2{
         <label>গ্রাহকের নাম:</label>
         <input type="text" id="sale_customer" placeholder="গ্রাহকের নাম লিখুন...">
     </div>
-
+    
     <div class="form-group">
         <label>পণ্যের নাম:</label>
         <input type="text" id="sale_item" placeholder="যেমন: রিং, নেকলেস">
@@ -126,7 +126,33 @@ h2{
         <label>ভরি:</label>
         <input type="number" step="0.01" id="sale_vori" placeholder="0.00">
     </div>
+   <div class="form-group">
+    <label>আনা:</label>
+    <input type="number" step="0.01" id="sale_ana" placeholder="0.00">
+</div>
 
+<div class="form-group">
+    <label>রতি:</label>
+    <input type="number" step="0.01" id="sale_roti" placeholder="0.00">
+</div>
+
+<div class="form-group">
+    <label>পয়েন্ট:</label>
+    <input type="number" step="0.01" id="sale_point" placeholder="0.00">
+</div>
+
+<div class="form-group">
+    <label>গ্রাম (যদি আলাদা দেন):</label>
+    <input type="number" step="0.001" id="sale_gram" placeholder="0.000">
+</div>
+
+<button class="btn-primary" onclick="calcTotalGram()">⚖ মোট গ্রাম হিসাব</button>
+
+<div class="form-group">
+    <label>মোট গ্রাম:</label>
+    <input type="text" id="sale_total_gram" readonly>
+</div>
+ 
     <div class="form-group">
         <label>আনা:</label>
         <input type="number" step="0.01" id="sale_ana" placeholder="0.00">
