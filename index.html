@@ -2,18 +2,16 @@
 <html lang="bn">
 <head>
 <meta charset="UTF-8">
-<title>Jewellery POS – Ultra Gold Royal Edition (Updated)</title>
+<title>Jewellery POS – Ultra Gold Royal Edition (Final Merge)</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<!-- Tailwind CSS -->
 <script src="https://cdn.tailwindcss.com"></script>
 
-<!-- Font Awesome Icons -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
 <style>
 /* ------------------------------------------
-   GLOBAL GOLD ROYAL THEME
+   GLOBAL GOLD ROYAL THEME (From index (5).html)
 -------------------------------------------*/
 :root {
     --gold: #FFD37A;
@@ -32,251 +30,552 @@ body {
     min-height: 100vh;
 }
 
-/* ------------------------------------------
-   HEADER
--------------------------------------------*/
+/* Header, Navigation, Card, Form, Modal Styles are omitted for brevity in this response, 
+   but are included in the full merged code (using styles from index (5).html). */
+
 .header {
     padding: 18px 10px;
     text-align: center;
-    background: rgba(0,0,0,0.35);
-    backdrop-filter: blur(8px);
+    background: rgba(0,0,0,0.6);
     border-bottom: 1px solid var(--glass-border);
-}
-
-.header-title {
-    font-size: 28px;
-    font-weight: 700;
-    color: var(--gold);
-}
-
-.header-tagline {
-    font-size: 14px;
-    opacity: 0.8;
-}
-
-/* ------------------------------------------
-   GLASS NAVIGATION BAR
--------------------------------------------*/
-.navbar {
+    backdrop-filter: blur(5px);
     position: sticky;
     top: 0;
-    z-index: 50;
+    z-index: 100;
+}
+
+.nav {
     display: flex;
-    overflow-x: auto;
-    background: rgba(20,20,20,0.55);
+    justify-content: space-around;
+    padding: 10px 0;
+    background: rgba(0,0,0,0.6);
+    position: sticky;
+    top: 60px; /* Adjust based on header height */
+    z-index: 90;
     border-bottom: 1px solid var(--glass-border);
-    backdrop-filter: blur(10px);
-    gap: 6px;
-    padding: 10px 6px;
+    backdrop-filter: blur(5px);
 }
 
 .nav-btn {
-    flex: 1 1 auto;
-    white-space: nowrap;
-    padding: 10px 14px;
-    font-size: 14px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     color: var(--gold-soft);
-    background: rgba(255,255,255,0.05);
-    border-radius: 10px;
-    border: 1px solid var(--glass-border);
-    transition: .25s;
+    font-size: 14px;
     cursor: pointer;
+    padding: 5px 10px;
+    border-radius: 8px;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.nav-btn i {
+    font-size: 18px;
+    margin-bottom: 4px;
 }
 
 .nav-btn:hover {
-    background: rgba(255,255,255,0.12);
-    color: var(--gold);
+    background-color: var(--glass);
 }
 
 .nav-btn.active {
-    background: linear-gradient(145deg, var(--gold), var(--gold-hard));
-    color: #000;
-    font-weight: bold;
-    border-color: var(--gold-soft);
-    box-shadow: 0 3px 10px rgba(255,175,50,0.4);
-    transform: translateY(-2px);
-}
-
-/* ------------------------------------------
-   UNIVERSAL CARD WITH GOLD FRAME + GLASS
--------------------------------------------*/
-.gold-card {
-    background: var(--glass);
-    border: 1px solid var(--glass-border);
-    border-radius: 14px;
-    padding: 18px;
-    margin: 14px 0;
-    box-shadow: 0 0 18px rgba(255,215,140,0.06);
-    backdrop-filter: blur(6px);
-}
-
-/* ------------------------------------------
-   INPUT (Floating Style)
--------------------------------------------*/
-.form-group {
-    position: relative;
-    margin: 14px 0;
-}
-
-.form-input {
-    width: 100%;
-    padding: 12px 14px;
-    background: rgba(255,255,255,0.05);
-    border: 1px solid var(--glass-border);
     color: var(--gold);
-    border-radius: 8px;
-    transition: .3s ease;
+    background-color: var(--glass-border);
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
 }
 
-.form-input:focus {
-    border-color: var(--gold);
-    background: rgba(0,0,0,0.4);
-    box-shadow: 0 0 8px rgba(255,214,120,0.4);
-    outline: none;
+.content {
+    padding: 20px;
 }
 
-.form-label {
-    position: absolute;
-    top: -8px;
-    left: 14px;
-    background: #000;
-    padding: 0 6px;
-    font-size: 12px;
-    color: var(--gold-soft);
-}
-
-/* ------------------------------------------
-   GOLD BUTTON
--------------------------------------------*/
-.btn-gold {
-    background: linear-gradient(140deg, var(--gold), var(--gold-hard));
-    color: #000;
-    font-weight: 700;
-    padding: 12px 20px;
-    width: 100%;
-    border-radius: 10px;
-    margin-top: 8px;
-    box-shadow: 0 4px 14px rgba(255,200,100,0.35);
-    border: none;
-    transition: .25s ease;
-    cursor: pointer;
-}
-.btn-gold:hover {
-    background: linear-gradient(140deg, var(--gold-hard), var(--gold));
-    transform: translateY(-2px);
-}
-
-/* ------------------------------------------
-   PAGE HIDE/SHOW
--------------------------------------------*/
 .page {
     display: none;
-    padding: 18px;
-}
-.page.active {
-    display: block;
+    min-height: calc(100vh - 120px);
 }
 
-/* ------------------------------------------
-   TABLE GOLD THEME
--------------------------------------------*/
-table {
+.card {
+    background: var(--glass);
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.input-gold {
     width: 100%;
-    border-collapse: collapse;
-    margin-top: 10px;
-    background: rgba(255,255,255,0.04);
-    border-radius: 10px;
-    overflow: hidden;
-}
-th {
-    background: rgba(255,255,255,0.07);
     padding: 10px;
-    color: var(--gold);
-    font-size: 13px;
-    text-align: left;
-}
-td {
-    padding: 10px;
-    border-bottom: 1px solid rgba(255,255,255,0.05);
+    border-radius: 6px;
+    border: 1px solid var(--glass-border);
+    background: rgba(0, 0, 0, 0.3);
     color: var(--gold-soft);
-    font-size: 13px;
 }
 
-/* ------------------------------------------
-   MODAL (GLASS)
--------------------------------------------*/
+.input-gold:focus {
+    outline: none;
+    border-color: var(--gold);
+    box-shadow: 0 0 5px var(--gold-hard);
+}
+
+.btn-primary {
+    background-color: var(--gold-hard);
+    color: var(--dark);
+    font-weight: bold;
+    padding: 10px 20px;
+    border-radius: 8px;
+    transition: background-color 0.2s;
+    cursor: pointer;
+}
+
+.btn-primary:hover {
+    background-color: var(--gold);
+}
+
 .modal {
     position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.75);
-    backdrop-filter: blur(5px);
-    display: none;
-    justify-content: center;
-    align-items: center;
-    padding: 14px;
-    z-index: 100;
-}
-.modal-card {
-    background: rgba(255,255,255,0.06);
-    border: 1px solid rgba(255,255,255,0.15);
-    border-radius: 14px;
-    padding: 20px;
+    z-index: 1000;
+    left: 0;
+    top: 0;
     width: 100%;
-    max-width: 420px;
-    box-shadow: 0 0 24px rgba(255,210,120,0.2);
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.8);
+    display: none;
+    align-items: center;
+    justify-content: center;
 }
+
+.modal-content {
+    background-color: #1a1a1a;
+    margin: auto;
+    padding: 30px;
+    border: 1px solid var(--gold-hard);
+    width: 90%;
+    max-width: 500px;
+    border-radius: 12px;
+    position: relative;
+    box-shadow: 0 5px 15px rgba(255, 215, 0, 0.2);
+}
+
+.close-btn {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    position: absolute;
+    top: 10px;
+    right: 20px;
+}
+
+.close-btn:hover,
+.close-btn:focus {
+    color: var(--gold);
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.text-gold {
+    color: var(--gold);
+}
+
+.alert {
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 6px;
+    font-weight: bold;
+}
+
+.alert-success {
+    background-color: rgba(0, 128, 0, 0.3);
+    color: lightgreen;
+    border: 1px solid green;
+}
+
+.alert-error {
+    background-color: rgba(128, 0, 0, 0.3);
+    color: #ff9999;
+    border: 1px solid red;
+}
+
+.table-gold {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+.table-gold th, .table-gold td {
+    border: 1px solid var(--glass-border);
+    padding: 8px;
+    text-align: left;
+}
+
+.table-gold th {
+    background-color: rgba(255, 215, 0, 0.1);
+    color: var(--gold);
+}
+
+/* Utility for hiding elements */
+.hidden {
+    display: none !important;
+}
+
 </style>
-
 </head>
-
 <body>
 
-<div class="header">
-    <h1 class="header-title"><i class="fa-solid fa-gem mr-2"></i> জুয়েলারি POS সিস্টেম</h1>
-    <p class="header-tagline">Ultra Gold Royal Premium Edition</p>
+<div id="app">
+    <div class="header">
+        <h1 class="text-xl font-bold text-gold">জুয়েলারি POS সিস্টেম</h1>
+        <p class="text-sm">আল্ট্রা গোল্ড রয়্যাল প্রিমিয়াম এডিশন</p>
+    </div>
+
+    <div class="nav">
+        <button class="nav-btn active" onclick="showPage('dashboard', this)">
+            <i class="fas fa-home"></i> ড্যাশবোর্ড
+        </button>
+        <button class="nav-btn" onclick="showPage('purchase', this)">
+            <i class="fas fa-cart-plus"></i> ক্রয়
+        </button>
+        <button class="nav-btn" onclick="showPage('sale', this)">
+            <i class="fas fa-cash-register"></i> বিক্রয়
+        </button>
+        <button class="nav-btn" onclick="showPage('mortgage', this)">
+            <i class="fas fa-handshake"></i> বন্ধক
+        </button>
+        <button class="nav-btn" onclick="showPage('cash', this)">
+            <i class="fas fa-wallet"></i> নগদ
+        </button>
+        <button class="nav-btn" onclick="showPage('reports', this)">
+            <i class="fas fa-chart-line"></i> রিপোর্ট
+        </button>
+        <button class="nav-btn" onclick="showPage('party', this)">
+            <i class="fas fa-users"></i> পার্টি
+        </button>
+    </div>
+
+    <div class="content">
+        
+        <div id="dashboard" class="page">
+            <div id="message-area" class="alert hidden"></div>
+
+            <h2 class="text-2xl font-bold mb-4 text-gold">ড্যাশবোর্ড</h2>
+            
+            <div class="card grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+                <div><p class="text-sm text-gray-400">মোট বিনিয়োগ</p><p id="total-investment" class="text-xl font-bold text-green-400">০ ৳</p></div>
+                <div><p class="text-sm text-gray-400">মোট খরচ</p><p id="total-expense" class="text-xl font-bold text-red-400">০ ৳</p></div>
+                <div><p class="text-sm text-gray-400">বন্ধক বকেয়া</p><p id="total-mortgage" class="text-xl font-bold text-yellow-400">০ ৳</p></div>
+                <div><p class="text-sm text-gray-400">বন্ধক সুদ বকেয়া</p><p id="total-interest" class="text-xl font-bold text-yellow-400">০ ৳</p></div>
+            </div>
+
+            <div class="card">
+                <h3 class="text-xl font-bold mb-3 text-gold">বর্তমান স্বর্ণের স্টক</h3>
+                <div class="flex justify-between items-center mb-3">
+                    <p class="text-lg">ওজন (গ্রাম): <span id="stock-grams" class="font-bold">০ gm</span></p>
+                    <p class="text-lg">ওজন (ভরি): <span id="stock-vori" class="font-bold">০ ভরি</span></p>
+                </div>
+                
+                <div class="flex justify-between items-center mb-3">
+                    <p class="text-lg">বাজার মূল্য: <span id="stock-value" class="font-bold text-green-400">০ ৳</span></p>
+                    <p class="text-lg">প্রতি ভরি রেট: <span id="market-rate" class="font-bold text-gold">০ ৳</span></p>
+                </div>
+
+                <div class="mt-4 flex space-x-2">
+                    <input type="number" id="new-gold-rate" placeholder="নতুন প্রতি ভরি রেট" class="input-gold flex-grow">
+                    <button class="btn-primary" onclick="updateGoldRate()">রেট আপডেট</button>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3 class="text-xl font-bold mb-3 text-gold">সাম্প্রতিক লেনদেন</h3>
+                <div class="overflow-x-auto">
+                    <table class="table-gold">
+                        <thead><tr><th>তারিখ</th><th>প্রকার</th><th>বিবরণ</th><th>টাকা</th></tr></thead>
+                        <tbody id="recent-transactions-body">
+                            <tr><td colspan="4" class="text-center">কোনো লেনদেন পাওয়া যায়নি।</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div id="purchase" class="page">
+            <h2 class="text-2xl font-bold mb-4 text-gold">ক্রয় (Purchase)</h2>
+            <div class="card">
+                <form id="purchase-form">
+                    <h3 class="text-xl font-bold mb-3">ওজন ও প্রকার</h3>
+                    <div class="grid grid-cols-4 gap-2 mb-3">
+                        <input type="number" id="purchase-vori" placeholder="ভরি" class="input-gold" value="0">
+                        <input type="number" id="purchase-ana" placeholder="আনা" class="input-gold" value="0">
+                        <input type="number" id="purchase-roti" placeholder="রতি" class="input-gold" value="0">
+                        <input type="number" id="purchase-point" placeholder="পয়েন্ট" class="input-gold" value="0">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="block mb-1">স্বর্ণের প্রকার</label>
+                        <select id="purchase-type" class="input-gold">
+                            <option value="Hallmark">হলমার্ক</option>
+                            <option value="Old">পুরাতন</option>
+                            <option value="New">নতুন</option>
+                        </select>
+                    </div>
+
+                    <h3 class="text-xl font-bold my-3">মূল্য নির্ধারণ</h3>
+                    <div class="form-group">
+                        <label class="block mb-1">প্রতি ভরি মূল্য (৳)</label>
+                        <input type="number" id="purchase-rate" placeholder="প্রতি ভরি মূল্য" class="input-gold">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="block mb-1">মেকিং চার্জ/খরচ (৳)</label>
+                        <input type="number" id="purchase-charge" placeholder="মেকিং চার্জ" class="input-gold" value="0">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="block mb-1">মোট ওজন (গ্রাম)</label>
+                        <input type="text" id="purchase-grams" class="input-gold bg-gray-700" readonly value="0 gm">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="block mb-1">মোট মূল্য (৳)</label>
+                        <input type="text" id="purchase-total" class="input-gold bg-gray-700 text-gold text-2xl" readonly value="৳ 0">
+                    </div>
+
+                    <h3 class="text-xl font-bold my-3">সরবরাহকারীর তথ্য</h3>
+                    <div class="form-group">
+                        <input type="text" id="purchase-supplier" placeholder="সরবরাহকারীর নাম" class="input-gold">
+                    </div>
+                    <div class="form-group">
+                        <input type="tel" id="purchase-phone" placeholder="ফোন নম্বর" class="input-gold">
+                    </div>
+                    
+                    <button type="submit" class="btn-primary w-full mt-4">ক্রয় সংরক্ষণ করুন</button>
+                </form>
+            </div>
+        </div>
+
+        <div id="sale" class="page">
+            <h2 class="text-2xl font-bold mb-4 text-gold">বিক্রয় (Sale)</h2>
+            <div class="card">
+                <form id="sale-form">
+                    <h3 class="text-xl font-bold mb-3">ওজন ও প্রকার</h3>
+                    <div class="grid grid-cols-4 gap-2 mb-3">
+                        <input type="number" id="sale-vori" placeholder="ভরি" class="input-gold" value="0">
+                        <input type="number" id="sale-ana" placeholder="আনা" class="input-gold" value="0">
+                        <input type="number" id="sale-roti" placeholder="রতি" class="input-gold" value="0">
+                        <input type="number" id="sale-point" placeholder="পয়েন্ট" class="input-gold" value="0">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="block mb-1">স্বর্ণের প্রকার</label>
+                        <select id="sale-type" class="input-gold">
+                            <option value="Hallmark">হলমার্ক</option>
+                            <option value="Old">পুরাতন</option>
+                            <option value="New">নতুন</option>
+                        </select>
+                    </div>
+
+                    <h3 class="text-xl font-bold my-3">মূল্য নির্ধারণ</h3>
+                    <div class="form-group">
+                        <label class="block mb-1">প্রতি ভরি মূল্য (৳)</label>
+                        <input type="number" id="sale-rate" placeholder="প্রতি ভরি মূল্য" class="input-gold">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="block mb-1">মেকিং চার্জ + লাভ (৳)</label>
+                        <input type="number" id="sale-charge" placeholder="মেকিং চার্জ/লাভ" class="input-gold" value="0">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="block mb-1">মোট ওজন (গ্রাম)</label>
+                        <input type="text" id="sale-grams" class="input-gold bg-gray-700" readonly value="0 gm">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="block mb-1">মোট মূল্য (৳)</label>
+                        <input type="text" id="sale-total" class="input-gold bg-gray-700 text-gold text-2xl" readonly value="৳ 0">
+                    </div>
+
+                    <h3 class="text-xl font-bold my-3">গ্রাহকের তথ্য</h3>
+                    <div class="form-group">
+                        <input type="text" id="sale-customer" placeholder="গ্রাহকের নাম" class="input-gold">
+                    </div>
+                    <div class="form-group">
+                        <input type="tel" id="sale-phone" placeholder="ফোন নম্বর" class="input-gold">
+                    </div>
+                    
+                    <button type="submit" class="btn-primary w-full mt-4">বিক্রয় সংরক্ষণ করুন</button>
+                </form>
+            </div>
+        </div>
+        
+        <div id="mortgage" class="page">
+            <h2 class="text-2xl font-bold mb-4 text-gold">বন্ধক (Mortgage)</h2>
+            
+            <div class="card">
+                <h3 class="text-xl font-bold mb-3 text-gold">নতুন বন্ধক যোগ করুন</h3>
+                <form id="mortgage-form">
+                    <h4 class="text-lg font-bold mb-2">ওজন</h4>
+                    <div class="grid grid-cols-4 gap-2 mb-3">
+                        <input type="number" id="mortgage-vori" placeholder="ভরি" class="input-gold" value="0">
+                        <input type="number" id="mortgage-ana" placeholder="আনা" class="input-gold" value="0">
+                        <input type="number" id="mortgage-roti" placeholder="রতি" class="input-gold" value="0">
+                        <input type="number" id="mortgage-point" placeholder="পয়েন্ট" class="input-gold" value="0">
+                    </div>
+                    <div class="form-group">
+                        <label class="block mb-1">মোট ওজন (গ্রাম)</label>
+                        <input type="text" id="mortgage-grams" class="input-gold bg-gray-700" readonly value="0 gm">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="block mb-1">বন্ধক লোন পরিমাণ (৳)</label>
+                        <input type="number" id="mortgage-amount" placeholder="লোন পরিমাণ" class="input-gold" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="block mb-1">মাসিক সুদের হার (%)</label>
+                        <input type="number" id="mortgage-rate" placeholder="সুদের হার" class="input-gold" required>
+                    </div>
+
+                    <h4 class="text-lg font-bold my-3">বন্ধকদাতার তথ্য</h4>
+                    <div class="form-group">
+                        <input type="text" id="mortgage-customer" placeholder="বন্ধকদাতার নাম" class="input-gold" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="tel" id="mortgage-phone" placeholder="ফোন নম্বর" class="input-gold">
+                    </div>
+                    
+                    <button type="submit" class="btn-primary w-full mt-4">বন্ধক সংরক্ষণ করুন</button>
+                </form>
+            </div>
+            
+            <div class="card mt-6">
+                <h3 class="text-xl font-bold mb-3 text-gold">সক্রিয় বন্ধক তালিকা</h3>
+                <div class="overflow-x-auto">
+                    <table class="table-gold">
+                        <thead><tr><th>তারিখ</th><th>গ্রাহক</th><th>ওজন (ভরি)</th><th>লোন (৳)</th><th>সুদ (%)</th><th>বকেয়া সুদ (৳)</th><th>অ্যাকশন</th></tr></thead>
+                        <tbody id="active-mortgages-body">
+                            <tr><td colspan="7" class="text-center">কোনো সক্রিয় বন্ধক নেই।</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+        <div id="cash" class="page">
+            <h2 class="text-2xl font-bold mb-4 text-gold">নগদ (Cash)</h2>
+            <div class="card">
+                <form id="cash-transaction-form">
+                    <div class="form-group">
+                        <label class="block mb-1">লেনদেনের প্রকার</label>
+                        <select id="cash-type" class="input-gold">
+                            <option value="Investment">বিনিয়োগ (Cash In)</option>
+                            <option value="Expense">খরচ (Cash Out)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="block mb-1">পরিমাণ (৳)</label>
+                        <input type="number" id="cash-amount" placeholder="পরিমাণ" class="input-gold" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="block mb-1">বিবরণ</label>
+                        <input type="text" id="cash-description" placeholder="সংক্ষিপ্ত বিবরণ" class="input-gold" required>
+                    </div>
+                    
+                    <button type="submit" class="btn-primary w-full mt-4">সংরক্ষণ করুন</button>
+                </form>
+            </div>
+        </div>
+
+        <div id="reports" class="page">
+            <h2 class="text-2xl font-bold mb-4 text-gold">রিপোর্ট (Reports)</h2>
+            <div class="card">
+                <h3 class="text-xl font-bold mb-3">সময়সীমা নির্বাচন</h3>
+                <div class="grid grid-cols-2 gap-4 mb-4">
+                    <div class="form-group">
+                        <label class="block mb-1">শুরুর তারিখ</label>
+                        <input type="date" id="report-start-date" class="input-gold">
+                    </div>
+                    <div class="form-group">
+                        <label class="block mb-1">শেষ তারিখ</label>
+                        <input type="date" id="report-end-date" class="input-gold">
+                    </div>
+                </div>
+                <button class="btn-primary w-full" onclick="generateReport()">রিপোর্ট তৈরি করুন</button>
+            </div>
+            
+            <div id="report-summary" class="card mt-6 hidden">
+                <h3 class="text-xl font-bold mb-3 text-gold">সারসংক্ষেপ</h3>
+                <div class="grid grid-cols-3 gap-4 text-center">
+                    <div><p class="text-sm text-gray-400">মোট বিক্রয়</p><p id="report-total-sale" class="text-xl font-bold text-green-400">০ ৳</p></div>
+                    <div><p class="text-sm text-gray-400">মোট ক্রয়</p><p id="report-total-purchase" class="text-xl font-bold text-red-400">০ ৳</p></div>
+                    <div><p class="text-sm text-gray-400">নেট লাভ/ক্ষতি</p><p id="report-net-profit" class="text-xl font-bold text-gold">০ ৳</p></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="party" class="page">
+            <h2 class="text-2xl font-bold mb-4 text-gold">পার্টি (Party) তালিকা</h2>
+            <div class="card">
+                <div class="form-group mb-4">
+                    <label class="block mb-1">ফিল্টার করুন</label>
+                    <select id="party-type-filter" class="input-gold">
+                        <option value="All">সকল পার্টি</option>
+                        <option value="Customer">গ্রাহক</option>
+                        <option value="Supplier">সরবরাহকারী</option>
+                        <option value="Mortgage Giver">বন্ধকদাতা</option>
+                    </select>
+                </div>
+                
+                <div class="overflow-x-auto">
+                    <table class="table-gold">
+                        <thead><tr><th>পার্টির নাম</th><th>ফোন</th><th>প্রকার</th><th>মোট লেনদেন</th></tr></thead>
+                        <tbody id="party-list-body">
+                            <tr><td colspan="4" class="text-center">কোনো পার্টি পাওয়া যায়নি।</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div id="redeem-mortgage-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="document.getElementById('redeem-mortgage-modal').style.display='none'">&times;</span>
+            <h3 class="text-2xl font-bold mb-4 text-gold">বন্ধক পরিশোধ</h3>
+            <div class="mb-4">
+                <p>বন্ধকদাতা: <span id="redeem-customer" class="font-bold"></span></p>
+                <p>লোন পরিমাণ: <span id="redeem-loan-amount" class="font-bold"></span></p>
+                <p>সুদের হার: <span id="redeem-rate" class="font-bold"></span></p>
+                <p>বন্ধকের তারিখ: <span id="redeem-start-date" class="font-bold"></span></p>
+            </div>
+            <div class="card p-4 bg-gray-900 border-gold mb-4">
+                <p class="text-lg">মোট বকেয়া সুদ: <span id="redeem-interest-amount" class="font-bold text-yellow-400"></span></p>
+                <p class="text-2xl mt-2">মোট পরিশোধযোগ্য: <span id="redeem-total-amount" class="font-bold text-green-400"></span></p>
+            </div>
+            
+            <button id="confirm-redeem-btn" class="btn-primary w-full" onclick="confirmRedeem()">পরিশোধ নিশ্চিত করুন</button>
+            <p class="text-sm text-gray-500 mt-2">এই অ্যাকশনটি বন্ধক লেনদেন শেষ করবে এবং ডেটাবেস আপডেট করবে।</p>
+        </div>
+    </div>
+
 </div>
 
-<div class="navbar">
-    <button class="nav-btn active" onclick="showPage('dashboard', this)">ড্যাশবোর্ড</button>
-    <button class="nav-btn" onclick="showPage('purchase', this)">ক্রয়</button>
-    <button class="nav-btn" onclick="showPage('sale', this)">বিক্রয়</button>
-    <button class="nav-btn" onclick="showPage('mortgage', this)">বন্ধক</button>
-    <button class="nav-btn" onclick="showPage('cash', this)">নগদ</button>
-    <button class="nav-btn" onclick="showPage('reports', this)">রিপোর্ট</button>
-    <button class="nav-btn" onclick="showPage('party', this)">পার্টি</button>
-</div>
-
-<!-- PART–1 END -->
-<!-- PART–2 START -->
 <script type="module">
+// ------------------------------------------
+// FIREBASE CONFIG (YOUR CONFIG INCLUDED HERE)
+// ------------------------------------------
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+import { getFirestore, collection, addDoc, query, orderBy, onSnapshot, updateDoc, doc, where, getDocs, runTransaction } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
 
-/* ------------------------------------------
-   FIREBASE IMPORTS
-------------------------------------------- */
-
-import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-import {
-    getFirestore,
-    doc,
-    setDoc,
-    addDoc,
-    getDoc,
-    updateDoc,
-    onSnapshot,
-    deleteDoc,
-    collection,
-    query,
-    where,
-    orderBy,
-    serverTimestamp
-} from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-
-import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-analytics.js";
-
-/* ------------------------------------------
-   FIREBASE CONFIG (YOUR REAL PROJECT)
-------------------------------------------- */
-
+// !!! আপনার দেওয়া Firebase কনফিগারেশনটি নিচে যুক্ত করা হয়েছে !!!
 const firebaseConfig = {
   apiKey: "AIzaSyDc6By4_9Y5skuN77ma1pLJY7i9yitn0RI",
   authDomain: "bodhuboronpos.firebaseapp.com",
@@ -287,273 +586,644 @@ const firebaseConfig = {
   measurementId: "G-1Y3P8XQ734"
 };
 
-/* ------------------------------------------
-   FIREBASE INITIALIZATION
-------------------------------------------- */
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
-const db = getFirestore(app);
+let db;
+let unsubscribeListeners = [];
 
-/* ------------------------------------------
-   WEIGHT CONSTANTS
-------------------------------------------- */
-const GRAMS_PER_VORI = 11.664;
-const ANA_PER_VORI = 16;
-const ROTI_PER_ANA = 4;
-const POINT_PER_ROTI = 6;
-const POINT_PER_VORI = ANA_PER_VORI * ROTI_PER_ANA * POINT_PER_ROTI;
-
-/* ------------------------------------------
-   WEIGHT CALCULATIONS
-------------------------------------------- */
-function voriToDecimal(v, a, r, p) {
-    v = parseFloat(v) || 0;
-    a = parseFloat(a) || 0;
-    r = parseFloat(r) || 0;
-    p = parseFloat(p) || 0;
-
-    let totalPoints =
-        v * POINT_PER_VORI +
-        a * ROTI_PER_ANA * POINT_PER_ROTI +
-        r * POINT_PER_ROTI +
-        p;
-
-    return totalPoints / POINT_PER_VORI;
-}
-
-function voriToGrams(v, a, r, p) {
-    return voriToDecimal(v, a, r, p) * GRAMS_PER_VORI;
-}
-
-/* ------------------------------------------
-   FORMAT CURRENCY
-------------------------------------------- */
-function formatCurrency(amount) {
-    return "৳ " + (amount || 0).toLocaleString("bn-BD");
-}
-
-/* ------------------------------------------
-   MESSAGE BOX (Toast)
-------------------------------------------- */
-window.showMessage = function (msg, type="success") {
-    const box = document.getElementById("message-box");
-    box.textContent = msg;
-
-    box.style.background = type === "success" ? "#0a9b6a" : "#d9534f";
-    box.style.display = "block";
-    box.style.transform = "translateX(0)";
-
-    setTimeout(() => {
-        box.style.transform = "translateX(120%)";
-        setTimeout(() => (box.style.display = "none"), 300);
-    }, 2500);
+window.initFirebase = function() {
+    try {
+        const app = initializeApp(firebaseConfig);
+        db = getFirestore(app);
+        startRealTimeListeners();
+    } catch (e) {
+        showMessage("Firebase কনফিগারেশন ত্রুটি। আপনার সেটিংস পরীক্ষা করুন।", "error");
+        console.error("Firebase Init Error:", e);
+    }
 };
-/* ------------------------------------------
-   REAL-TIME LISTENERS
-------------------------------------------- */
 
-function startListeners() {
 
-    // GOLD RATE
-    onSnapshot(doc(db, "settings", "gold_rate"), (snap) => {
-        if (snap.exists()) {
-            const rate = snap.data().rate || 0;
-            document.getElementById("current-gold-rate").textContent =
-                "বর্তমান রেট: " + formatCurrency(rate);
-            window.currentGoldRate = rate;
+// ------------------------------------------
+// CONSTANTS (From index (5).html)
+// ------------------------------------------
+const VORI_TO_GRAMS = 11.664;
+const VORI_TO_ANA = 16;
+const ANA_TO_ROTI = 4;
+const ROTI_TO_POINT = 6;
+const TRANSACTION_COLLECTION = "transactions";
+const GOLD_RATE_DOC_ID = "current_rate";
+let currentGoldRate = 0; // Will be set by Firebase listener
+
+// ------------------------------------------
+// HELPER FUNCTIONS (From index (5).html)
+// ------------------------------------------
+
+// Shows user message/alert
+window.showMessage = function (message, type = "success") {
+    const messageArea = document.getElementById('message-area');
+    messageArea.textContent = message;
+    messageArea.className = `alert ${type === "success" ? "alert-success" : "alert-error"}`;
+    messageArea.classList.remove('hidden');
+    setTimeout(() => messageArea.classList.add('hidden'), 5000);
+};
+
+// Converts vori, ana, roti, point to grams
+window.voriToGrams = function (vori, ana, roti, point) {
+    const decimalVori = voriToDecimal(vori, ana, roti, point);
+    return decimalVori * VORI_TO_GRAMS;
+};
+
+// Converts vori, ana, roti, point to decimal vori
+window.voriToDecimal = function (vori, ana, roti, point) {
+    const rotiFraction = roti + (point / ROTI_TO_POINT);
+    const anaFraction = ana + (rotiFraction / ANA_TO_ROTI);
+    return parseFloat(vori) + (anaFraction / VORI_TO_ANA);
+};
+
+// Formats a number as Bangladeshi Taka
+window.formatCurrency = function (amount) {
+    if (isNaN(amount)) return '৳ 0';
+    return `৳ ${Math.round(amount).toLocaleString('bn-BD')}`;
+};
+
+// Calculates total weight and cost for purchase/sale/mortgage forms
+window.calculateWeightAndCost = function (type) {
+    const vori = parseFloat(document.getElementById(`${type}-vori`).value) || 0;
+    const ana = parseFloat(document.getElementById(`${type}-ana`).value) || 0;
+    const roti = parseFloat(document.getElementById(`${type}-roti`).value) || 0;
+    const point = parseFloat(document.getElementById(`${type}-point`).value) || 0;
+    const rate = parseFloat(document.getElementById(`${type}-rate`)?.value) || 0;
+    const charge = parseFloat(document.getElementById(`${type}-charge`)?.value) || 0;
+
+    const decimalVori = voriToDecimal(vori, ana, roti, point);
+    const grams = voriToGrams(vori, ana, roti, point);
+
+    if (document.getElementById(`${type}-grams`)) {
+        document.getElementById(`${type}-grams`).value = `${grams.toFixed(3)} gm`;
+    }
+
+    if (document.getElementById(`${type}-total`)) {
+        let totalCost = (decimalVori * rate) + charge;
+        document.getElementById(`${type}-total`).value = formatCurrency(totalCost);
+    }
+    
+    return { decimalVori, grams };
+};
+
+// Calculate total interest on a mortgage
+window.calculateInterest = function (mortgage) {
+    const today = new Date();
+    const startDate = mortgage.startDate.toDate();
+    const diffTime = Math.abs(today - startDate);
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    
+    // Calculate interest based on days
+    const monthlyRate = mortgage.rate / 100; // e.g., 5% -> 0.05
+    const dailyRate = monthlyRate / 30; // Assuming 30 days in a month for calculation
+    
+    const interest = mortgage.loanAmount * dailyRate * diffDays;
+    
+    return { interest: Math.round(interest), days: diffDays };
+};
+
+// Setup listeners for all weight/rate inputs on a form
+window.setupWeightListeners = function (type) {
+    const inputs = [`${type}-vori`, `${type}-ana`, `${type}-roti`, `${type}-point`, `${type}-rate`, `${type}-charge`];
+    inputs.forEach(id => {
+        const element = document.getElementById(id);
+        if (element) {
+            element.addEventListener('input', () => calculateWeightAndCost(type));
+        }
+    });
+};
+
+// ------------------------------------------
+// FIREBASE CRUD OPERATIONS (From index (5).html)
+// ------------------------------------------
+
+// Add a transaction to Firestore
+window.addTransaction = async function (data) {
+    try {
+        const transactionsRef = collection(db, TRANSACTION_COLLECTION);
+        await addDoc(transactionsRef, {
+            ...data,
+            timestamp: new Date(),
+            date: new Date().toLocaleDateString('bn-BD'),
+            status: data.status || 'Active' // Default status
+        });
+        return true;
+    } catch (e) {
+        console.error("Error adding document: ", e);
+        showMessage("ডেটা সংরক্ষণ ব্যর্থ হয়েছে।", "error");
+        return false;
+    }
+};
+
+// Update Gold Rate in Firestore
+window.updateGoldRate = async function () {
+    const newRate = parseFloat(document.getElementById("new-gold-rate").value);
+    if (isNaN(newRate) || newRate <= 0) {
+        showMessage("একটি সঠিক স্বর্ণের রেট প্রদান করুন।", "error");
+        return;
+    }
+
+    try {
+        const rateRef = doc(db, "settings", GOLD_RATE_DOC_ID);
+        await updateDoc(rateRef, { 
+            rate: newRate, 
+            lastUpdated: new Date() 
+        }, { merge: true });
+        
+        document.getElementById("new-gold-rate").value = "";
+        showMessage("স্বর্ণের রেট সফলভাবে আপডেট করা হয়েছে।", "success");
+    } catch (e) {
+        showMessage(`রেট আপডেট ব্যর্থ: ${e.message}`, "error");
+        console.error("Error updating rate: ", e);
+    }
+};
+
+
+// ------------------------------------------
+// REAL-TIME LISTENERS & UI UPDATES (From index (5).html)
+// ------------------------------------------
+
+window.startRealTimeListeners = function () {
+    // 1. Gold Rate Listener
+    const rateQuery = doc(db, "settings", GOLD_RATE_DOC_ID);
+    unsubscribeListeners.push(onSnapshot(rateQuery, (docSnapshot) => {
+        if (docSnapshot.exists()) {
+            currentGoldRate = docSnapshot.data().rate || 0;
+            document.getElementById('market-rate').textContent = formatCurrency(currentGoldRate) + " / ভরি";
+            // Recalculate dashboard stock value
+            updateDashboard(); 
+        } else {
+            showMessage("স্বর্ণের রেট সেটিং পাওয়া যায়নি।", "error");
+        }
+    }));
+
+    // 2. Transaction Listener (Dashboard, Mortgage, Party, Stock)
+    const q = query(collection(db, TRANSACTION_COLLECTION), orderBy("timestamp", "desc"));
+    unsubscribeListeners.push(onSnapshot(q, (querySnapshot) => {
+        const transactions = [];
+        const activeMortgages = [];
+        let totalInvestment = 0;
+        let totalExpense = 0;
+        let totalMortgageLoan = 0;
+        let totalAccruedInterest = 0;
+        let goldStockGrams = 0;
+
+        querySnapshot.forEach((doc) => {
+            const data = { id: doc.id, ...doc.data() };
+            transactions.push(data);
+            
+            // Tally Cash/Investment/Expense
+            if (data.type === 'Investment') {
+                totalInvestment += data.amount;
+            } else if (data.type === 'Expense') {
+                totalExpense += data.amount;
+            }
+
+            // Tally Gold Stock (Purchase - Sale - Mortgage Out + Mortgage In)
+            if (data.type === 'Purchase') {
+                goldStockGrams += data.grams;
+            } else if (data.type === 'Sale') {
+                goldStockGrams -= data.grams;
+            } else if (data.type === 'Mortgage') {
+                goldStockGrams -= data.grams; // Gold is 'given' as collateral
+                totalMortgageLoan += data.loanAmount;
+                if (data.status === 'Active') {
+                    activeMortgages.push(data);
+                    const { interest } = calculateInterest(data);
+                    totalAccruedInterest += interest;
+                }
+            } else if (data.type === 'Redeem') {
+                // Gold returned to stock upon redemption
+                const originalMortgage = transactions.find(t => t.id === data.mortgageId);
+                if (originalMortgage) {
+                    goldStockGrams += originalMortgage.grams;
+                }
+            }
+        });
+
+        // Update UI functions
+        updateDashboard(totalInvestment, totalExpense, totalMortgageLoan, totalAccruedInterest, goldStockGrams);
+        updateRecentTransactions(transactions.slice(0, 10)); // Show top 10
+        updateActiveMortgages(activeMortgages);
+        buildPartyList(transactions);
+    }));
+};
+
+// Update Dashboard UI (From index (5).html)
+window.updateDashboard = function (totalInvestment = 0, totalExpense = 0, totalMortgageLoan = 0, totalAccruedInterest = 0, goldStockGrams = 0) {
+    document.getElementById('total-investment').textContent = formatCurrency(totalInvestment);
+    document.getElementById('total-expense').textContent = formatCurrency(totalExpense);
+    document.getElementById('total-mortgage').textContent = formatCurrency(totalMortgageLoan);
+    document.getElementById('total-interest').textContent = formatCurrency(totalAccruedInterest);
+    
+    // Gold Stock
+    const stockVori = goldStockGrams / VORI_TO_GRAMS;
+    document.getElementById('stock-grams').textContent = `${goldStockGrams.toFixed(3)} gm`;
+    document.getElementById('stock-vori').textContent = `${stockVori.toFixed(3)} ভরি`;
+    
+    // Stock Value
+    const stockValue = stockVori * currentGoldRate;
+    document.getElementById('stock-value').textContent = formatCurrency(stockValue);
+};
+
+// Update Recent Transactions Table (From index (5).html)
+window.updateRecentTransactions = function (transactions) {
+    const body = document.getElementById('recent-transactions-body');
+    body.innerHTML = '';
+    
+    if (transactions.length === 0) {
+        body.innerHTML = '<tr><td colspan="4" class="text-center">কোনো লেনদেন পাওয়া যায়নি।</td></tr>';
+        return;
+    }
+
+    transactions.forEach(t => {
+        const row = body.insertRow();
+        row.insertCell().textContent = t.date;
+        row.insertCell().textContent = t.type_bn || t.type;
+        row.insertCell().textContent = t.description || 'N/A';
+        row.insertCell().textContent = formatCurrency(t.amount || t.loanAmount || 0);
+        
+        // Color coding for cash flow
+        if (t.type === 'Investment' || t.type === 'Sale' || t.type === 'Redeem') {
+            row.cells[3].classList.add('text-green-400');
+        } else if (t.type === 'Expense' || t.type === 'Purchase' || t.type === 'Mortgage') {
+            row.cells[3].classList.add('text-red-400');
+        } else {
+            row.cells[3].classList.add('text-yellow-400');
+        }
+    });
+};
+
+// Update Active Mortgages Table (From index (5).html)
+let globalActiveMortgages = [];
+window.updateActiveMortgages = function (activeMortgages) {
+    globalActiveMortgages = activeMortgages; // Store for redeem functionality
+    const body = document.getElementById('active-mortgages-body');
+    body.innerHTML = '';
+    
+    if (activeMortgages.length === 0) {
+        body.innerHTML = '<tr><td colspan="7" class="text-center">কোনো সক্রিয় বন্ধক নেই।</td></tr>';
+        return;
+    }
+
+    activeMortgages.forEach((m) => {
+        const { interest } = calculateInterest(m);
+        const row = body.insertRow();
+        row.insertCell().textContent = m.date;
+        row.insertCell().textContent = m.customer;
+        row.insertCell().textContent = `${(m.grams / VORI_TO_GRAMS).toFixed(3)} ভরি`;
+        row.insertCell().textContent = formatCurrency(m.loanAmount);
+        row.insertCell().textContent = `${m.rate}%`;
+        row.insertCell().textContent = formatCurrency(interest);
+
+        const actionCell = row.insertCell();
+        const redeemBtn = document.createElement('button');
+        redeemBtn.textContent = 'পরিশোধ';
+        redeemBtn.className = 'btn-primary text-sm p-1';
+        redeemBtn.onclick = () => showRedeemModal(m.id);
+        actionCell.appendChild(redeemBtn);
+    });
+};
+
+// Build Party List (From index (5).html)
+let globalPartyMap = {};
+window.buildPartyList = function (transactions) {
+    globalPartyMap = {};
+
+    transactions.forEach(t => {
+        let name = t.customer || t.supplier || t.mortgageCustomer;
+        let type;
+
+        if (t.type === 'Sale') {
+            type = 'Customer';
+            name = t.customer;
+        } else if (t.type === 'Purchase') {
+            type = 'Supplier';
+            name = t.supplier;
+        } else if (t.type === 'Mortgage') {
+            type = 'Mortgage Giver';
+            name = t.customer;
+        }
+
+        if (name) {
+            if (!globalPartyMap[name]) {
+                globalPartyMap[name] = { name, phone: t.phone || 'N/A', types: new Set() };
+            }
+            if (type) {
+                globalPartyMap[name].types.add(type);
+            }
         }
     });
 
-    // TRANSACTIONS
-    const q = query(
-        collection(db, "transactions"),
-        orderBy("timestamp", "desc")
-    );
+    filterPartyList(); // Initial render
+};
 
-    onSnapshot(q, (snap) => {
-        window.allTransactions = [];
-        snap.forEach((d) => window.allTransactions.push(d.data()));
-        updateDashboard();
-        updateRecentTransactions();
-        updateCashTable();
-    });
+window.filterPartyList = function () {
+    const filterType = document.getElementById('party-type-filter').value;
+    const body = document.getElementById('party-list-body');
+    body.innerHTML = '';
+    const parties = Object.values(globalPartyMap);
+    
+    if (parties.length === 0) {
+        body.innerHTML = '<tr><td colspan="4" class="text-center">কোনো পার্টি পাওয়া যায়নি।</td></tr>';
+        return;
+    }
 
-    // MORTGAGE
-    const mq = query(collection(db, "mortgages"));
-    onSnapshot(mq, (snap) => {
-        updateMortgageTable(snap);
-    });
-}
+    parties.filter(p => filterType === 'All' || p.types.has(filterType))
+           .forEach(p => {
+               const row = body.insertRow();
+               row.insertCell().textContent = p.name;
+               row.insertCell().textContent = p.phone;
+               row.insertCell().textContent = Array.from(p.types).join(', ');
+               row.insertCell().textContent = 'N/A'; // Total transactions count (not implemented in JS logic)
+           });
+};
 
-/* ------------------------------------------
-   ADD TRANSACTION TO FIRESTORE
-------------------------------------------- */
-async function addTransaction(data) {
-    await addDoc(collection(db, "transactions"), {
-        ...data,
-        timestamp: serverTimestamp(),
-    });
-}
 
-/* ------------------------------------------
-   UPDATE DASHBOARD
-------------------------------------------- */
-function updateDashboard() {
-    let totalInvestment = 0,
-        totalExpense = 0,
-        totalGrams = 0,
-        totalInterest = 0;
+// ------------------------------------------
+// FORM SUBMISSION HANDLERS (From index (5).html)
+// ------------------------------------------
 
-    window.allTransactions.forEach((t) => {
-        if (t.type === "Investment") totalInvestment += t.amount;
-        if (t.type === "Expense") totalExpense += t.amount;
-
-        if (t.type === "Purchase") totalGrams += t.grams;
-        if (t.type === "Sale") totalGrams -= t.grams;
-
-        if (t.type === "Redeem") totalInterest += t.interest;
-    });
-
-    document.getElementById("total-investment").textContent =
-        formatCurrency(totalInvestment);
-
-    document.getElementById("total-expense").textContent =
-        formatCurrency(totalExpense);
-
-    document.getElementById("stock-grams").textContent =
-        totalGrams.toFixed(3) + " gm";
-
-    document.getElementById("stock-vori").textContent =
-        (totalGrams / GRAMS_PER_VORI).toFixed(3) + " ভরি";
-
-    document.getElementById("stock-market-value").textContent =
-        formatCurrency(
-            (totalGrams / GRAMS_PER_VORI) * (window.currentGoldRate || 0)
-        );
-}
-
-/* ------------------------------------------
-   RECENT TRANSACTIONS
-------------------------------------------- */
-function updateRecentTransactions() {
-    const body = document.getElementById("recent-transactions-body");
-    body.innerHTML = "";
-
-    window.allTransactions.slice(0, 10).forEach((t) => {
-        body.innerHTML += `
-            <tr>
-                <td>${new Date(t.timestamp?.toDate()).toLocaleDateString("bn-BD")}</td>
-                <td>${t.type_bn}</td>
-                <td>${formatCurrency(t.amount)}</td>
-                <td>${t.description}</td>
-            </tr>
-        `;
-    });
-}
-
-/* ------------------------------------------
-   CASH TABLE UPDATE
-------------------------------------------- */
-function updateCashTable() {
-    const body = document.getElementById("cash-list-body");
-    body.innerHTML = "";
-
-    window.allTransactions
-        .filter((t) => ["Investment", "Expense"].includes(t.type))
-        .forEach((t) => {
-            body.innerHTML += `
-                <tr>
-                    <td>${new Date(t.timestamp?.toDate()).toLocaleDateString("bn-BD")}</td>
-                    <td>${t.type_bn}</td>
-                    <td>${formatCurrency(t.amount)}</td>
-                    <td>${t.description}</td>
-                </tr>
-            `;
-        });
-}
-
-/* ------------------------------------------
-   PURCHASE FORM SUBMIT
-------------------------------------------- */
-document.getElementById("purchase-form").addEventListener("submit", async (e) => {
+// PURCHASE FORM
+document.getElementById('purchase-form').addEventListener('submit', async (e) => {
     e.preventDefault();
 
-    let V = purchase-vori.value,
-        A = purchase-ana.value,
-        R = purchase-roti.value,
-        P = purchase-point.value;
+    const { decimalVori, grams } = calculateWeightAndCost('purchase');
+    const rate = parseFloat(document.getElementById('purchase-rate').value);
+    const charge = parseFloat(document.getElementById('purchase-charge').value);
+    const amount = (decimalVori * rate) + charge;
 
-    let grams = voriToGrams(V, A, R, P);
-    let vori = voriToDecimal(V, A, R, P);
+    if (decimalVori <= 0 || amount <= 0 || isNaN(amount)) {
+        showMessage("ক্রয়ের তথ্য সঠিক নয়। ওজন বা মূল্য সঠিকভাবে লিখুন।", "error");
+        return;
+    }
 
-    let amount =
-        vori * parseFloat(purchase-price-per-vori.value) +
-        parseFloat(purchase-making-charge.value);
-
-    await addTransaction({
+    const transactionData = {
         type: "Purchase",
         type_bn: "ক্রয়",
-        grams,
+        grams: parseFloat(grams.toFixed(3)),
         amount: Math.round(amount),
-        description: `ক্রয়: ${vori.toFixed(2)} ভরি`,
-        supplier: purchase-supplier.value,
-    });
+        description: `ক্রয়: ${decimalVori.toFixed(3)} ভরি`,
+        supplier: document.getElementById('purchase-supplier').value,
+        phone: document.getElementById('purchase-phone').value,
+        rate,
+        charge,
+        goldType: document.getElementById('purchase-type').value
+    };
 
-    showMessage("ক্রয় সংরক্ষণ হয়েছে");
+    if (await addTransaction(transactionData)) {
+        showMessage("ক্রয় সফলভাবে সংরক্ষণ হয়েছে।", "success");
+        e.target.reset();
+    }
 });
 
-/* ------------------------------------------
-   SALE FORM SUBMIT
-------------------------------------------- */
-document.getElementById("sale-form").addEventListener("submit", async (e) => {
+// SALE FORM
+document.getElementById('sale-form').addEventListener('submit', async (e) => {
     e.preventDefault();
 
-    let V = sale-vori.value,
-        A = sale-ana.value,
-        R = sale-roti.value,
-        P = sale-point.value;
+    const { decimalVori, grams } = calculateWeightAndCost('sale');
+    const rate = parseFloat(document.getElementById('sale-rate').value);
+    const charge = parseFloat(document.getElementById('sale-charge').value);
+    const amount = (decimalVori * rate) + charge;
 
-    let grams = voriToGrams(V, A, R, P);
-    let vori = voriToDecimal(V, A, R, P);
+    if (decimalVori <= 0 || amount <= 0 || isNaN(amount)) {
+        showMessage("বিক্রয়ের তথ্য সঠিক নয়। ওজন বা মূল্য সঠিকভাবে লিখুন।", "error");
+        return;
+    }
 
-    let amount =
-        vori * parseFloat(sale-price-per-vori.value) +
-        parseFloat(sale-charge-profit.value);
-
-    await addTransaction({
+    const transactionData = {
         type: "Sale",
         type_bn: "বিক্রয়",
-        grams,
+        grams: parseFloat(grams.toFixed(3)),
         amount: Math.round(amount),
-        description: `বিক্রয়: ${vori.toFixed(2)} ভরি`,
-        customer: sale-customer.value,
-        phone: sale-phone.value,
-    });
+        description: `বিক্রয়: ${decimalVori.toFixed(3)} ভরি`,
+        customer: document.getElementById('sale-customer').value,
+        phone: document.getElementById('sale-phone').value,
+        rate,
+        charge,
+        goldType: document.getElementById('sale-type').value
+    };
 
-    showMessage("বিক্রয় সংরক্ষণ হয়েছে");
+    if (await addTransaction(transactionData)) {
+        showMessage("বিক্রয় সফলভাবে সংরক্ষণ হয়েছে।", "success");
+        e.target.reset();
+    }
 });
 
-/* ------------------------------------------
-   CASH FORM SUBMIT
-------------------------------------------- */
-document
-    .getElementById("cash-transaction-form")
-    .addEventListener("submit", async (e) => {
-        e.preventDefault();
+// MORTGAGE FORM
+document.getElementById('mortgage-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
 
-        await addTransaction({
-            type: cash-type.value,
-            type_bn: cash-type.value === "Investment" ? "বিনিয়োগ" : "খরচ",
-            amount: parseFloat(cash-amount.value),
-            description: cash-description.value,
+    const { decimalVori, grams } = calculateWeightAndCost('mortgage');
+    const loanAmount = parseFloat(document.getElementById('mortgage-amount').value);
+    const rate = parseFloat(document.getElementById('mortgage-rate').value);
+
+    if (decimalVori <= 0 || loanAmount <= 0 || rate <= 0 || isNaN(loanAmount) || isNaN(rate)) {
+        showMessage("বন্ধকের তথ্য সঠিক নয়। ওজন, লোনের পরিমাণ ও সুদের হার সঠিকভাবে লিখুন।", "error");
+        return;
+    }
+
+    const transactionData = {
+        type: "Mortgage",
+        type_bn: "বন্ধক",
+        grams: parseFloat(grams.toFixed(3)),
+        loanAmount: Math.round(loanAmount),
+        description: `বন্ধক: ${decimalVori.toFixed(3)} ভরি, ৳${loanAmount.toFixed(0)}`,
+        customer: document.getElementById('mortgage-customer').value,
+        phone: document.getElementById('mortgage-phone').value,
+        rate: rate,
+        startDate: new Date(),
+        status: "Active"
+    };
+
+    if (await addTransaction(transactionData)) {
+        showMessage("বন্ধক সফলভাবে সংরক্ষণ হয়েছে।", "success");
+        e.target.reset();
+    }
+});
+
+// CASH FORM
+document.getElementById('cash-transaction-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const type = document.getElementById('cash-type').value;
+    const amount = parseFloat(document.getElementById('cash-amount').value);
+    const description = document.getElementById('cash-description').value;
+
+    if (isNaN(amount) || amount <= 0 || !description) {
+        showMessage("নগদ লেনদেনের তথ্য সঠিকভাবে পূরণ করুন।", "error");
+        return;
+    }
+
+    const transactionData = {
+        type: type,
+        type_bn: type === "Investment" ? "বিনিয়োগ" : "খরচ",
+        amount: Math.round(amount),
+        description: description,
+    };
+
+    if (await addTransaction(transactionData)) {
+        showMessage("নগদ লেনদেন সফলভাবে সংরক্ষণ হয়েছে।", "success");
+        e.target.reset();
+    }
+});
+
+
+// ------------------------------------------
+// MORTGAGE REDEEM LOGIC (From index (5).html)
+// ------------------------------------------
+let selectedMortgage = null;
+
+window.showRedeemModal = function (mortgageId) {
+    selectedMortgage = globalActiveMortgages.find(m => m.id === mortgageId);
+
+    if (!selectedMortgage) {
+        showMessage("বন্ধক ডেটা খুঁজে পাওয়া যায়নি।", "error");
+        return;
+    }
+
+    const { interest, days } = calculateInterest(selectedMortgage);
+    const totalPayable = selectedMortgage.loanAmount + interest;
+    
+    // Update Modal UI
+    document.getElementById('redeem-customer').textContent = selectedMortgage.customer;
+    document.getElementById('redeem-loan-amount').textContent = formatCurrency(selectedMortgage.loanAmount);
+    document.getElementById('redeem-rate').textContent = `${selectedMortgage.rate}% (মাসিক)`;
+    document.getElementById('redeem-start-date').textContent = selectedMortgage.startDate.toDate().toLocaleDateString('bn-BD');
+    document.getElementById('redeem-interest-amount').textContent = `${formatCurrency(interest)} (${days} দিন)`;
+    document.getElementById('redeem-total-amount').textContent = formatCurrency(totalPayable);
+
+    // Store calculated values in the selectedMortgage object for the confirmRedeem function
+    selectedMortgage.calculatedInterest = interest;
+    selectedMortgage.totalRedeemAmount = totalPayable;
+    selectedMortgage.redeemDays = days;
+    
+    document.getElementById('redeem-mortgage-modal').style.display = 'flex';
+};
+
+window.confirmRedeem = async function () {
+    if (!selectedMortgage) {
+        showMessage("বন্ধক পরিশোধের জন্য কোনো ডেটা নির্বাচন করা হয়নি।", "error");
+        return;
+    }
+
+    try {
+        // 1. Run a transaction to ensure atomicity
+        await runTransaction(db, async (transaction) => {
+            const mortgageRef = doc(db, TRANSACTION_COLLECTION, selectedMortgage.id);
+            const loanAmount = selectedMortgage.loanAmount;
+            const interestAmount = selectedMortgage.calculatedInterest;
+            const totalAmount = selectedMortgage.totalRedeemAmount;
+
+            // a. Update the original mortgage transaction status to 'Redeemed'
+            transaction.update(mortgageRef, { status: "Redeemed" });
+
+            // b. Add a new 'Redeem' transaction to track the repayment
+            const transactionsRef = collection(db, TRANSACTION_COLLECTION);
+            transaction.set(doc(transactionsRef), {
+                type: "Redeem",
+                type_bn: "বন্ধক পরিশোধ",
+                mortgageId: selectedMortgage.id,
+                amount: totalAmount, // This is the total cash IN
+                loanAmount: loanAmount,
+                interestAmount: interestAmount,
+                grams: selectedMortgage.grams, // Gold returns to stock
+                description: `বন্ধক পরিশোধ: ${selectedMortgage.customer}`,
+                customer: selectedMortgage.customer,
+                phone: selectedMortgage.phone,
+                startDate: selectedMortgage.startDate,
+                redeemDate: new Date(),
+                redeemDays: selectedMortgage.redeemDays,
+                rate: selectedMortgage.rate,
+                timestamp: new Date(),
+                date: new Date().toLocaleDateString('bn-BD'),
+                status: 'Completed'
+            });
         });
 
-        showMessage("নগদ লেনদেন সংরক্ষণ হয়েছে");
-    });
+        showMessage("বন্ধক সফলভাবে পরিশোধ করা হয়েছে।", "success");
+        document.getElementById('redeem-mortgage-modal').style.display = 'none';
 
-/* ------------------------------------------
-   PAGE SWITCHER
-------------------------------------------- */
+    } catch (e) {
+        showMessage(`পরিশোধ প্রক্রিয়া ব্যর্থ: ${e.message}`, "error");
+        console.error("Redeem Error: ", e);
+    }
+};
+
+// ------------------------------------------
+// REPORT LOGIC (From index (5).html)
+// ------------------------------------------
+
+window.generateReport = async function() {
+    const startDateStr = document.getElementById('report-start-date').value;
+    const endDateStr = document.getElementById('report-end-date').value;
+    const summaryDiv = document.getElementById('report-summary');
+    summaryDiv.classList.add('hidden');
+    
+    if (!startDateStr || !endDateStr) {
+        showMessage("রিপোর্ট তৈরির জন্য শুরুর তারিখ ও শেষের তারিখ নির্বাচন করুন।", "error");
+        return;
+    }
+
+    const startDate = new Date(startDateStr);
+    const endDate = new Date(endDateStr);
+    endDate.setHours(23, 59, 59, 999); // Set to end of day
+
+    if (startDate > endDate) {
+        showMessage("শুরুর তারিখ শেষের তারিখের আগে হতে হবে।", "error");
+        return;
+    }
+
+    try {
+        const q = query(
+            collection(db, TRANSACTION_COLLECTION),
+            where("timestamp", ">=", startDate),
+            where("timestamp", "<=", endDate)
+        );
+
+        const querySnapshot = await getDocs(q);
+        
+        let totalSale = 0;
+        let totalPurchase = 0;
+
+        querySnapshot.forEach((doc) => {
+            const data = doc.data();
+            if (data.type === 'Sale') {
+                totalSale += data.amount;
+            } else if (data.type === 'Purchase') {
+                totalPurchase += data.amount;
+            }
+        });
+
+        const netProfit = totalSale - totalPurchase;
+
+        document.getElementById('report-total-sale').textContent = formatCurrency(totalSale);
+        document.getElementById('report-total-purchase').textContent = formatCurrency(totalPurchase);
+        document.getElementById('report-net-profit').textContent = formatCurrency(netProfit);
+        
+        if (netProfit >= 0) {
+            document.getElementById('report-net-profit').classList.remove('text-red-400');
+            document.getElementById('report-net-profit').classList.add('text-green-400');
+        } else {
+            document.getElementById('report-net-profit').classList.remove('text-green-400');
+            document.getElementById('report-net-profit').classList.add('text-red-400');
+        }
+
+        summaryDiv.classList.remove('hidden');
+        showMessage("রিপোর্ট সফলভাবে তৈরি করা হয়েছে।", "success");
+
+    } catch (e) {
+        showMessage(`রিপোর্ট তৈরি ব্যর্থ: ${e.message}`, "error");
+        console.error("Report Error: ", e);
+    }
+};
+
+
+// ------------------------------------------
+// PAGE NAVIGATION (From index (5).html)
+// -------------------------------------------
 window.showPage = function (id, btn) {
     document.querySelectorAll(".page").forEach((p) => (p.style.display = "none"));
     document.getElementById(id).style.display = "block";
@@ -564,11 +1234,23 @@ window.showPage = function (id, btn) {
     btn.classList.add("active");
 };
 
-/* ------------------------------------------
-   INIT APP
-------------------------------------------- */
+
+// ------------------------------------------
+// INIT APP (From index (5).html)
+// -------------------------------------------
 window.onload = function () {
-    startListeners();
+    // Setup listeners for weight/cost calculations on load
+    setupWeightListeners('purchase');
+    setupWeightListeners('sale');
+    setupWeightListeners('mortgage');
+    
+    // Also setup listener for party filter change
+    document.getElementById("party-type-filter").addEventListener('change', window.filterPartyList);
+
+    // Start Firebase and real-time listeners
+    initFirebase();
+    
+    // Show Dashboard on load
     showPage("dashboard", document.querySelector(".nav-btn"));
 };
 
