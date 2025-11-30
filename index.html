@@ -482,7 +482,42 @@ td {
 ======================================= --> <!-- =======================================
      PAGE: MORTGAGE (বন্ধক)
 ======================================= -->
-<div id="mortgage" class="page">
+<div id="mortgage" class="page"><!-- =======================================
+     Redeem Mortgage Modal
+======================================= -->
+<div id="redeem-modal" class="modal">
+  <div class="modal-card">
+
+    <h2 class="text-lg font-semibold mb-4 text-[var(--gold)]">রিডিম / পরিশোধ</h2>
+
+    <div class="form-group">
+        <label class="form-label">ঋণের মোট পরিমাণ</label>
+        <input id="redeem-loan" class="form-input" disabled>
+    </div>
+
+    <div class="form-group">
+        <label class="form-label">মোট সুদ</label>
+        <input id="redeem-interest" class="form-input" disabled>
+    </div>
+
+    <div class="form-group">
+        <label class="form-label">যে পরিমাণ পরিশোধ করবেন</label>
+        <input id="redeem-pay" type="number" class="form-input" placeholder="টাকা লিখুন">
+    </div>
+
+    <div class="flex justify-end gap-3 mt-4">
+        <button 
+            type="button"
+            onclick="closeRedeemModal()"
+            class="px-4 py-2 bg-gray-500 text-white rounded-lg">বাতিল</button>
+
+        <button 
+            onclick="submitRedeem()"
+            class="btn-gold">পরিশোধ করুন</button>
+    </div>
+
+  </div>
+</div>
 
     <div class="gold-card">
         <h2 class="text-xl font-semibold mb-4 text-[var(--gold)]">
