@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8" />
+<title>Jewelry App (Mobile Style V8)</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<style>
+:root{--primary:#111827;--primary-soft:#1f2937;--accent:#fbbf24;--bg:#020617;--card:#0b1120;--text:#f9fafb;--muted:#9ca3af;--danger:#ef4444;--success:#22c55e;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:radial-gradient(circle at top,#111827,#020617);color:var(--text);height:100vh;display:flex;justify-content:center;align-items:center;}
+.app-shell{width:100%;max-width:480px;height:100vh;max-height:900px;background:#020617;border-radius:24px;box-shadow:0 20px 40px rgba(0,0,0,0.6);overflow:hidden;display:flex;flex-direction:column;border:1px solid rgba(148,163,184,0.3);}
+.app-bar{height:60px;display:flex;align-items:center;justify-content:space-between;padding:0 16px;background:rgba(15,23,42,0.95);border-bottom:1px solid rgba(148,163,184,0.3);}
+.app-title{font-weight:700;font-size:18px;display:flex;align-items:center;gap:8px;}
+.app-title span.icon{width:28px;height:28px;border-radius:999px;background:radial-gradient(circle at 30% 30%,#facc15,#f97316);display:flex;align-items:center;justify-content:center;font-size:16px;}
+.app-subtitle{font-size:11px;color:var(--muted);}
+.app-content{flex:1;overflow-y:auto;padding:12px 12px 70px 12px;}
+.bottom-nav{height:62px;background:rgba(15,23,42,0.98);border-top:1px solid rgba(148,163,184,0.3);display:flex;justify-content:space-around;align-items:center;}
+.nav-item{flex:1;text-align:center;font-size:11px;color:var(--muted);cursor:pointer;padding-top:4px;}
+.nav-item span.icon{display:block;font-size:18px;margin-bottom:2px;}
+.nav-item.active{color:var(--accent);}
+.section-card{background:radial-gradient(circle at top left,#111827,#020617);border-radius:18px;padding:14px;margin-bottom:12px;border:1px solid rgba(148,163,184,0.25);box-shadow:0 10px 25px rgba(15,23,42,0.8);}
+.section-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
+.section-title{font-size:14px;font-weight:600;display:flex;align-items:center;gap:6px;}
+.section-title-badge{font-size:9px;padding:2px 6px;border-radius:999px;border:1px solid rgba(148,163,184,0.6);color:var(--muted);}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.form-group{display:flex;flex-direction:column;gap:3px;}
+label{font-size:11px;color:var(--muted);}
+input,select,textarea{background:rgba(15,23,42,0.9);color:var(--text);border-radius:999px;border:1px solid rgba(148,163,184,0.5);padding:8px 10px;font-size:12px;outline:none;}
+textarea{border-radius:12px;min-height:60px;resize:vertical;}
+input:focus,select:focus,textarea:focus{border-color:var(--accent);box-shadow:0 0 0 1px rgba(251,191,36,0.5);}
+.btn-row{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap;}
+.btn{flex:1;min-width:120px;border:none;border-radius:999px;padding:9px 12px;font-size:13px;font-weight:600;cursor:pointer;}
+.btn-primary{background:linear-gradient(to right,#f59e0b,#facc15);color:#111827;}
+.btn-ghost{background:transparent;color:var(--muted);border:1px solid rgba(148,163,184,0.6);}
+.btn-danger{background:var(--danger);color:white;}
+.chips-row{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px;}
+.chip{font-size:10px;padding:4px 8px;border-radius:999px;border:1px solid rgba(148,163,184,0.6);color:var(--muted);cursor:pointer;}
+.result-box{margin-top:8px;font-size:12px;padding:8px 10px;border-radius:12px;background:rgba(22,163,74,0.12);border:1px solid rgba(34,197,94,0.5);color:#bbf7d0;}
+.result-box.error{background:rgba(239,68,68,0.12);border-color:rgba(248,113,113,0.9);color:#fecaca;}
+.summary-row{display:flex;justify-content:space-between;margin-top:4px;font-size:11px;color:var(--muted);}
+.last-list{margin-top:6px;font-size:11px;color:var(--muted);}
+.last-list b{color:var(--text);}
+.rep-table{width:100%;border-collapse:collapse;font-size:11px;margin-top:4px;}
+.rep-table th,.rep-table td{padding:3px 4px;border-bottom:1px solid rgba(148,163,184,0.25);}
+.rep-table th{text-align:left;color:var(--muted);}
+.screen{display:none;}
+.screen.active{display:block;}
+.pill{display:inline-flex;align-items:center;gap:6px;font-size:11px;padding:4px 10px;border-radius:999px;background:rgba(15,23,42,0.9);border:1px solid rgba(148,163,184,0.5);margin-bottom:6px;}
+#print-area{display:none;}
+@media print{body{background:white;}.app-shell{display:none;}#print-area{display:block;font-family:system-ui,sans-serif;color:#000;padding:10px;}#print-area h2{margin-bottom:4px;}#print-area table{width:100%;border-collapse:collapse;font-size:12px;}#print-area th,#print-area td{border:1px solid #000;padding:4px;}}
+</style>
+</head>
+<body>
+<div class="app-shell">
+  <div class="app-bar">
+    <div>
+      <div class="app-title">
+        <span class="icon">💎</span>
+        <div>Jewelry POS V8</div>
+      </div>
+      <div class="app-subtitle">
+        ২২K/২১K/১৮K রেট + কাস্টমার + লোকাল + সাপ্লায়ার + স্টক (বারকোড) + বিক্রি + মর্টগেজ + ক্যাশ + রিপোর্ট + প্রিন্ট + লেজার
+      </div>
+    </div>
+    <div class="app-subtitle" id="todayText"></div>
+  </div>
+  <div class="app-content">
+    <div class="screen active" id="screen-home">
+      <div class="section-card">
+        <div class="section-header">
+          <div class="section-title">📊 আজকের সারাংশ</div>
+          <span class="section-title-badge">লাইভ</span>
+        </div>
+        <div class="summary-row">
+          <span>আজকের বিক্রি নেট (শুধু বিক্রি)</span>
+          <span id="sumSale">৳ 0</span>
+        </div>
+        <div class="summary-row">
+          <span>মোট মর্টগেজ প্রিন্সিপাল (Active)</span>
+          <span id="sumMortIn">৳ 0</span>
+        </div>
+        <div class="summary-row">
+          <span>মাসিক মর্টগেজ + লকার ডিউ (Active)</span>
+          <span id="sumMortMonthly">৳ 0</span>
+        </div>
+        <div class="summary-row">
+          <span>ক্যাশ ব্যালেন্স (Cash In - Out)</span>
+          <span id="sumCash">৳ 0</span>
+        </div>
+        <div class="summary-row">
+          <span>স্টক আইটেম সংখ্যা</span>
+          <span id="sumStock">0</span>
+        </div>
+        <div class="chips-row">
+          <span class="chip">⚡ অফলাইন লোকাল সিস্টেম</span>
+          <span class="chip">📱 মোবাইল ভিউ</span>
+          <span class="chip">💾 LocalStorage ডাটা</span>
+        </div>
+      </div>
+      <div class="section-card">
+        <div class="section-header">
+          <div class="section-title">🧾 দ্রুত গাইড</div>
+        </div>
+        <p style="font-size:12px;color:var(--muted);margin-bottom:4px;">
+          প্রথমে <b>আইডি/স্টক</b> ট্যাবে গিয়ে কাস্টমার, লোকাল, সাপ্লায়ার, স্টক (বারকোড + বুড়ি/আনা/রতি/পয়েন্ট) সেট করুন।
+          তারপর <b>২২K/২১K/১৮K গোল্ড রেট</b> আপডেট করুন। এরপর <b>বিক্রি / মর্টগেজ / ক্যাশ</b> এ এন্ট্রি দিন,
+          শেষে <b>রিপোর্ট</b> থেকে সারাংশ ও কাস্টমার লেজার দেখুন।
+        </p>
+      </div>
+    </div>
+
+    <div class="screen" id="screen-sales">
+      <div class="pill">🧾 বিক্রি / অর্ডার (ওজন অটো কনভার্ট + বারকোড লোড + প্রিন্ট বিল)</div>
+      <div class="section-card">
+        <div class="section-header">
+          <div class="section-title">⚙️ রেট সেটিংস (২২K / ২১K / ১৮K)</div>
+        </div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>প্রতি ভরি রেট (এই বিক্রির জন্য)</label>
+            <input type="number" id="rateVori" value="105000" onchange="updateRate()" />
+          </div>
+          <div class="form-group">
+            <label>প্রতি গ্রাম রেট (অটো)</label>
+            <input type="text" id="rateGram" readonly />
+          </div>
+        </div>
+        <div class="chips-row">
+          <span class="chip" onclick="applySavedRate('22')">২২K সিলেক্ট করুন: <span id="rate22View">লোড হচ্ছে…</span></span>
+          <span class="chip" onclick="applySavedRate('21')">২১K সিলেক্ট করুন: <span id="rate21View">লোড হচ্ছে…</span></span>
+          <span class="chip" onclick="applySavedRate('18')">১৮K সিলেক্ট করুন: <span id="rate18View">লোড হচ্ছে…</span></span>
+        </div>
+        <div class="chips-row">
+          <span class="chip">১ ভরি = ১১.৬৬৪ গ্রাম</span>
+          <span class="chip">১ আনা = ০.৭২৯ গ্রাম</span>
+          <span class="chip">১ রতি = ০.১২১৫ গ্রাম</span>
+          <span class="chip">১ পয়েন্ট = ০.০১ গ্রাম</span>
+        </div>
+      </div>
+
+      <div class="section-card">
+        <div class="section-header">
+          <div class="section-title">👤 কাস্টমার / অর্ডার</div>
+        </div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>এন্ট্রি টাইপ</label>
+            <select id="sType">
+              <option value="বিক্রি">বিক্রি</option>
+              <option value="অর্ডার">অর্ডার</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>বিল নং (অটো জেনারেট)</label>
+            <input type="text" id="sBillNo" readonly />
+          </div>
+        </div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>কাস্টমার আইডি</label>
+            <input type="text" id="sCustomerId" placeholder="যেমন: C-001" />
+          </div>
+          <div class="form-group">
+            <label>কাস্টমার নাম</label>
+            <input type="text" id="sCustomer" placeholder="যেমন: রহিম উদ্দিন" />
+          </div>
+        </div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>আইটেম কোড</label>
+            <input type="text" id="sItemCode" placeholder="যেমন: R-001" />
+          </div>
+          <div class="form-group">
+            <label>স্টক থেকে অটো কমবে?</label>
+            <select id="sAffectStock">
+              <option value="yes">হ্যাঁ (বিক্রি/ডেলিভারি)</option>
+              <option value="no">না (অর্ডার/হোল্ড)</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>বারকোড / স্ক্যান কোড (স্টক থেকে লোড)</label>
+          <input type="text" id="sBarcode" placeholder="স্ক্যানার দিয়ে স্ক্যান করুন বা লিখুন" onchange="loadStockFromBarcode()" />
+        </div>
+        <div class="form-group">
+          <label>বিবরণ / আইটেম</label>
+          <input type="text" id="sDesc" placeholder="যেমন: ২২ ক্যারেট রিং" />
+        </div>
+      </div>
+
+      <div class="section-card">
+        <div class="section-header">
+          <div class="section-title">⚖️ ওজন ইনপুট</div>
+        </div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>ভরি</label>
+            <input type="number" id="sVori" step="0.01" />
+          </div>
+          <div class="form-group">
+            <label>আনা</label>
+            <input type="number" id="sAna" step="0.01" />
+          </div>
+          <div class="form-group">
+            <label>রতি</label>
+            <input type="number" id="sRoti" step="0.01" />
+          </div>
+          <div class="form-group">
+            <label>পয়েন্ট</label>
+            <input type="number" id="sPoint" step="0.01" />
+          </div>
+          <div class="form-group">
+            <label>গ্রাম (সরাসরি)</label>
+            <input type="number" id="sGram" step="0.001" />
+          </div>
+        </div>
+      </div>
+
+      <div class="section-card">
+        <div class="section-header">
+          <div class="section-title">💰 হিসাব</div>
+        </div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>ওয়েস্টেজ %</label>
+            <input type="number" id="sWaste" value="5" />
+          </div>
+          <div class="form-group">
+            <label>মেকিং চার্জ (প্রতি গ্রাম)</label>
+            <input type="number" id="sMaking" value="250" />
+          </div>
+          <div class="form-group">
+            <label>স্টোন মূল্য</label>
+            <input type="number" id="sStone" value="0" />
+          </div>
+          <div class="form-group">
+            <label>ডিসকাউন্ট (৳)</label>
+            <input type="number" id="sDiscount" value="0" />
+          </div>
+          <div class="form-group">
+            <label>নগদ পরিশোধ</label>
+            <input type="number" id="sPaid" value="0" />
+          </div>
+        </div>
+        <div class="btn-row">
+          <button class="btn btn-ghost" type="button" onclick="clearSaleForm()">রিসেট</button>
+          <button class="btn btn-primary" type="button" onclick="saveSale()">সেভ ✅</button>
+          <button class="btn btn-ghost" type="button" onclick="printLastBill()">🖨 প্রিন্ট বিল</button>
+        </div>
+        <div id="saleResult"></div>
+        <div id="saleLast" class="last-list"></div>
+      </div>
+    </div>
+
+    <div class="screen" id="screen-mortgage">
+      <div class="pill">🏦 মর্টগেজ + লকার (মাসিক হিসাব)</div>
+      <div class="section-card">
+        <div class="section-header">
+          <div class="section-title">👤 কাস্টমার</div>
+        </div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>কাস্টমার আইডি</label>
+            <input type="text" id="mCustomerId" placeholder="যেমন: C-010" />
+          </div>
+          <div class="form-group">
+            <label>কাস্টমার নাম</label>
+            <input type="text" id="mCustomer" placeholder="যেমন: আলমগীর হোসেন" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label>মর্টগেজ স্লিপ/নং</label>
+          <input type="text" id="mSlip" placeholder="যেমন: M-001" />
+        </div>
+        <div class="form-group">
+          <label>বিবরণ</label>
+          <input type="text" id="mDesc" placeholder="যেমন: ২২ ক্যারেট বালা" />
+        </div>
+      </div>
+      <div class="section-card">
+        <div class="section-header">
+          <div class="section-title">⚖️ ওজন ইনপুট</div>
+        </div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>ভরি</label>
+            <input type="number" id="mVori" step="0.01" />
+          </div>
+          <div class="form-group">
+            <label>আনা</label>
+            <input type="number" id="mAna" step="0.01" />
+          </div>
+          <div class="form-group">
+            <label>রতি</label>
+            <input type="number" id="mRoti" step="0.01" />
+          </div>
+          <div class="form-group">
+            <label>পয়েন্ট</label>
+            <input type="number" id="mPoint" step="0.01" />
+          </div>
+          <div class="form-group">
+            <label>গ্রাম</label>
+            <input type="number" id="mGram" step="0.001" />
+          </div>
+        </div>
+      </div>
+      <div class="section-card">
+        <div class="section-header">
+          <div class="section-title">💰 লোন + লকার (প্রতি মাস)</div>
+        </div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>ঋণের পরিমাণ (৳)</label>
+            <input type="number" id="mLoan" />
+          </div>
+          <div class="form-group">
+            <label>সুদ % (প্রতি মাস)</label>
+            <input type="number" id="mInterest" value="2" />
+          </div>
+          <div class="form-group">
+            <label>লকার ভাড়া (প্রতি মাস)</label>
+            <input type="number" id="mLocker" value="0" />
+          </div>
+          <div class="form-group">
+            <label>স্ট্যাটাস</label>
+            <select id="mStatus">
+              <option value="Active">Active</option>
+              <option value="Closed">Closed</option>
+            </select>
+          </div>
+        </div>
+        <div class="btn-row">
+          <button class="btn btn-ghost" type="button" onclick="clearMortgageForm()">রিসেট</button>
+          <button class="btn btn-primary" type="button" onclick="saveMortgage()">মর্টগেজ সেভ ✅</button>
+        </div>
+        <div id="mortgageResult"></div>
+        <div id="mortgageLast" class="last-list"></div>
+      </div>
+    </div>
+
+    <div class="screen" id="screen-cash">
+      <div class="pill">💰 ক্যাশ এন্ট্রি ফর্ম</div>
+      <div class="section-card">
+        <div class="section-header">
+          <div class="section-title">লেনদেন</div>
+        </div>
+        <div class="form-group">
+          <label>ধরন</label>
+          <select id="cType">
+            <option value="বিক্রি">বিক্রি</option>
+            <option value="খরচ">খরচ</option>
+            <option value="অন্যান্য">অন্যান্য</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>বিবরণ</label>
+          <textarea id="cDesc" placeholder="যেমন: বিল 0001 থেকে নগদ / দোকান খরচ"></textarea>
+        </div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>নগদ প্রবেশ (Cash In)</label>
+            <input type="number" id="cIn" />
+          </div>
+          <div class="form-group">
+            <label>নগদ বহির্গমন (Cash Out)</label>
+            <input type="number" id="cOut" />
+          </div>
+        </div>
+        <div class="btn-row">
+          <button class="btn btn-ghost" type="button" onclick="clearCashForm()">রিসেট</button>
+          <button class="btn btn-primary" type="button" onclick="saveCash()">ক্যাশ সেভ ✅</button>
+        </div>
+        <div id="cashResult"></div>
+      </div>
+    </div>
+
+    <div class="screen" id="screen-settings">
+      <div class="pill">🧾 কাস্টমার / লোকাল / সাপ্লায়ার / স্টক আইডি + গোল্ড রেট</div>
+      <div class="section-card">
+        <div class="section-header">
+          <div class="section-title">👤 কাস্টমার আইডি রেজিস্টার</div>
+        </div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>কাস্টমার আইডি</label>
+            <input type="text" id="custId" placeholder="যেমন: C-001" />
+          </div>
+          <div class="form-group">
+            <label>কাস্টমার নাম</label>
+            <input type="text" id="custName" />
+          </div>
+        </div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>মোবাইল নাম্বার</label>
+            <input type="text" id="custMobile" />
+          </div>
+          <div class="form-group">
+            <label>ঠিকানা</label>
+            <input type="text" id="custAddress" />
+          </div>
+        </div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>ছবি (লিংক / নোট)</label>
+            <input type="text" id="custPhoto" placeholder="যেমন: ছবি ফাইলের নাম বা লিংক" />
+          </div>
+          <div class="form-group">
+            <label>অগ্রিম জমা (৳)</label>
+            <input type="number" id="custAdvance" value="0" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label>বাকি (৳)</label>
+          <input type="number" id="custDue" value="0" />
+        </div>
+        <div class="btn-row">
+          <button class="btn btn-primary" type="button" onclick="saveCustomer()">কাস্টমার সেভ ✅</button>
+        </div>
+        <div id="custResult"></div>
+      </div>
+
+      <div class="section-card">
+        <div class="section-header">
+          <div class="section-title">🏠 লোকাল / নিয়মিত গ্রাহক আইডি</div>
+        </div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>লোকাল আইডি</label>
+            <input type="text" id="locId" placeholder="যেমন: L-001" />
+          </div>
+          <div class="form-group">
+            <label>নাম</label>
+            <input type="text" id="locName" />
+          </div>
+        </div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>মোবাইল নাম্বার</label>
+            <input type="text" id="locMobile" />
+          </div>
+          <div class="form-group">
+            <label>ঠিকানা</label>
+            <input type="text" id="locAddress" />
+          </div>
+        </div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>ছবি (লিংক / নোট)</label>
+            <input type="text" id="locPhoto" placeholder="যেমন: ছবি ফাইলের নাম বা লিংক" />
+          </div>
+          <div class="form-group">
+            <label>অগ্রিম জমা (৳)</label>
+            <input type="number" id="locAdvance" value="0" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label>বাকি (৳)</label>
+          <input type="number" id="locDue" value="0" />
+        </div>
+        <div class="btn-row">
+          <button class="btn btn-primary" type="button" onclick="saveLocal()">লোকাল গ্রাহক সেভ ✅</button>
+        </div>
+        <div id="locResult"></div>
+      </div>
+
+      <div class="section-card">
+        <div class="section-header">
+          <div class="section-title">🏭 সাপ্লায়ার আইডি রেজিস্টার</div>
+        </div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>সাপ্লায়ার আইডি</label>
+            <input type="text" id="supId" placeholder="যেমন: S-001" />
+          </div>
+          <div class="form-group">
+            <label>নাম</label>
+            <input type="text" id="supName" />
+          </div>
+        </div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>মোবাইল</label>
+            <input type="text" id="supMobile" />
+          </div>
+          <div class="form-group">
+            <label>নোট</label>
+            <input type="text" id="supNote" />
+          </div>
+        </div>
+        <div class="btn-row">
+          <button class="btn btn-primary" type="button" onclick="saveSupplier()">সাপ্লায়ার সেভ ✅</button>
+        </div>
+        <div id="supResult"></div>
+      </div>
+
+      <div class="section-card">
+        <div class="section-header">
+          <div class="section-title">📦 স্টক আইটেম রেজিস্টার (বারকোড + বুড়ি/আনা/রতি/পয়েন্ট)</div>
+        </div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>আইটেম কোড</label>
+            <input type="text" id="stCode" placeholder="যেমন: R-001" />
+          </div>
+          <div class="form-group">
+            <label>নাম</label>
+            <input type="text" id="stName" />
+          </div>
+        </div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>বারকোড / স্ক্যান কোড</label>
+            <input type="text" id="stBarcode" placeholder="স্ক্যানার দিয়ে লিখুন বা টাইপ করুন" />
+          </div>
+          <div class="form-group">
+            <label>কারেট</label>
+            <input type="text" id="stKarat" placeholder="যেমন: ২২K" />
+          </div>
+        </div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>ভরি</label>
+            <input type="number" id="stVori" step="0.01" oninput="updateStockGram()" />
+          </div>
+          <div class="form-group">
+            <label>আনা</label>
+            <input type="number" id="stAna" step="0.01" oninput="updateStockGram()" />
+          </div>
+          <div class="form-group">
+            <label>রতি</label>
+            <input type="number" id="stRoti" step="0.01" oninput="updateStockGram()" />
+          </div>
+          <div class="form-group">
+            <label>পয়েন্ট</label>
+            <input type="number" id="stPoint" step="0.01" oninput="updateStockGram()" />
+          </div>
+          <div class="form-group">
+            <label>গ্রাম (সরাসরি)</label>
+            <input type="number" id="stGram" step="0.001" oninput="updateStockGram()" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label>মোট গ্রাম (অটো কনভার্ট)</label>
+          <input type="text" id="stGramTotal" readonly />
+        </div>
+        <div class="form-group">
+          <label>সাপ্লায়ার আইডি</label>
+          <input type="text" id="stSupId" placeholder="যেমন: S-001" />
+        </div>
+        <div class="btn-row">
+          <button class="btn btn-primary" type="button" onclick="saveStock()">স্টক সেভ ✅</button>
+        </div>
+        <div id="stockResult"></div>
+        <div id="stockLast" class="last-list"></div>
+      </div>
+
+      <div class="section-card">
+        <div class="section-header">
+          <div class="section-title">✨ গোল্ড রেট সেটিংস (২২K / ২১K / ১৮K)</div>
+        </div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>২২K প্রতি ভরি</label>
+            <input type="number" id="g22Vori" />
+          </div>
+          <div class="form-group">
+            <label>২২K প্রতি গ্রাম (অটো)</label>
+            <input type="text" id="g22Gram" readonly />
+          </div>
+        </div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>২১K প্রতি ভরি</label>
+            <input type="number" id="g21Vori" />
+          </div>
+          <div class="form-group">
+            <label>২১K প্রতি গ্রাম (অটো)</label>
+            <input type="text" id="g21Gram" readonly />
+          </div>
+        </div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>১৮K প্রতি ভরি</label>
+            <input type="number" id="g18Vori" />
+          </div>
+          <div class="form-group">
+            <label>১৮K প্রতি গ্রাম (অটো)</label>
+            <input type="text" id="g18Gram" readonly />
+          </div>
+        </div>
+        <div class="btn-row">
+          <button class="btn btn-primary" type="button" onclick="saveGoldRateSettings()">গোল্ড রেট সেভ ✅</button>
+        </div>
+        <div class="last-list">
+          <b>ব্যবহার:</b> এখানে রেট আপডেট করলে বিক্রি স্ক্রিনের উপরে ২২K/২১K/১৮K চিপে ক্লিক করলেই সেই রেট অটো বসবে।
+        </div>
+      </div>
+
+      <div class="section-card">
+        <div class="section-header">
+          <div class="section-title">⚠ ডাটা ব্যাকআপ / রিসেট</div>
+        </div>
+        <div class="btn-row">
+          <button class="btn btn-ghost" type="button" onclick="exportData()">ব্যাকআপ (কপি/পেস্ট)</button>
+          <button class="btn btn-danger" type="button" onclick="resetAll()">সব মুছে ফেলুন</button>
+        </div>
+        <div id="exportBox" class="last-list"></div>
+      </div>
+    </div>
+
+    <div class="screen" id="screen-report">
+      <div class="pill">📑 রিপোর্ট (Sales + Mortgage + Cash + Stock + কাস্টমার লেজার)</div>
+      <div class="section-card">
+        <div class="section-header">
+          <div class="section-title">👤 কাস্টমার লেজার</div>
+        </div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>কাস্টমার আইডি</label>
+            <input type="text" id="ledCustId" placeholder="যেমন: C-001" />
+          </div>
+          <div class="form-group">
+            <label>&nbsp;</label>
+            <button class="btn btn-primary" type="button" onclick="loadLedger()">লেজার দেখুন</button>
+          </div>
+        </div>
+        <div id="ledgerBox" class="last-list"></div>
+      </div>
+
+      <div class="section-card">
+        <div class="section-header">
+          <div class="section-title">রিপোর্ট রেঞ্জ</div>
+        </div>
+        <div class="form-group">
+          <label>তারিখ ফিল্টার</label>
+          <select id="repRange" onchange="renderReport()">
+            <option value="today">শুধু আজকের</option>
+            <option value="all">সকল ডাটা</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="section-card">
+        <div class="section-header">
+          <div class="section-title">🧾 বিক্রি রিপোর্ট</div>
+        </div>
+        <div id="repSales"></div>
+      </div>
+
+      <div class="section-card">
+        <div class="section-header">
+          <div class="section-title">🏦 মর্টগেজ রিপোর্ট</div>
+        </div>
+        <div id="repMort"></div>
+      </div>
+
+      <div class="section-card">
+        <div class="section-header">
+          <div class="section-title">💰 ক্যাশ রিপোর্ট</div>
+        </div>
+        <div id="repCash"></div>
+      </div>
+
+      <div class="section-card">
+        <div class="section-header">
+          <div class="section-title">📦 স্টক স্ন্যাপশট</div>
+        </div>
+        <div id="repStock"></div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="bottom-nav">
+    <div class="nav-item active" data-target="home" onclick="switchScreen('home', this)">
+      <span class="icon">🏠</span>
+      Home
+    </div>
+    <div class="nav-item" data-target="sales" onclick="switchScreen('sales', this)">
+      <span class="icon">🧾</span>
+      বিক্রি
+    </div>
+    <div class="nav-item" data-target="mortgage" onclick="switchScreen('mortgage', this)">
+      <span class="icon">🏦</span>
+      মর্টগেজ
+    </div>
+    <div class="nav-item" data-target="cash" onclick="switchScreen('cash', this)">
+      <span class="icon">💰</span>
+      ক্যাশ
+    </div>
+    <div class="nav-item" data-target="settings" onclick="switchScreen('settings', this)">
+      <span class="icon">📦</span>
+      আইডি/স্টক
+    </div>
+    <div class="nav-item" data-target="report" onclick="switchScreen('report', this)">
+      <span class="icon">📑</span>
+      রিপোর্ট
+    </div>
+  </div>
+</div>
+
+<div id="print-area"></div>
+
+<script>
+function formatCurrency(num){if(isNaN(num))return "৳ 0";return "৳ " + num.toFixed(2);}
+function convertToGram(v,a,r,p,g){return (v*11.664)+(a*0.729)+(r*0.1215)+(p*0.01)+g;}
+function isToday(ts){const d=new Date(ts);const t=new Date();return d.getFullYear()===t.getFullYear()&&d.getMonth()===t.getMonth()&&d.getDate()===t.getDate();}
+(function setTodayText(){const el=document.getElementById("todayText");const d=new Date();try{el.textContent=d.toLocaleDateString('bn-BD',{day:'2-digit',month:'2-digit',year:'numeric'});}catch(e){el.textContent=d.toLocaleDateString();}})();
+const KEY_SALES='jewelry_sales';const KEY_MORTGAGE='jewelry_mortgages';const KEY_CASH='jewelry_cash';const KEY_CUSTOMERS='jewelry_customers';const KEY_SUPPLIERS='jewelry_suppliers';const KEY_STOCK='jewelry_stock';const KEY_LOCALS='jewelry_locals';const KEY_BILL_COUNTER='jewelry_bill_counter';
+function getArray(key){const raw=localStorage.getItem(key);if(!raw)return[];try{return JSON.parse(raw);}catch(e){return[];}}
+function setArray(key,arr){localStorage.setItem(key,JSON.stringify(arr));}
+let lastSaleForPrint=null;
+function updateRate(){let vori=parseFloat(document.getElementById("rateVori").value)||0;const perGram=vori/11.664;document.getElementById("rateGram").value=perGram?perGram.toFixed(2):"";localStorage.setItem('gold_rate_vori',vori.toString());localStorage.setItem('gold_rate_gram',perGram.toString());}
+function loadMultiKaratRatesToChips(){const defaults={"22":105000,"21":100000,"18":80000};['22','21','18'].forEach(k=>{let v=parseFloat(localStorage.getItem('rate'+k)||"0");if(!v){v=defaults[k];localStorage.setItem('rate'+k,v);localStorage.setItem('rate'+k+'_g',v/11.664);}let g=parseFloat(localStorage.getItem('rate'+k+'_g')||"0");if(!g){g=v/11.664;localStorage.setItem('rate'+k+'_g',g);}const el=document.getElementById('rate'+k+'View');if(el){el.textContent='৳'+v.toFixed(0)+' / '+g.toFixed(2)+'/g';}});}
+function applySavedRate(k){const v=parseFloat(localStorage.getItem('rate'+k)||"0");const g=parseFloat(localStorage.getItem('rate'+k+'_g')||"0");if(!v||!g){alert('আগে Settings → গোল্ড রেট থেকে '+k+'K রেট সেট করুন।');return;}document.getElementById("rateVori").value=v.toFixed(0);document.getElementById("rateGram").value=g.toFixed(2);localStorage.setItem('gold_rate_vori',v.toString());localStorage.setItem('gold_rate_gram',g.toString());}
+function loadGoldRateSettings(){const defaults={"22":105000,"21":100000,"18":80000};['22','21','18'].forEach(k=>{const voriInput=document.getElementById('g'+k+'Vori');const gramInput=document.getElementById('g'+k+'Gram');if(!voriInput||!gramInput)return;let v=parseFloat(localStorage.getItem('rate'+k)||"0");if(!v)v=defaults[k];const g=v/11.664;voriInput.value=v.toFixed(0);gramInput.value=g.toFixed(2);});}
+function saveGoldRateSettings(){['22','21','18'].forEach(k=>{const voriInput=document.getElementById('g'+k+'Vori');const gramInput=document.getElementById('g'+k+'Gram');if(!voriInput||!gramInput)return;let v=parseFloat(voriInput.value)||0;let g=v/11.664;gramInput.value=g?g.toFixed(2):"";localStorage.setItem('rate'+k,v);localStorage.setItem('rate'+k+'_g',g);});loadMultiKaratRatesToChips();alert('গোল্ড রেট আপডেট হয়েছে।');}
+(function initRate(){let v=parseFloat(localStorage.getItem('gold_rate_vori')||"0");let g=parseFloat(localStorage.getItem('gold_rate_gram')||"0");if(!v||!g){let v22=parseFloat(localStorage.getItem('rate22')||"0");if(!v22)v22=105000;let g22=v22/11.664;v=v22;g=g22;localStorage.setItem('gold_rate_vori',v.toString());localStorage.setItem('gold_rate_gram',g.toString());localStorage.setItem('rate22',v22);localStorage.setItem('rate22_g',g22);}const voriEl=document.getElementById("rateVori");const gramEl=document.getElementById("rateGram");if(voriEl)voriEl.value=v.toFixed(0);if(gramEl)gramEl.value=g.toFixed(2);loadMultiKaratRatesToChips();prepareBillNo();updateSummary();})();
+function switchScreen(name,navEl){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById('screen-'+name).classList.add('active');document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));navEl.classList.add('active');if(name==='sales'){prepareBillNo();renderLastSales();loadMultiKaratRatesToChips();}if(name==='mortgage'){renderLastMortgages();}if(name==='settings'){renderLastStock();loadGoldRateSettings();loadMultiKaratRatesToChips();}if(name==='report'){renderReport();}}
+function prepareBillNo(){let counter=parseInt(localStorage.getItem(KEY_BILL_COUNTER)||"0");const next=counter+1;const el=document.getElementById("sBillNo");if(el){el.value="B-"+String(next).padStart(4,'0');}}
+function autoApplyRateByKarat(karat){if(!karat)return;const k=karat.toString().replace(/\s/g,'');if(/22/.test(k)||/২২/.test(k))applySavedRate('22');else if(/21/.test(k)||/২১/.test(k))applySavedRate('21');else if(/18/.test(k)||/১৮/.test(k))applySavedRate('18');}
+function loadStockFromBarcode(){const bcEl=document.getElementById("sBarcode");if(!bcEl)return;const code=bcEl.value.trim();if(!code)return;const stock=getArray(KEY_STOCK);const item=stock.find(it=>(it.barcode||'').toLowerCase()===code.toLowerCase());if(!item){alert('এই বারকোড দিয়ে কোনো স্টক পাওয়া যায়নি।');return;}document.getElementById("sItemCode").value=item.code||"";document.getElementById("sDesc").value=item.name||"";document.getElementById("sVori").value=item.vori||"";document.getElementById("sAna").value=item.ana||"";document.getElementById("sRoti").value=item.roti||"";document.getElementById("sPoint").value=item.point||"";const g=parseFloat(item.gramDirect||item.gram||0);if(!isNaN(g)&&g>0){document.getElementById("sGram").value=g.toFixed(3);}autoApplyRateByKarat(item.karat||"");document.getElementById("saleResult").innerHTML='<div class="result-box">📦 স্টক থেকে লোড হয়েছে: '+(item.code||'')+' - '+(item.name||'')+'</div>';}
+function clearSaleForm(){['sCustomer','sDesc','sVori','sAna','sRoti','sPoint','sGram','sStone','sDiscount','sPaid','sCustomerId','sItemCode','sBarcode'].forEach(id=>{const el=document.getElementById(id);if(el)el.value="";});document.getElementById("sWaste").value=5;document.getElementById("sMaking").value=250;document.getElementById("sType").value="বিক্রি";document.getElementById("sAffectStock").value="yes";document.getElementById("saleResult").innerHTML="";prepareBillNo();}
+function saveSale(){const rateG=parseFloat(document.getElementById("rateGram").value)||0;const v=parseFloat(document.getElementById("sVori").value)||0;const a=parseFloat(document.getElementById("sAna").value)||0;const r=parseFloat(document.getElementById("sRoti").value)||0;const p=parseFloat(document.getElementById("sPoint").value)||0;const g=parseFloat(document.getElementById("sGram").value)||0;const totalGram=convertToGram(v,a,r,p,g);if(!totalGram||!rateG){document.getElementById("saleResult").innerHTML='<div class="result-box error">⚠ ওজন ও রেট ঠিক করে দিন।</div>';return;}const goldValue=totalGram*rateG;const wastePercent=parseFloat(document.getElementById("sWaste").value)||0;const makingRate=parseFloat(document.getElementById("sMaking").value)||0;const stone=parseFloat(document.getElementById("sStone").value)||0;const discount=parseFloat(document.getElementById("sDiscount").value)||0;const paid=parseFloat(document.getElementById("sPaid").value)||0;const wasteValue=goldValue*(wastePercent/100);const making=totalGram*makingRate;const gross=goldValue+wasteValue+making+stone;const net=gross-discount;const due=net-paid;const entryType=document.getElementById("sType").value;const billNo=document.getElementById("sBillNo").value;const affectStock=document.getElementById("sAffectStock").value==="yes";const sale={ts:Date.now(),billNo,type:entryType,customerId:document.getElementById("sCustomerId").value||"",customer:document.getElementById("sCustomer").value||"",itemCode:document.getElementById("sItemCode").value||"",barcode:document.getElementById("sBarcode").value||"",desc:document.getElementById("sDesc").value||"",totalGram,goldValue,wasteValue,making,stone,discount,net,paid,due,rateGram:rateG,wastePercent,makingRate,affectStock};const arr=getArray(KEY_SALES);arr.push(sale);setArray(KEY_SALES,arr);let counter=parseInt(localStorage.getItem(KEY_BILL_COUNTER)||"0");counter+=1;localStorage.setItem(KEY_BILL_COUNTER,String(counter));if(sale.itemCode&&affectStock){const stockArr=getArray(KEY_STOCK);const idx=stockArr.findIndex(it=>(it.code||"").toLowerCase()===sale.itemCode.toLowerCase());if(idx>=0){stockArr[idx].gram=(parseFloat(stockArr[idx].gram)||0)-sale.totalGram;if(stockArr[idx].gram<0)stockArr[idx].gram=0;setArray(KEY_STOCK,stockArr);}}lastSaleForPrint=sale;document.getElementById("saleResult").innerHTML='<div class="result-box">'+'✔ '+entryType+' সেভ হয়েছে (বিল: '+billNo+')<br>'+'মোট গ্রাম: '+totalGram.toFixed(3)+'<br>'+'গোল্ড মূল্য: '+goldValue.toFixed(2)+'<br>'+'ওয়েস্টেজ: '+wasteValue.toFixed(2)+'<br>'+'মেকিং: '+making.toFixed(2)+'<br>'+'স্টোন: '+stone.toFixed(2)+'<br>'+'মোট: '+gross.toFixed(2)+'<br>'+'ডিসকাউন্ট: '+discount.toFixed(2)+'<br>'+'<b>নেট: '+net.toFixed(2)+' | নগদ: '+paid.toFixed(2)+' | বাকি: '+due.toFixed(2)+'</b>'+'</div>';prepareBillNo();updateSummary();renderLastSales();}
+function printLastBill(){const s=lastSaleForPrint;if(!s){alert('এখনো কোনো বিক্রি সেভ করা হয়নি।');return;}const d=new Date(s.ts);const shopName='আপনার জুয়েলার্সের নাম';const shopAddr='ঠিকানা: .................. মোবাইল: ..................';const html=`<h2>${shopName}</h2><div style="font-size:12px;margin-bottom:6px;">${shopAddr}</div><hr /><div style="font-size:12px;margin:4px 0;"><b>বিল নং:</b> ${s.billNo} &nbsp; | &nbsp;<b>তারিখ:</b> ${d.toLocaleDateString()}<br/><b>কাস্টমার:</b> ${s.customer||''} (${s.customerId||''})</div><table><thead><tr><th>বিবরণ</th><th>ওজন (গ্রাম)</th><th>রেট/গ্রাম</th><th>গোল্ড</th><th>ওয়েস্টেজ</th><th>মেকিং</th><th>স্টোন</th></tr></thead><tbody><tr><td>${s.desc||''}</td><td>${s.totalGram.toFixed(3)}</td><td>${s.rateGram.toFixed(2)}</td><td>${s.goldValue.toFixed(2)}</td><td>${s.wasteValue.toFixed(2)}</td><td>${s.making.toFixed(2)}</td><td>${s.stone.toFixed(2)}</td></tr></tbody></table><br/><table><tbody><tr><td><b>সর্বমোট</b></td><td>${(s.goldValue+s.wasteValue+s.making+s.stone).toFixed(2)}</td></tr><tr><td>ডিসকাউন্ট</td><td>${s.discount.toFixed(2)}</td></tr><tr><td><b>নেট মূল্য</b></td><td><b>${s.net.toFixed(2)}</b></td></tr><tr><td>নগদ পরিশোধ</td><td>${s.paid.toFixed(2)}</td></tr><tr><td><b>বাকি</b></td><td><b>${s.due.toFixed(2)}</b></td></tr></tbody></table><br/><div style="font-size:12px;margin-top:10px;">কাস্টমার স্বাক্ষর: ____________________________</div>`;const area=document.getElementById('print-area');area.innerHTML=html;window.print();}
+function clearMortgageForm(){['mCustomer','mDesc','mVori','mAna','mRoti','mPoint','mGram','mLoan','mInterest','mLocker','mCustomerId','mSlip'].forEach(id=>{const el=document.getElementById(id);if(el)el.value="";});document.getElementById("mInterest").value=2;document.getElementById("mStatus").value="Active";document.getElementById("mortgageResult").innerHTML="";}
+function saveMortgage(){const v=parseFloat(document.getElementById("mVori").value)||0;const a=parseFloat(document.getElementById("mAna").value)||0;const r=parseFloat(document.getElementById("mRoti").value)||0;const p=parseFloat(document.getElementById("mPoint").value)||0;const g=parseFloat(document.getElementById("mGram").value)||0;const totalGram=convertToGram(v,a,r,p,g);const loan=parseFloat(document.getElementById("mLoan").value)||0;const intRate=parseFloat(document.getElementById("mInterest").value)||0;const locker=parseFloat(document.getElementById("mLocker").value)||0;const status=document.getElementById("mStatus").value;if(!loan||!totalGram){document.getElementById("mortgageResult").innerHTML='<div class="result-box error">⚠ ওজন ও ঋণের পরিমাণ দিন।</div>';return;}const monthlyInterest=loan*(intRate/100);const monthlyTotal=monthlyInterest+locker;const mg={ts:Date.now(),slip:document.getElementById("mSlip").value||"",status,customerId:document.getElementById("mCustomerId").value||"",customer:document.getElementById("mCustomer").value||"",desc:document.getElementById("mDesc").value||"",totalGram,loan,interestRate:intRate,lockerMonthly:locker,monthlyInterest,monthlyTotal};const arr=getArray(KEY_MORTGAGE);arr.push(mg);setArray(KEY_MORTGAGE,arr);document.getElementById("mortgageResult").innerHTML='<div class="result-box">'+'✔ মর্টগেজ '+(status==='Active'?'(চলমান)':'(বন্ধ)')+' সেভ হয়েছে<br>'+'মোট গ্রাম: '+totalGram.toFixed(3)+'<br>'+'ঋণের পরিমাণ: '+loan.toFixed(2)+'<br>'+'সুদ % (মাসিক): '+intRate.toFixed(2)+'<br>'+'মাসিক সুদ: '+monthlyInterest.toFixed(2)+'<br>'+'লকার ভাড়া (মাসিক): '+locker.toFixed(2)+'<br>'+'<b>প্রতি মাস মোট দিতে হবে: '+monthlyTotal.toFixed(2)+'</b>'+'</div>';updateSummary();renderLastMortgages();}
+function clearCashForm(){['cDesc','cIn','cOut'].forEach(id=>{const el=document.getElementById(id);if(el)el.value="";});document.getElementById("cType").value="বিক্রি";document.getElementById("cashResult").innerHTML="";}
+function saveCash(){const type=document.getElementById("cType").value;const desc=document.getElementById("cDesc").value;const cin=parseFloat(document.getElementById("cIn").value)||0;const cout=parseFloat(document.getElementById("cOut").value)||0;if(!cin&&!cout){document.getElementById("cashResult").innerHTML='<div class="result-box error">⚠ Cash In বা Cash Out দিন।</div>';return;}const tx={ts:Date.now(),type,desc,cin,cout};const arr=getArray(KEY_CASH);arr.push(tx);setArray(KEY_CASH,arr);document.getElementById("cashResult").innerHTML='<div class="result-box">✔ ক্যাশ এন্ট্রি সেভ হয়েছে<br>ধরন: '+type+'</div>';updateSummary();}
+function saveCustomer(){const id=document.getElementById("custId").value.trim();const name=document.getElementById("custName").value.trim();if(!id||!name){document.getElementById("custResult").innerHTML='<div class="result-box error">⚠ কাস্টমার আইডি ও নাম দিন।</div>';return;}const cust={id,name,mobile:document.getElementById("custMobile").value.trim(),address:document.getElementById("custAddress").value.trim(),photo:document.getElementById("custPhoto").value.trim(),advance:parseFloat(document.getElementById("custAdvance").value)||0,due:parseFloat(document.getElementById("custDue").value)||0};const arr=getArray(KEY_CUSTOMERS);arr.push(cust);setArray(KEY_CUSTOMERS,arr);document.getElementById("custResult").innerHTML='<div class="result-box">✔ কাস্টমার সেভ হয়েছে। মোট কাস্টমার: '+arr.length+'</div>';}
+function saveLocal(){const id=document.getElementById("locId").value.trim();const name=document.getElementById("locName").value.trim();if(!id||!name){document.getElementById("locResult").innerHTML='<div class="result-box error">⚠ লোকাল আইডি ও নাম দিন।</div>';return;}const loc={id,name,mobile:document.getElementById("locMobile").value.trim(),address:document.getElementById("locAddress").value.trim(),photo:document.getElementById("locPhoto").value.trim(),advance:parseFloat(document.getElementById("locAdvance").value)||0,due:parseFloat(document.getElementById("locDue").value)||0};const arr=getArray(KEY_LOCALS);arr.push(loc);setArray(KEY_LOCALS,arr);document.getElementById("locResult").innerHTML='<div class="result-box">✔ লোকাল গ্রাহক সেভ হয়েছে। মোট লোকাল: '+arr.length+'</div>';}
+function saveSupplier(){const id=document.getElementById("supId").value.trim();const name=document.getElementById("supName").value.trim();if(!id||!name){document.getElementById("supResult").innerHTML='<div class="result-box error">⚠ সাপ্লায়ার আইডি ও নাম দিন।</div>';return;}const sup={id,name,mobile:document.getElementById("supMobile").value.trim(),note:document.getElementById("supNote").value.trim()};const arr=getArray(KEY_SUPPLIERS);arr.push(sup);setArray(KEY_SUPPLIERS,arr);document.getElementById("supResult").innerHTML='<div class="result-box">✔ সাপ্লায়ার সেভ হয়েছে। মোট সাপ্লায়ার: '+arr.length+'</div>';}
+function updateStockGram(){const v=parseFloat(document.getElementById("stVori").value)||0;const a=parseFloat(document.getElementById("stAna").value)||0;const r=parseFloat(document.getElementById("stRoti").value)||0;const p=parseFloat(document.getElementById("stPoint").value)||0;const g=parseFloat(document.getElementById("stGram").value)||0;const total=convertToGram(v,a,r,p,g);const el=document.getElementById("stGramTotal");if(el){el.value=total?total.toFixed(3):"";}}
+function saveStock(){const code=document.getElementById("stCode").value.trim();const name=document.getElementById("stName").value.trim();if(!code||!name){document.getElementById("stockResult").innerHTML='<div class="result-box error">⚠ আইটেম কোড ও নাম দিন।</div>';return;}const v=parseFloat(document.getElementById("stVori").value)||0;const a=parseFloat(document.getElementById("stAna").value)||0;const r=parseFloat(document.getElementById("stRoti").value)||0;const p=parseFloat(document.getElementById("stPoint").value)||0;const gDirect=parseFloat(document.getElementById("stGram").value)||0;const totalGram=convertToGram(v,a,r,p,gDirect);const item={code,name,barcode:document.getElementById("stBarcode").value.trim(),karat:document.getElementById("stKarat").value.trim(),vori:v,ana:a,roti:r,point:p,gramDirect:gDirect,gram:totalGram,supplierId:document.getElementById("stSupId").value.trim()};const arr=getArray(KEY_STOCK);arr.push(item);setArray(KEY_STOCK,arr);document.getElementById("stockResult").innerHTML='<div class="result-box">✔ স্টক সেভ হয়েছে। মোট স্টক আইটেম: '+arr.length+'<br>মোট গ্রাম: '+totalGram.toFixed(3)+'</div>';['stVori','stAna','stRoti','stPoint','stGram','stGramTotal','stBarcode'].forEach(id=>{const el=document.getElementById(id);if(el)el.value="";});updateSummary();renderLastStock();}
+function updateSummary(){const sales=getArray(KEY_SALES);const mortgages=getArray(KEY_MORTGAGE);const cashList=getArray(KEY_CASH);const stockList=getArray(KEY_STOCK);let sumSale=0;sales.forEach(s=>{if(s.type==='বিক্রি'&&isToday(s.ts)){sumSale+=(s.net||0);}});let sumMortIn=0;let sumMortMonthly=0;mortgages.forEach(m=>{if(m.status!=='Closed'){sumMortIn+=(m.loan||0);sumMortMonthly+=(m.monthlyTotal||0);}});let sumCash=0;cashList.forEach(c=>sumCash+=(c.cin||0)-(c.cout||0));document.getElementById("sumSale").textContent=formatCurrency(sumSale);document.getElementById("sumMortIn").textContent=formatCurrency(sumMortIn);document.getElementById("sumMortMonthly").textContent=formatCurrency(sumMortMonthly);document.getElementById("sumCash").textContent=formatCurrency(sumCash);document.getElementById("sumStock").textContent=stockList.length.toString();}
+function renderLastSales(){const el=document.getElementById("saleLast");const arr=getArray(KEY_SALES);if(!el)return;if(arr.length===0){el.innerHTML='';return;}const last=arr.slice(-5).reverse();let html='<b>শেষ ৫ বিক্রি/অর্ডার:</b><br>';last.forEach(s=>{const d=new Date(s.ts);html+=d.toLocaleDateString()+' - '+(s.billNo||'')+' - '+(s.customer||'')+' ('+s.type+') - '+formatCurrency(s.net||0)+'<br>';});el.innerHTML=html;}
+function renderLastMortgages(){const el=document.getElementById("mortgageLast");const arr=getArray(KEY_MORTGAGE);if(!el)return;if(arr.length===0){el.innerHTML='';return;}const last=arr.slice(-5).reverse();let html='<b>শেষ ৫ মর্টগেজ:</b><br>';last.forEach(m=>{const d=new Date(m.ts);html+=d.toLocaleDateString()+' - '+(m.slip||'')+' - '+(m.customer||'')+' ['+(m.status||'')+'] - '+formatCurrency(m.loan||0)+' | মাসিক: '+formatCurrency(m.monthlyTotal||0)+'<br>';});el.innerHTML=html;}
+function renderLastStock(){const el=document.getElementById("stockLast");const arr=getArray(KEY_STOCK);if(!el)return;if(arr.length===0){el.innerHTML='';return;}const last=arr.slice(-5).reverse();let html='<b>শেষ ৫ স্টক আপডেট:</b><br>';last.forEach(s=>{const g=parseFloat(s.gram)||0;html+=(s.code||'')+' - '+(s.name||'')+' ('+(s.karat||'')+') - '+g.toFixed(3)+' g';if(s.barcode){html+=' | বারকোড: '+s.barcode;}html+='<br>';});el.innerHTML=html;}
+function exportData(){const data={sales:getArray(KEY_SALES),mortgages:getArray(KEY_MORTGAGE),cash:getArray(KEY_CASH),customers:getArray(KEY_CUSTOMERS),locals:getArray(KEY_LOCALS),suppliers:getArray(KEY_SUPPLIERS),stock:getArray(KEY_STOCK)};const text=JSON.stringify(data,null,2);const box=document.getElementById("exportBox");box.innerHTML='<b>নিচের ডাটা কপি করে যেকোনো ফাইলে সেভ রাখতে পারেন (ব্যাকআপ):</b><br><textarea style="width:100%;height:140px;background:#020617;color:#e5e7eb;border-radius:10px;border:1px solid rgba(148,163,184,0.6);padding:6px;font-size:11px;">'+text+'</textarea>';}
+function resetAll(){if(!confirm('সব ডাটা মুছে যাবে, নিশ্চিত?'))return;[KEY_SALES,KEY_MORTGAGE,KEY_CASH,KEY_CUSTOMERS,KEY_SUPPLIERS,KEY_STOCK,KEY_LOCALS,KEY_BILL_COUNTER].forEach(k=>localStorage.removeItem(k));updateSummary();renderLastSales();renderLastMortgages();renderLastStock();document.getElementById("exportBox").innerHTML='';alert('সব ডাটা ডিলিট হয়েছে।');}
+function renderReport(){const rangeEl=document.getElementById("repRange");const range=rangeEl?rangeEl.value:'today';const onlyToday=(range==='today');const sales=getArray(KEY_SALES).filter(s=>!onlyToday||isToday(s.ts));const mortgages=getArray(KEY_MORTGAGE).filter(m=>!onlyToday||isToday(m.ts));const cash=getArray(KEY_CASH).filter(c=>!onlyToday||isToday(c.ts));const stock=getArray(KEY_STOCK);let sumSaleNet=0;let sumSaleQty=0;sales.forEach(s=>{if(s.type==='বিক্রি')sumSaleNet+=(s.net||0);sumSaleQty+=1;});let htmlSales='<div class="summary-row"><span>মোট এন্ট্রি</span><span>'+sumSaleQty+'</span></div>';htmlSales+='<div class="summary-row"><span>মোট বিক্রি নেট</span><span>'+formatCurrency(sumSaleNet)+'</span></div>';htmlSales+='<table class="rep-table"><thead><tr><th>তারিখ</th><th>বিল</th><th>কাস্টমার</th><th>টাইপ</th><th>নেট</th></tr></thead><tbody>';sales.slice(-50).reverse().forEach(s=>{const d=new Date(s.ts);htmlSales+='<tr><td>'+d.toLocaleDateString()+'</td><td>'+(s.billNo||'')+'</td><td>'+(s.customer||'')+'</td><td>'+s.type+'</td><td>'+formatCurrency(s.net||0)+'</td></tr>';});htmlSales+='</tbody></table>';document.getElementById("repSales").innerHTML=htmlSales;let sumLoan=0;let sumMonthly=0;mortgages.forEach(m=>{sumLoan+=(m.loan||0);sumMonthly+=(m.monthlyTotal||0);});let htmlMort='<div class="summary-row"><span>মোট মর্টগেজ এন্ট্রি</span><span>'+mortgages.length+'</span></div>';htmlMort+='<div class="summary-row"><span>মোট ঋণ</span><span>'+formatCurrency(sumLoan)+'</span></div>';htmlMort+='<div class="summary-row"><span>মাসিক মোট (সুদ+লকার)</span><span>'+formatCurrency(sumMonthly)+'</span></div>';htmlMort+='<table class="rep-table"><thead><tr><th>তারিখ</th><th>স্লিপ</th><th>কাস্টমার</th><th>স্ট্যাটাস</th><th>লোন</th><th>মাসিক</th></tr></thead><tbody>';mortgages.slice(-50).reverse().forEach(m=>{const d=new Date(m.ts);htmlMort+='<tr><td>'+d.toLocaleDateString()+'</td><td>'+(m.slip||'')+'</td><td>'+(m.customer||'')+'</td><td>'+(m.status||'')+'</td><td>'+formatCurrency(m.loan||0)+'</td><td>'+formatCurrency(m.monthlyTotal||0)+'</td></tr>';});htmlMort+='</tbody></table>';document.getElementById("repMort").innerHTML=htmlMort;let sumIn=0;let sumOut=0;cash.forEach(c=>{sumIn+=(c.cin||0);sumOut+=(c.cout||0);});let htmlCash='<div class="summary-row"><span>মোট এন্ট্রি</span><span>'+cash.length+'</span></div>';htmlCash+='<div class="summary-row"><span>মোট Cash In</span><span>'+formatCurrency(sumIn)+'</span></div>';htmlCash+='<div class="summary-row"><span>মোট Cash Out</span><span>'+formatCurrency(sumOut)+'</span></div>';htmlCash+='<div class="summary-row"><span>নেট ক্যাশ</span><span>'+formatCurrency(sumIn-sumOut)+'</span></div>';htmlCash+='<table class="rep-table"><thead><tr><th>তারিখ</th><th>টাইপ</th><th>In</th><th>Out</th><th>বিবরণ</th></tr></thead><tbody>';cash.slice(-50).reverse().forEach(c=>{const d=new Date(c.ts);htmlCash+='<tr><td>'+d.toLocaleDateString()+'</td><td>'+c.type+'</td><td>'+formatCurrency(c.cin||0)+'</td><td>'+formatCurrency(c.cout||0)+'</td><td>'+(c.desc||'')+'</td></tr>';});htmlCash+='</tbody></table>';document.getElementById("repCash").innerHTML=htmlCash;let sumStockItems=stock.length;let sumStockGram=0;stock.forEach(s=>sumStockGram+=(parseFloat(s.gram)||0));let htmlStock='<div class="summary-row"><span>মোট আইটেম</span><span>'+sumStockItems+'</span></div>';htmlStock+='<div class="summary-row"><span>মোট স্টক (গ্রাম)</span><span>'+sumStockGram.toFixed(3)+' g</span></div>';htmlStock+='<table class="rep-table"><thead><tr><th>কোড</th><th>নাম</th><th>কারেট</th><th>গ্রাম</th><th>বারকোড</th></tr></thead><tbody>';stock.slice(-100).forEach(s=>{const g=parseFloat(s.gram)||0;htmlStock+='<tr><td>'+(s.code||'')+'</td><td>'+(s.name||'')+'</td><td>'+(s.karat||'')+'</td><td>'+g.toFixed(3)+'</td><td>'+(s.barcode||'')+'</td></tr>';});htmlStock+='</tbody></table>';document.getElementById("repStock").innerHTML=htmlStock;}
+function loadLedger(){const cid=(document.getElementById('ledCustId').value||'').trim();const box=document.getElementById('ledgerBox');if(!cid){box.innerHTML='<span style="color:#fecaca;">⚠ কাস্টমার আইডি লিখুন।</span>';return;}const customers=getArray(KEY_CUSTOMERS);const cust=customers.find(c=>(c.id||'').toLowerCase()===cid.toLowerCase());const sales=getArray(KEY_SALES).filter(s=>(s.customerId||'').toLowerCase()===cid.toLowerCase());const mortgages=getArray(KEY_MORTGAGE).filter(m=>(m.customerId||'').toLowerCase()===cid.toLowerCase());if(!cust&&sales.length===0&&mortgages.length===0){box.innerHTML='<span style="color:#fecaca;">এই আইডির কোনো ডাটা পাওয়া যায়নি।</span>';return;}let openingAdvance=cust?(cust.advance||0):0;let openingDue=cust?(cust.due||0):0;let totalNet=0;let totalPaid=0;let totalDue=0;sales.forEach(s=>{if(s.type==='বিক্রি'){totalNet+=(s.net||0);totalPaid+=(s.paid||0);totalDue+=(s.due||0);}});let html='';html+='<b>কাস্টমার আইডি:</b> '+cid+'<br>';if(cust){html+='<b>নাম:</b> '+(cust.name||'')+' | মোবাইল: '+(cust.mobile||'')+'<br>';}html+='<br><b>ওপেনিং ব্যালেন্স:</b> অগ্রিম = '+formatCurrency(openingAdvance)+' | বাকি = '+formatCurrency(openingDue)+'<br><br>';html+='<b>বিক্রি সারাংশ:</b><br>';html+='মোট বিক্রি নেট: '+formatCurrency(totalNet)+' | মোট নগদ: '+formatCurrency(totalPaid)+' | মোট বাকি: '+formatCurrency(totalDue)+'<br><br>';if(sales.length>0){html+='<table class="rep-table"><thead><tr><th>তারিখ</th><th>বিল</th><th>টাইপ</th><th>নেট</th><th>নগদ</th><th>বাকি</th></tr></thead><tbody>';sales.slice(-100).reverse().forEach(s=>{const d=new Date(s.ts);html+='<tr><td>'+d.toLocaleDateString()+'</td><td>'+(s.billNo||'')+'</td><td>'+s.type+'</td><td>'+formatCurrency(s.net||0)+'</td><td>'+formatCurrency(s.paid||0)+'</td><td>'+formatCurrency(s.due||0)+'</td></tr>';});html+='</tbody></table><br>';}else{html+='বিক্রি ডাটা পাওয়া যায়নি।<br><br>';}if(mortgages.length>0){html+='<b>মর্টগেজ সারাংশ:</b><br>';let sumLoan=0;let sumMonthly=0;mortgages.forEach(m=>{sumLoan+=(m.loan||0);sumMonthly+=(m.monthlyTotal||0);});html+='মোট Loan: '+formatCurrency(sumLoan)+' | মাসিক মোট (সুদ+লকার): '+formatCurrency(sumMonthly)+'<br>';html+='<table class="rep-table"><thead><tr><th>তারিখ</th><th>স্লিপ</th><th>স্ট্যাটাস</th><th>Loan</th><th>মাসিক</th></tr></thead><tbody>';mortgages.slice(-50).reverse().forEach(m=>{const d=new Date(m.ts);html+='<tr><td>'+d.toLocaleDateString()+'</td><td>'+(m.slip||'')+'</td><td>'+(m.status||'')+'</td><td>'+formatCurrency(m.loan||0)+'</td><td>'+formatCurrency(m.monthlyTotal||0)+'</td></tr>';});html+='</tbody></table>';}box.innerHTML=html;}
+</script>
+</body>
+</html>
