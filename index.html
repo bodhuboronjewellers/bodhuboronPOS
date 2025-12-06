@@ -1,1 +1,755 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>জুয়েলারি ম্যানেজমেন্ট সফটওয়্যার</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+Bengali:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #FFD700; /* Gold */
+            --secondary: #0a0a0a; /* Dark background */
+        }
+        body {
+            font-family: 'Noto Sans Bengali', 'Inter', sans-serif;
+            background-color: #f4f4f9;
+        }
+        .sidebar {
+            background-color: var(--secondary);
+            transition: all 0.3s ease;
+        }
+        .nav-item {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 1rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            color: #ccc;
+            margin-bottom: 0.5rem;
+            transition: background-color 0.2s, color 0.2s;
+        }
+        .nav-item:hover, .nav-item.active {
+            background-color: #2c2c2c;
+            color: var(--primary);
+        }
+        .nav-item.active {
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+        }
+        .dashboard-card {
+            background-color: white;
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+            transition: transform 0.3s;
+        }
+        .dashboard-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 10px rgba(0, 0, 0, 0.15);
+        }
+        .primary-btn {
+            background-color: var(--primary);
+            color: var(--secondary);
+            font-weight: 600;
+            border-radius: 0.5rem;
+            padding: 0.6rem 1.25rem;
+            transition: background-color 0.2s;
+        }
+        .primary-btn:hover {
+            background-color: #e6c500;
+        }
+        /* Custom scrollbar for content area */
+        .content-area::-webkit-scrollbar {
+            width: 8px;
+        }
+        .content-area::-webkit-scrollbar-thumb {
+            background-color: #ccc;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col md:flex-row">
+
+    <!-- Loading Overlay -->
+    <div id="loading-overlay" class="fixed inset-0 bg-white/70 backdrop-blur-sm z-50 flex flex-col items-center justify-center">
+        <div class="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-yellow-500"></div>
+        <p class="mt-4 text-gray-700 font-semibold">সফটওয়্যার লোড হচ্ছে...</p>
+    </div>
+
+    <!-- Sidebar (Hidden on Mobile, shown via button) -->
+    <div id="sidebar" class="sidebar fixed inset-y-0 left-0 w-64 p-4 z-40 transform -translate-x-full md:relative md:translate-x-0 md:flex-shrink-0">
+        <h1 class="text-2xl font-bold text-white mb-8 border-b border-gray-700 pb-3">💎 জুয়েলারি POS</h1>
+
+        <!-- User Role Display -->
+        <div class="mb-6 p-3 bg-gray-800 rounded-lg text-sm">
+            <p class="text-gray-400">ব্যবহারকারী:</p>
+            <p id="current-user-id" class="text-xs text-yellow-500 truncate mb-1">ID: Loading...</p>
+            <p id="current-role" class="font-semibold text-white">রোল: লোড হচ্ছে...</p>
+        </div>
+
+        <nav id="module-nav">
+            <!-- Navigation items will be inserted here based on role -->
+        </nav>
+        
+        <div class="absolute bottom-4 w-full pr-8">
+            <button onclick="changeRolePrompt()" class="w-full primary-btn bg-gray-700 text-white hover:bg-gray-600">
+                <i data-lucide="users" class="inline-block w-4 h-4 mr-2"></i> রোল পরিবর্তন করুন
+            </button>
+        </div>
+    </div>
+
+    <!-- Main Content Area -->
+    <div class="flex-1 overflow-auto content-area p-4 md:p-8">
+        <!-- Mobile Menu Toggle -->
+        <button id="menu-toggle" class="md:hidden p-2 text-gray-700 rounded-lg hover:bg-gray-200 focus:outline-none mb-4">
+            <i data-lucide="menu" class="w-6 h-6"></i>
+        </button>
+        
+        <header class="mb-8 flex justify-between items-center">
+            <h2 id="page-title" class="text-3xl font-bold text-gray-800">ড্যাশবোর্ড</h2>
+        </header>
+
+        <!-- Main Content View -->
+        <main id="main-content-view">
+            <!-- Content of the active module will be loaded here -->
+        </main>
+        
+        <!-- Custom Modal for Role Change -->
+        <div id="role-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
+            <div class="bg-white p-6 rounded-xl w-full max-w-sm">
+                <h3 class="text-xl font-bold mb-4 text-gray-800">ব্যবহারকারী রোল নির্বাচন</h3>
+                <p class="mb-4 text-sm text-gray-600">আপনার অ্যাক্সেস লেভেল অনুযায়ী একটি রোল বেছে নিন।</p>
+                <select id="role-selector" class="w-full p-3 border border-gray-300 rounded-lg mb-4 focus:ring-yellow-500 focus:border-yellow-500">
+                    <option value="admin">অ্যাডমিন/মালিক</option>
+                    <option value="manager">ম্যানেজার</option>
+                    <option value="sales">বিক্রয় কর্মী</option>
+                    <option value="accountant">হিসাবরক্ষক</option>
+                </select>
+                <div class="flex justify-end space-x-3">
+                    <button onclick="document.getElementById('role-modal').classList.add('hidden')" class="px-4 py-2 text-gray-600 rounded-lg hover:bg-gray-100">বাতিল</button>
+                    <button onclick="setAndSaveRole()" class="primary-btn">রোল সেট করুন</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Custom Notification Message Box -->
+        <div id="message-box" class="fixed bottom-4 right-4 p-4 rounded-lg shadow-xl text-white hidden transition-opacity duration-300"></div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, getDoc, setDoc, onSnapshot, collection, query, setLogLevel } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // Global Firebase Instances
+        let app, db, auth;
+        let userId = 'default-user';
+        let currentUserRole = 'admin'; // Default role
+        let isAuthReady = false;
+
+        // MANDATORY: Global variables provided by Canvas environment
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : null;
+        const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+
+        // --- Utility Functions ---
+
+        /**
+         * Shows a custom notification message instead of alert().
+         * @param {string} message - The message to display.
+         * @param {string} type - 'success' or 'error'.
+         */
+        function showMessage(message, type = 'success') {
+            const box = document.getElementById('message-box');
+            box.textContent = message;
+            box.className = 'fixed bottom-4 right-4 p-4 rounded-lg shadow-xl text-white transition-opacity duration-300';
+            
+            if (type === 'success') {
+                box.classList.add('bg-green-600');
+            } else if (type === 'error') {
+                box.classList.add('bg-red-600');
+            } else {
+                 box.classList.add('bg-blue-600');
+            }
+
+            box.classList.remove('hidden');
+            box.style.opacity = '1';
+
+            setTimeout(() => {
+                box.style.opacity = '0';
+                setTimeout(() => box.classList.add('hidden'), 300);
+            }, 3000);
+        }
+
+        /**
+         * Converts Gold weight from Bhari/Ana/Roti/Point to Grams.
+         * 1 Bhari = 16 Ana, 1 Ana = 4 Roti, 1 Roti = 4 Point.
+         * 1 Bhari ≈ 11.664 grams (Bangladesh Standard)
+         * @param {number} bhari
+         * @param {number} ana
+         * @param {number} roti
+         * @param {number} point
+         * @returns {string} Weight in grams (3 decimal places).
+         */
+        function voriToGram(bhari, ana, roti, point) {
+            const VORI_TO_GRAM = 11.664;
+            const POINTS_PER_VORI = 16 * 4 * 4; // 256
+            
+            const totalPoints = (bhari * POINTS_PER_VORI) + (ana * 4 * 4) + (roti * 4) + point;
+            
+            if (totalPoints === 0) return '0.000';
+
+            const grams = (totalPoints * VORI_TO_GRAM) / POINTS_PER_VORI;
+            return grams.toFixed(3);
+        }
+
+        // --- Firebase Initialization and Authentication ---
+
+        async function initializeFirebase() {
+            setLogLevel('debug'); // For debugging any potential issues
+
+            if (!firebaseConfig) {
+                console.error("Firebase config is missing.");
+                document.getElementById('loading-overlay').classList.add('hidden');
+                showMessage("Firebase কনফিগারেশন অনুপস্থিত। অ্যাপটি ডাটাবেস ছাড়া চলছে।", 'error');
+                isAuthReady = true;
+                renderNavigation(currentUserRole);
+                loadView('dashboard');
+                return;
+            }
+            
+            try {
+                app = initializeApp(firebaseConfig);
+                db = getFirestore(app);
+                auth = getAuth(app);
+
+                // 1. Setup Auth State Listener (Critical: This will fire once auth status is known)
+                onAuthStateChanged(auth, async (user) => {
+                    if (user) {
+                        userId = user.uid;
+                        document.getElementById('current-user-id').textContent = `ID: ${userId}`;
+                        await loadUserRole(userId);
+                        
+                        // Start listeners and load initial view
+                        startModuleListeners(); 
+                        renderNavigation(currentUserRole);
+                        loadView(currentUserRole === 'admin' ? 'dashboard' : 'dashboard');
+
+                    } else {
+                        // If authentication fails or user signs out
+                        userId = crypto.randomUUID();
+                        document.getElementById('current-user-id').textContent = `ID: (Anonymous) ${userId.substring(0, 8)}...`;
+                        renderNavigation(currentUserRole);
+                        loadView('dashboard');
+                    }
+                    
+                    // Mark auth ready and hide loading screen
+                    isAuthReady = true;
+                    document.getElementById('loading-overlay').classList.add('hidden');
+                });
+
+                // 2. Initial Authentication Attempt
+                if (initialAuthToken) {
+                    await signInWithCustomToken(auth, initialAuthToken);
+                } else {
+                    // Fallback to anonymous sign-in if no custom token is available
+                    await signInAnonymously(auth);
+                }
+
+            } catch (error) {
+                console.error("Error during Firebase initialization or sign-in:", error);
+                
+                // CRITICAL FIX: Ensure loading overlay is hidden upon error
+                document.getElementById('loading-overlay').classList.add('hidden');
+                showMessage(`Firebase ত্রুটি: ${error.message}. সাইন-ইন ব্যর্থ হয়েছে।`, 'error');
+
+                // Load the view anyway, but with limited functionality
+                isAuthReady = false; 
+                renderNavigation(currentUserRole);
+                loadView('dashboard');
+            }
+        }
+
+        // --- Role Management and Access Control ---
+
+        const userRoles = {
+            admin: { name: 'অ্যাডমিন/মালিক', modules: ['dashboard', 'inventory', 'finance', 'mortgage', 'karigor', 'reports', 'settings'] },
+            manager: { name: 'ম্যানেজার', modules: ['dashboard', 'inventory', 'finance', 'mortgage', 'reports'] },
+            sales: { name: 'বিক্রয় কর্মী', modules: ['sales', 'inventory', 'dashboard'] },
+            accountant: { name: 'হিসাবরক্ষক', modules: ['dashboard', 'finance', 'mortgage', 'reports'] },
+        };
+
+        const moduleIcons = {
+            dashboard: 'layout-dashboard',
+            inventory: 'warehouse',
+            sales: 'shopping-cart',
+            finance: 'dollar-sign',
+            mortgage: 'banknote',
+            karigor: 'hammer',
+            reports: 'bar-chart-2',
+            settings: 'settings',
+        };
+
+        const moduleNames = {
+            dashboard: 'ড্যাশবোর্ড',
+            inventory: 'ইনভেন্টরি/স্টক',
+            sales: 'বিক্রয় ও রিটার্ন',
+            finance: 'হিসাব ও ফিনান্স',
+            mortgage: 'মর্গেজ (বন্ধক)',
+            karigor: 'কারিগর ও অর্ডার',
+            reports: 'রিপোর্টিং',
+            settings: 'সিস্টেম সেটিংস',
+        };
+
+        async function loadUserRole(uid) {
+            if (!db) return;
+            const userDocRef = doc(db, `artifacts/${appId}/users/${uid}`, 'profile');
+            try {
+                const userDoc = await getDoc(userDocRef);
+                if (userDoc.exists()) {
+                    currentUserRole = userDoc.data().role || 'admin';
+                }
+            } catch (error) {
+                console.warn("Could not load user role, defaulting to admin:", error);
+                currentUserRole = 'admin';
+            }
+            document.getElementById('current-role').textContent = `রোল: ${userRoles[currentUserRole].name}`;
+        }
+
+        function changeRolePrompt() {
+            const selector = document.getElementById('role-selector');
+            selector.value = currentUserRole;
+            document.getElementById('role-modal').classList.remove('hidden');
+        }
+
+        async function setAndSaveRole() {
+            const newRole = document.getElementById('role-selector').value;
+            if (!userRoles[newRole]) return;
+
+            document.getElementById('role-modal').classList.add('hidden');
+            
+            // Save the new role to Firestore
+            const userDocRef = doc(db, `artifacts/${appId}/users/${userId}`, 'profile');
+            try {
+                if(db && userId) { // Check if Firestore and userId are ready
+                    await setDoc(userDocRef, { role: newRole }, { merge: true });
+                }
+                
+                currentUserRole = newRole;
+                document.getElementById('current-role').textContent = `রোল: ${userRoles[currentUserRole].name}`;
+                showMessage(`রোল সফলভাবে পরিবর্তন করা হয়েছে: ${userRoles[currentUserRole].name}`, 'success');
+                
+                renderNavigation(currentUserRole);
+                loadView('dashboard'); // Always go to dashboard after role change
+            } catch (error) {
+                console.error("Error saving new role:", error);
+                showMessage("রোল পরিবর্তন সংরক্ষণ করা যায়নি। (ডাটাবেস সংযোগ চেক করুন)", 'error');
+            }
+        }
+        
+        function renderNavigation(role) {
+            const nav = document.getElementById('module-nav');
+            nav.innerHTML = '';
+            const modules = userRoles[role].modules;
+
+            modules.forEach(moduleId => {
+                const name = moduleNames[moduleId];
+                const icon = moduleIcons[moduleId];
+                const item = document.createElement('div');
+                item.className = 'nav-item';
+                item.id = `nav-${moduleId}`;
+                item.innerHTML = `<i data-lucide="${icon}" class="w-5 h-5 mr-3"></i> ${name}`;
+                item.onclick = () => loadView(moduleId);
+                nav.appendChild(item);
+            });
+            // Re-render lucide icons after injecting HTML
+            lucide.createIcons();
+        }
+
+        // --- View Rendering Logic ---
+
+        function setActiveNav(moduleId) {
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            const activeItem = document.getElementById(`nav-${moduleId}`);
+            if (activeItem) {
+                activeItem.classList.add('active');
+            }
+        }
+
+        function loadView(moduleId) {
+            setActiveNav(moduleId);
+            document.getElementById('page-title').textContent = moduleNames[moduleId];
+            const content = document.getElementById('main-content-view');
+            content.innerHTML = ''; // Clear existing content
+
+            let html = '';
+
+            switch (moduleId) {
+                case 'dashboard':
+                    html = renderDashboardView();
+                    break;
+                case 'inventory':
+                    html = renderInventoryView();
+                    break;
+                case 'sales':
+                    html = renderSalesView();
+                    break;
+                case 'finance':
+                    html = renderFinanceView();
+                    break;
+                case 'mortgage':
+                    html = renderMortgageView();
+                    break;
+                case 'karigor':
+                    html = renderKarigorView();
+                    break;
+                case 'reports':
+                    html = renderReportsView();
+                    break;
+                case 'settings':
+                    html = renderSettingsView();
+                    break;
+                default:
+                    html = `<p class="text-gray-500">এই মডিউলটি এখনও তৈরি হয়নি।</p>`;
+            }
+
+            content.innerHTML = html;
+            // Re-render lucide icons for the new content
+            lucide.createIcons();
+            
+            // Specific initialisation for views
+            if (moduleId === 'inventory') {
+                document.getElementById('convert-btn').onclick = convertWeight;
+            } else if (moduleId === 'mortgage') {
+                document.getElementById('calculate-interest-btn').onclick = calculateSimpleInterest;
+            }
+        }
+
+        function renderDashboardView() {
+            return `
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <!-- Card 1: Total Sales -->
+                    <div class="dashboard-card border-l-4 border-yellow-500">
+                        <p class="text-sm font-medium text-gray-500">মোট বিক্রয় (আজ)</p>
+                        <p class="text-2xl font-bold text-gray-900 mt-1">৳ 2,50,000</p>
+                        <div class="flex items-center text-sm mt-2">
+                            <i data-lucide="trending-up" class="w-4 h-4 text-green-500 mr-1"></i>
+                            <span class="text-green-500">২.৫%</span> 
+                            <span class="text-gray-500 ml-1">গতকাল থেকে</span>
+                        </div>
+                    </div>
+                    <!-- Card 2: Current Gold Stock -->
+                    <div class="dashboard-card border-l-4 border-gray-700">
+                        <p class="text-sm font-medium text-gray-500">মোট গোল্ড স্টক</p>
+                        <p class="text-2xl font-bold text-gray-900 mt-1">50.123 গ্রাম</p>
+                        <p class="text-sm text-gray-500 mt-2">৪ ভরি ৭ আনা ২ রতি</p>
+                    </div>
+                    <!-- Card 3: Active Mortgages -->
+                    <div class="dashboard-card border-l-4 border-blue-500">
+                        <p class="text-sm font-medium text-gray-500">সক্রিয় বন্ধক</p>
+                        <p class="text-2xl font-bold text-gray-900 mt-1">৳ 5,50,000</p>
+                        <p class="text-sm text-gray-500 mt-2">মোট ১৫টি ট্রানজ্যাকশন</p>
+                    </div>
+                    <!-- Card 4: Due Payments -->
+                    <div class="dashboard-card border-l-4 border-red-500">
+                        <p class="text-sm font-medium text-gray-500">আজকের বকেয়া</p>
+                        <p class="text-2xl font-bold text-gray-900 mt-1">৳ 35,000</p>
+                        <p class="text-sm text-red-500 mt-2">২টি মর্গেজ মেয়াদ উত্তীর্ণ</p>
+                    </div>
+                </div>
+                
+                <h3 class="text-xl font-bold text-gray-800 mt-8 mb-4">রিয়েল-টাইম বিক্রয় চার্ট</h3>
+                <div class="dashboard-card h-80">
+                    <p class="text-gray-500">এখানে একটি লাইভ চার্ট লোড হবে।</p>
+                </div>
+            `;
+        }
+
+        // --- Core Feature: Inventory Unit Conversion (Bhari to Gram) ---
+
+        function convertWeight() {
+            const bhari = parseFloat(document.getElementById('bhari-input').value) || 0;
+            const ana = parseFloat(document.getElementById('ana-input').value) || 0;
+            const roti = parseFloat(document.getElementById('roti-input').value) || 0;
+            const point = parseFloat(document.getElementById('point-input').value) || 0;
+
+            if (bhari < 0 || ana < 0 || roti < 0 || point < 0) {
+                 document.getElementById('conversion-result').textContent = "ইনপুট অবশ্যই শূন্য বা তার বেশি হতে হবে।";
+                 document.getElementById('conversion-result').classList.add('text-red-500');
+                 return;
+            }
+
+            const grams = voriToGram(bhari, ana, roti, point);
+            
+            document.getElementById('conversion-result').textContent = `${grams} গ্রাম`;
+            document.getElementById('conversion-result').classList.remove('text-red-500');
+            showMessage("ওজন সফলভাবে পরিমাপ করা হয়েছে।", 'success');
+        }
+
+        function renderInventoryView() {
+            return `
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <!-- Left Panel: Unit Conversion -->
+                    <div class="lg:col-span-1 dashboard-card p-6 border-l-4 border-yellow-500">
+                        <h3 class="text-xl font-bold mb-4">স্বর্ণের ওজন রূপান্তর (ভরি → গ্রাম)</h3>
+                        
+                        <div class="space-y-4">
+                            <div>
+                                <label for="bhari-input" class="block text-sm font-medium text-gray-700">ভরি</label>
+                                <input type="number" id="bhari-input" class="mt-1 p-3 w-full border border-gray-300 rounded-lg focus:ring-yellow-500 focus:border-yellow-500" value="0">
+                            </div>
+                            <div>
+                                <label for="ana-input" class="block text-sm font-medium text-gray-700">আনা (সর্বোচ্চ ১৬)</label>
+                                <input type="number" id="ana-input" class="mt-1 p-3 w-full border border-gray-300 rounded-lg focus:ring-yellow-500 focus:border-yellow-500" value="0">
+                            </div>
+                            <div>
+                                <label for="roti-input" class="block text-sm font-medium text-gray-700">রতি (সর্বোচ্চ ৪)</label>
+                                <input type="number" id="roti-input" class="mt-1 p-3 w-full border border-gray-300 rounded-lg focus:ring-yellow-500 focus:border-yellow-500" value="0">
+                            </div>
+                            <div>
+                                <label for="point-input" class="block text-sm font-medium text-gray-700">পয়েন্ট (সর্বোচ্চ ৪)</label>
+                                <input type="number" id="point-input" class="mt-1 p-3 w-full border border-gray-300 rounded-lg focus:ring-yellow-500 focus:border-yellow-500" value="0">
+                            </div>
+                        </div>
+
+                        <button id="convert-btn" class="w-full primary-btn mt-6">
+                            <i data-lucide="repeat" class="inline-block w-4 h-4 mr-2"></i> গ্রামে রূপান্তর করুন
+                        </button>
+                        
+                        <div class="mt-6 p-4 bg-gray-100 rounded-lg">
+                            <p class="text-sm text-gray-600">রূপান্তরিত ওজন:</p>
+                            <p id="conversion-result" class="text-2xl font-bold text-gray-800">0.000 গ্রাম</p>
+                        </div>
+                    </div>
+
+                    <!-- Right Panel: Stock List -->
+                    <div class="lg:col-span-2 dashboard-card p-6">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="text-xl font-bold">ইনভেন্টরি তালিকা</h3>
+                            <button class="primary-btn px-4 py-2 text-sm">
+                                <i data-lucide="plus" class="inline-block w-4 h-4 mr-1"></i> নতুন পণ্য যোগ করুন
+                            </button>
+                        </div>
+                        
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full divide-y divide-gray-200">
+                                <thead class="bg-gray-50">
+                                    <tr>
+                                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">আইডি</th>
+                                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">পণ্যের নাম</th>
+                                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">ওজন (গ্রাম)</th>
+                                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">বর্তমান স্টক</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="bg-white divide-y divide-gray-200">
+                                    <tr>
+                                        <td class="px-4 py-2 whitespace-nowrap">J-001</td>
+                                        <td class="px-4 py-2 whitespace-nowrap">২৫ গ্রাম গোল্ড নেকলেস</td>
+                                        <td class="px-4 py-2 whitespace-nowrap">25.000g</td>
+                                        <td class="px-4 py-2 whitespace-nowrap">5 পিস</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="px-4 py-2 whitespace-nowrap">J-002</td>
+                                        <td class="px-4 py-2 whitespace-nowrap">ডায়মন্ড রিং</td>
+                                        <td class="px-4 py-2 whitespace-nowrap">4.665g</td>
+                                        <td class="px-4 py-2 whitespace-nowrap">12 পিস</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+        
+        // --- Core Feature: Mortgage Simple Interest Calculator ---
+        
+        function calculateSimpleInterest() {
+            const principal = parseFloat(document.getElementById('principal-input').value) || 0;
+            const rate = parseFloat(document.getElementById('rate-input').value) || 0; // Annual Rate
+            const duration = parseInt(document.getElementById('duration-input').value) || 0; // Duration in Months
+
+            if (principal <= 0 || rate <= 0 || duration <= 0) {
+                 document.getElementById('interest-result').textContent = "সব ইনপুট ফিল্ড পূরণ করুন (শূন্য বা তার বেশি)।";
+                 document.getElementById('total-payable-result').textContent = "৳ 0.00";
+                 document.getElementById('interest-result').classList.add('text-red-500');
+                 return;
+            }
+
+            // Simple Interest Formula (for annual rate, convert duration to years)
+            const timeInYears = duration / 12;
+            const interest = (principal * rate * timeInYears) / 100;
+            const totalPayable = principal + interest;
+
+            document.getElementById('interest-result').textContent = `৳ ${interest.toFixed(2)}`;
+            document.getElementById('total-payable-result').textContent = `৳ ${totalPayable.toFixed(2)}`;
+            document.getElementById('interest-result').classList.remove('text-red-500');
+            showMessage("সুদ সফলভাবে হিসাব করা হয়েছে।", 'success');
+        }
+
+        function renderMortgageView() {
+            return `
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <!-- Left Panel: Simple Interest Calculator -->
+                    <div class="lg:col-span-1 dashboard-card p-6 border-l-4 border-blue-500">
+                        <h3 class="text-xl font-bold mb-4">সরল সুদ ক্যালকুলেটর</h3>
+                        <p class="text-sm text-gray-500 mb-4">আসল টাকার সাথে লাভ যুক্ত হবে না (Compound ইন্টারেস্ট নয়)।</p>
+                        
+                        <div class="space-y-4">
+                            <div>
+                                <label for="principal-input" class="block text-sm font-medium text-gray-700">আসল টাকা (৳)</label>
+                                <input type="number" id="principal-input" class="mt-1 p-3 w-full border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" value="100000">
+                            </div>
+                            <div>
+                                <label for="rate-input" class="block text-sm font-medium text-gray-700">সুদের হার (% বার্ষিক)</label>
+                                <input type="number" id="rate-input" class="mt-1 p-3 w-full border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" value="12">
+                            </div>
+                            <div>
+                                <label for="duration-input" class="block text-sm font-medium text-gray-700">সময়কাল (মাস)</label>
+                                <input type="number" id="duration-input" class="mt-1 p-3 w-full border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" value="6">
+                            </div>
+                        </div>
+
+                        <button id="calculate-interest-btn" class="w-full primary-btn bg-blue-600 text-white hover:bg-blue-700 mt-6">
+                            <i data-lucide="calculator" class="inline-block w-4 h-4 mr-2"></i> হিসাব করুন
+                        </button>
+                        
+                        <div class="mt-6 p-4 bg-blue-50 rounded-lg space-y-2">
+                            <p class="text-sm text-gray-600">মোট সুদ:</p>
+                            <p id="interest-result" class="text-2xl font-bold text-gray-800">৳ 0.00</p>
+                            <p class="text-sm text-gray-600 border-t pt-2">মোট প্রদেয়:</p>
+                            <p id="total-payable-result" class="text-2xl font-bold text-blue-600">৳ 0.00</p>
+                        </div>
+                    </div>
+
+                    <!-- Right Panel: Mortgage List -->
+                    <div class="lg:col-span-2 dashboard-card p-6">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="text-xl font-bold">বন্ধক তালিকা</h3>
+                            <button class="primary-btn px-4 py-2 text-sm bg-blue-600 text-white hover:bg-blue-700">
+                                <i data-lucide="plus" class="inline-block w-4 h-4 mr-1"></i> নতুন বন্ধক যোগ করুন
+                            </button>
+                        </div>
+                        
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full divide-y divide-gray-200">
+                                <thead class="bg-gray-50">
+                                    <tr>
+                                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">গ্রাহক</th>
+                                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">আসল (৳)</th>
+                                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">মেয়াদ শেষ</th>
+                                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">স্ট্যাটাস</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="mortgage-table-body" class="bg-white divide-y divide-gray-200">
+                                    <tr>
+                                        <td class="px-4 py-2 whitespace-nowrap">আব্দুর রহিম</td>
+                                        <td class="px-4 py-2 whitespace-nowrap">৳ 50,000</td>
+                                        <td class="px-4 py-2 whitespace-nowrap">2026-01-15</td>
+                                        <td class="px-4 py-2 whitespace-nowrap"><span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">সক্রিয়</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <p class="text-sm text-gray-500 mt-4">মেয়াদ শেষ হওয়ার জন্য রিমাইন্ডার এখানে প্রদর্শিত হবে।</p>
+                    </div>
+                </div>
+            `;
+        }
+
+        // --- Other Module Placeholders ---
+
+        function renderSalesView() {
+            return `<div class="dashboard-card p-6">
+                <h3 class="text-xl font-bold mb-4">বিক্রয়, ক্রয় ও রিটার্ন পরিচালনা</h3>
+                <p class="text-gray-600">বিক্রয় কর্মীদের জন্য: এই মডিউলটিতে বারকোড স্ক্যানিং, দ্রুত বিলিং এবং রিটার্ন প্রসেসিং অন্তর্ভুক্ত থাকবে।</p>
+                <!-- POS Interface would go here -->
+            </div>`;
+        }
+
+        function renderFinanceView() {
+             return `<div class="dashboard-card p-6">
+                <h3 class="text-xl font-bold mb-4">হিসাব ও ফিনান্স</h3>
+                <p class="text-gray-600">হিসাবরক্ষকদের জন্য: লেজার, ক্যাশ বুক, আয়-ব্যয় ট্র্যাকিং এবং মাল্টি-ব্রাঞ্চ ফিনান্সিয়াল কন্সোলিডেশন এখানে পরিচালিত হবে।</p>
+                <!-- Ledger/Cash Book UI would go here -->
+            </div>`;
+        }
+
+        function renderKarigorView() {
+             return `<div class="dashboard-card p-6">
+                <h3 class="text-xl font-bold mb-4">কারিগর ও অর্ডার ম্যানেজমেন্ট</h3>
+                <p class="text-gray-600">এই মডিউলটিতে কাস্টম অর্ডার গ্রহণ, কারিগরদের কাজের হিসেব রাখা এবং তাদের পেমেন্ট ট্র্যাকিংয়ের ব্যবস্থা থাকবে।</p>
+                <!-- Karigor Tracking UI would go here -->
+            </div>`;
+        }
+
+        function renderReportsView() {
+             return `<div class="dashboard-card p-6">
+                <h3 class="text-xl font-bold mb-4">বিস্তারিত রিপোর্টিং সিস্টেম</h3>
+                <p class="text-gray-600">সমস্ত মডিউলের (বিক্রয়, স্টক, মর্গেজ, ফিনান্স) উপর বিস্তারিত রিপোর্ট এবং কাস্টমাইজড ড্যাশবোর্ড তৈরির সুবিধা থাকবে। বুকলেট স্টাইল রিপোর্টও তৈরি করা যাবে।</p>
+                <!-- Report filtering and generation UI would go here -->
+            </div>`;
+        }
+
+        function renderSettingsView() {
+             return `<div class="dashboard-card p-6">
+                <h3 class="text-xl font-bold mb-4">সিস্টেম সেটিংস ও কাস্টমাইজেশন</h3>
+                <p class="text-gray-600">অ্যাডমিন/মালিকের জন্য: এখানে হিসেবের নিয়ম পরিবর্তন, ইনভয়েস ডিজাইন কাস্টমাইজ করা এবং নতুন মডিউল ফ্লেক্সিবিলিটির কনফিগারেশন করা যাবে।</p>
+                <!-- Customization Forms would go here -->
+            </div>`;
+        }
+
+        // --- Firestore Data Listeners ---
+        
+        // This function is where you would place your onSnapshot listeners for real-time data.
+        function startModuleListeners() {
+            if (!isAuthReady || !db) return;
+
+            // Example: Listening to Inventory (Public Data for all users to see stock)
+            const inventoryColRef = collection(db, `artifacts/${appId}/public/data/inventory`);
+            onSnapshot(inventoryColRef, (snapshot) => {
+                const inventoryList = [];
+                snapshot.forEach(doc => {
+                    inventoryList.push({ id: doc.id, ...doc.data() });
+                });
+                // console.log("Inventory Data updated:", inventoryList);
+                // Future implementation: Update the Inventory UI table here.
+            }, (error) => {
+                console.error("Error listening to inventory:", error);
+            });
+            
+            // Example: Listening to User's private data (e.g., Accountant's personal notes)
+            if (currentUserRole === 'accountant' && userId !== 'default-user') {
+                 const privateNotesRef = collection(db, `artifacts/${appId}/users/${userId}/private_notes`);
+                 onSnapshot(privateNotesRef, (snapshot) => {
+                    // Handle private data updates
+                 }, (error) => {
+                    console.error("Error listening to private notes:", error);
+                 });
+            }
+        }
+
+
+        // --- Event Listeners and Initial Load ---
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            // Mobile sidebar toggle logic
+            const sidebar = document.getElementById('sidebar');
+            const menuToggle = document.getElementById('menu-toggle');
+            
+            menuToggle.addEventListener('click', () => {
+                sidebar.classList.toggle('-translate-x-full');
+            });
+            
+            initializeFirebase();
+        });
+
+    </script>
+</body>
+</html>
 
