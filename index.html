@@ -1,264 +1,441 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="bn">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ERP ZIP - অ্যাডমিন লগইন</title>
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Inter Font -->
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #f4f7f9;
-        }
-        /* কাস্টম গোল্ড থিম */
-        .gold-bg { background-color: #FFD700; }
-        .gold-text { color: #FFD700; }
-        .navy-bg { background-color: #0A1931; }
-        .navy-text { color: #0A1931; }
-        .card-shadow { box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1), 0 6px 6px rgba(0, 0, 0, 0.05); }
-        .lang-toggle-button {
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-    </style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Bodhuboron POS (Demo)</title>
+  <style>
+    :root{font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial; }
+    body{margin:0;background:#0b1220;color:#e8eefc}
+    header{padding:14px 16px;border-bottom:1px solid #22304f;display:flex;gap:10px;align-items:center}
+    header h1{font-size:16px;margin:0;font-weight:700}
+    header .tag{font-size:12px;opacity:.8}
+    main{display:grid;grid-template-columns:260px 1fr;gap:12px;padding:12px}
+    .card{background:#111b33;border:1px solid #22304f;border-radius:12px;overflow:hidden}
+    .card h2{font-size:13px;margin:0;padding:10px 12px;border-bottom:1px solid #22304f}
+    .nav{display:flex;flex-direction:column}
+    .nav button{all:unset;cursor:pointer;padding:10px 12px;border-bottom:1px solid #1d2a46}
+    .nav button:hover{background:#152044}
+    .nav button.active{background:#1a2a55}
+    .content{padding:12px}
+    .row{display:flex;gap:10px;flex-wrap:wrap}
+    input,select,button{font:inherit}
+    input,select{background:#0b1220;color:#e8eefc;border:1px solid #22304f;border-radius:10px;padding:10px}
+    button.btn{background:#3b82f6;border:none;color:white;border-radius:10px;padding:10px 12px;cursor:pointer}
+    button.btn:hover{opacity:.92}
+    button.btn2{background:#22c55e}
+    button.danger{background:#ef4444}
+    table{width:100%;border-collapse:collapse;margin-top:10px}
+    th,td{border-bottom:1px solid #22304f;padding:8px;text-align:left;font-size:13px}
+    th{opacity:.85;font-weight:600}
+    .muted{opacity:.75;font-size:12px}
+    .pill{display:inline-block;padding:2px 8px;border:1px solid #22304f;border-radius:999px;font-size:12px;opacity:.9}
+    .right{margin-left:auto}
+    .kpi{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+    .kpi .box{padding:10px;border:1px solid #22304f;border-radius:12px;background:#0f1830}
+    .kpi .n{font-size:18px;font-weight:800}
+    .kpi .t{font-size:12px;opacity:.8}
+    @media (max-width:860px){ main{grid-template-columns:1fr} }
+  </style>
 </head>
-<body class="flex items-center justify-center min-h-screen p-4">
+<body>
+<header>
+  <h1>বধূবরণ POS (Demo)</h1>
+  <span class="tag pill">LocalStorage</span>
+  <span class="muted">— ইন্টারনেট ছাড়াই ডেটা থাকে (এই ব্রাউজারে)</span>
+  <span class="right"></span>
+  <button class="btn danger" onclick="App.resetAll()">Reset সব ডেটা</button>
+</header>
 
-    <!-- Firebase SDKs -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInWithCustomToken, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, setLogLevel } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+<main>
+  <aside class="card">
+    <h2>মেনু</h2>
+    <div class="nav" id="nav"></div>
+  </aside>
 
-        // Firestore লগিং ডিবাগ মোডে সেট করা
-        setLogLevel('Debug');
+  <section class="card">
+    <h2 id="title">ড্যাশবোর্ড</h2>
+    <div class="content" id="view"></div>
+  </section>
+</main>
 
-        // গ্লোবাল ভ্যারিয়েবল ডিক্লেয়ারেশন (Canvas পরিবেশ থেকে আসা)
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-erp-zip';
-        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : { /* ফায়ারবেস কনফিগারেশন এখানে যোগ করা হবে */ };
-        const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+<script>
+const Store = {
+  key: "bodhuboron_pos_demo_v1",
+  load(){
+    try{ return JSON.parse(localStorage.getItem(this.key)) || null }catch(e){ return null }
+  },
+  save(db){ localStorage.setItem(this.key, JSON.stringify(db)) },
+  init(){
+    const db = this.load();
+    if(db) return db;
+    const fresh = {
+      meta:{ createdAt: Date.now() },
+      products:[
+        {id:1,name:"Gold Ring", sku:"GR-001", price:5000, stock:10},
+        {id:2,name:"Gold Chain", sku:"GC-002", price:12000, stock:5},
+      ],
+      customers:[
+        {id:1,name:"Walk-in", phone:"", address:""},
+      ],
+      sales:[], // {id, date, customerId, items:[{productId,qty,price}], total}
+      ledger:[] // {id,date,type,ref,amount,note}
+    };
+    this.save(fresh);
+    return fresh;
+  }
+};
 
-        let app, db, auth;
+const App = {
+  db: Store.init(),
+  pages: [
+    {id:"dash", name:"ড্যাশবোর্ড"},
+    {id:"pos", name:"POS / বিক্রি"},
+    {id:"products", name:"পণ্য (ইনভেন্টরি)"},
+    {id:"customers", name:"কাস্টমার"},
+    {id:"reports", name:"রিপোর্ট"},
+    {id:"ledger", name:"লেজার"},
+  ],
+  state:{ page:"dash" },
 
-        /**
-         * ফায়ারবেস ইনিশিয়ালাইজ এবং অথেন্টিকেশন হ্যান্ডেল করে।
-         */
-        async function initializeFirebase() {
-            try {
-                // অ্যাপ ইনিশিয়ালাইজ
-                app = initializeApp(firebaseConfig);
-                db = getFirestore(app);
-                auth = getAuth(app);
-                console.log("Firebase initialized successfully for App ID:", appId);
+  save(){ Store.save(this.db); },
 
-                // Auth টোকেন ব্যবহার করে লগইন
-                if (initialAuthToken) {
-                    await signInWithCustomToken(auth, initialAuthToken);
-                    console.log("Signed in with custom token.");
-                } else {
-                    await signInAnonymously(auth);
-                    console.log("Signed in anonymously.");
-                }
+  money(n){ return (Number(n)||0).toLocaleString("en-US"); },
 
-                const userId = auth.currentUser?.uid || 'anonymous';
-                console.log("Current User ID (for Firestore access):", userId);
+  setPage(id){
+    this.state.page = id;
+    document.querySelectorAll("#nav button").forEach(b=>b.classList.toggle("active", b.dataset.id===id));
+    const p = this.pages.find(x=>x.id===id);
+    document.getElementById("title").textContent = p ? p.name : "";
+    this.render();
+  },
 
-                // ডেটাবেস কনফিগারেশন যাচাই ও সেটআপ (Initial Settings)
-                await initializeSettings(db, appId, userId);
+  resetAll(){
+    if(!confirm("সব ডেটা মুছে যাবে। Continue?")) return;
+    localStorage.removeItem(Store.key);
+    this.db = Store.init();
+    this.setPage("dash");
+  },
 
-            } catch (error) {
-                console.error("Firebase Initialization or Sign-in Error:", error);
-                document.getElementById('message-box').innerHTML = `<p class="text-red-600">ত্রুটি: Firebase সংযোগ স্থাপন ব্যর্থ। ${error.message}</p>`;
-            }
-        }
+  nextId(list){ return list.length ? Math.max(...list.map(x=>x.id))+1 : 1; },
 
-        /**
-         * প্রাথমিক সিস্টেম সেটিংস সেটআপ বা যাচাই করে।
-         */
-        async function initializeSettings(db, appId, userId) {
-            const settingsPath = `artifacts/${appId}/users/${userId}/systemSettings/config`;
-            const docRef = doc(db, settingsPath);
+  // ---------- Views ----------
+  render(){
+    const v = document.getElementById("view");
+    if(this.state.page==="dash") return v.innerHTML = this.viewDash();
+    if(this.state.page==="products") return v.innerHTML = this.viewProducts();
+    if(this.state.page==="customers") return v.innerHTML = this.viewCustomers();
+    if(this.state.page==="pos") return v.innerHTML = this.viewPOS();
+    if(this.state.page==="reports") return v.innerHTML = this.viewReports();
+    if(this.state.page==="ledger") return v.innerHTML = this.viewLedger();
+  },
 
-            // যেহেতু এটি একটি নতুন বিল্ড, আমরা প্রাথমিক সেটিংস সেট করে দেব
-            const initialData = {
-                companyName: "ERP ZIP Solutions",
-                logoUrl: "https://placehold.co/150x40/0A1931/FFD700?text=ERP+ZIP",
-                defaultBranchId: "main-branch",
-                currency: "BDT",
-                taxRate: 0.05, // 5%
-                lastUpdated: new Date().toISOString()
-            };
+  viewDash(){
+    const today = new Date().toISOString().slice(0,10);
+    const todaysSales = this.db.sales.filter(s=>s.date===today).reduce((a,b)=>a+b.total,0);
+    const totalSales = this.db.sales.reduce((a,b)=>a+b.total,0);
+    const totalStockValue = this.db.products.reduce((a,p)=>a + (p.stock*p.price), 0);
 
-            try {
-                // Firestore-এ সেটিংস সেট করা
-                await setDoc(docRef, initialData, { merge: true });
-                console.log("Initial settings saved/verified successfully at:", settingsPath);
-            } catch (e) {
-                console.error("Error setting initial document:", e);
-            }
-        }
+    return `
+      <div class="kpi">
+        <div class="box"><div class="n">${this.db.products.length}</div><div class="t">পণ্য</div></div>
+        <div class="box"><div class="n">${this.db.customers.length}</div><div class="t">কাস্টমার</div></div>
+        <div class="box"><div class="n">${this.money(todaysSales)}</div><div class="t">আজকের বিক্রি</div></div>
+        <div class="box"><div class="n">${this.money(totalSales)}</div><div class="t">মোট বিক্রি</div></div>
+      </div>
 
-        initializeFirebase();
+      <p class="muted" style="margin-top:12px">
+        টিপ: এটা ডেমো POS। আপনার আসল ERP/Backend লাগলে পরের ধাপে PHP+MySQL সেটআপ দেব।
+      </p>
 
-        // গ্লোবাল ফাংশন তৈরি করা হয়েছে যাতে স্ক্রিপ্ট ট্যাগ ব্যবহার করতে পারে
-        window.initializeFirebase = initializeFirebase;
-
-    </script>
-
-    <!-- প্রধান কন্টেইনার -->
-    <div class="w-full max-w-sm bg-white rounded-xl p-8 card-shadow">
-        
-        <!-- ভাষা টগল বাটন -->
-        <div class="flex justify-end mb-6">
-            <div id="language-toggle" class="flex p-1 navy-bg rounded-full text-sm font-medium lang-toggle-button" onclick="toggleLanguage()">
-                <span class="px-3 py-1 text-white rounded-full transition-colors duration-300" data-lang="bn">বাংলা</span>
-                <span class="px-3 py-1 text-gray-400 transition-colors duration-300" data-lang="en">English</span>
-            </div>
+      <div class="card" style="margin-top:12px;background:#0f1830">
+        <h2 style="border-bottom:1px solid #22304f">স্টক ভ্যালু</h2>
+        <div class="content">
+          <div class="pill">মোট স্টক ভ্যালু: ৳ ${this.money(totalStockValue)}</div>
         </div>
+      </div>
+    `;
+  },
 
-        <!-- লোগো এবং শিরোনাম -->
-        <div class="text-center mb-8">
-            <img src="https://placehold.co/150x40/0A1931/FFD700?text=ERP+ZIP" alt="ERP ZIP Logo" class="h-10 mx-auto mb-3 rounded-md shadow-md">
-            <h1 id="app-title" class="text-3xl font-extrabold navy-text">ERP ZIP</h1>
-            <p id="tagline" class="text-gray-500 mt-1">Admin Panel</p>
-        </div>
+  viewProducts(){
+    return `
+      <div class="row">
+        <input id="p_name" placeholder="পণ্যের নাম" />
+        <input id="p_sku" placeholder="SKU" />
+        <input id="p_price" type="number" placeholder="দাম" />
+        <input id="p_stock" type="number" placeholder="স্টক" />
+        <button class="btn btn2" onclick="App.addProduct()">Add</button>
+      </div>
 
-        <!-- লগইন ফর্ম -->
-        <form id="login-form">
-            <div class="mb-5">
-                <label for="username" id="label-username" class="block text-sm font-medium navy-text mb-2">ইউজারনেম (Username)</label>
-                <input type="text" id="username" name="username" value="Madhab Das" required
-                       class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 transition duration-150">
-            </div>
-            <div class="mb-6">
-                <label for="password" id="label-password" class="block text-sm font-medium navy-text mb-2">পাসওয়ার্ড (Password)</label>
-                <input type="password" id="password" name="password" required
-                       class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 transition duration-150">
-            </div>
+      <table>
+        <thead><tr><th>নাম</th><th>SKU</th><th>দাম</th><th>স্টক</th><th></th></tr></thead>
+        <tbody>
+          ${this.db.products.map(p=>`
+            <tr>
+              <td>${p.name}</td>
+              <td>${p.sku}</td>
+              <td>৳ ${this.money(p.price)}</td>
+              <td>${p.stock}</td>
+              <td>
+                <button class="btn" onclick="App.editProduct(${p.id})">Edit</button>
+                <button class="btn danger" onclick="App.delProduct(${p.id})">Del</button>
+              </td>
+            </tr>
+          `).join("")}
+        </tbody>
+      </table>
+      <div class="muted">নোট: ডেটা ব্রাউজারের LocalStorage-এ সেভ হচ্ছে।</div>
+    `;
+  },
 
-            <button type="submit" id="login-button"
-                    class="w-full gold-bg text-gray-900 font-bold py-3 rounded-lg hover:bg-yellow-400 focus:outline-none focus:ring-4 focus:ring-yellow-300 transition duration-200 shadow-lg">
-                লগইন করুন
-            </button>
-        </form>
+  addProduct(){
+    const name = document.getElementById("p_name").value.trim();
+    const sku = document.getElementById("p_sku").value.trim();
+    const price = Number(document.getElementById("p_price").value||0);
+    const stock = Number(document.getElementById("p_stock").value||0);
+    if(!name) return alert("নাম দিন");
+    const id = this.nextId(this.db.products);
+    this.db.products.push({id,name,sku,price,stock});
+    this.save(); this.render();
+  },
 
-        <!-- বার্তা বক্স -->
-        <div id="message-box" class="mt-6 text-center text-sm font-medium text-gray-600">
-            ডেটাবেস সংযোগের জন্য অপেক্ষা করা হচ্ছে...
-        </div>
-        
-        <!-- User ID Display (Debugging) -->
-        <div id="user-id-display" class="mt-4 text-center text-xs text-gray-400 break-all">
-            ইউজার ID: <span id="current-user-id">Loading...</span>
-        </div>
+  editProduct(id){
+    const p = this.db.products.find(x=>x.id===id);
+    if(!p) return;
+    const name = prompt("নাম", p.name); if(name===null) return;
+    const sku = prompt("SKU", p.sku); if(sku===null) return;
+    const price = Number(prompt("দাম", p.price)); if(Number.isNaN(price)) return;
+    const stock = Number(prompt("স্টক", p.stock)); if(Number.isNaN(stock)) return;
+    Object.assign(p,{name:name.trim(), sku:sku.trim(), price, stock});
+    this.save(); this.render();
+  },
 
-    </div>
+  delProduct(id){
+    if(!confirm("ডিলিট করবেন?")) return;
+    this.db.products = this.db.products.filter(x=>x.id!==id);
+    this.save(); this.render();
+  },
 
-    <!-- JavaScript লজিক -->
-    <script>
-        // ডিকশনারি ফর ভাষা সাপোর্ট
-        const translations = {
-            en: {
-                title: "ERP ZIP",
-                tagline: "Admin Panel",
-                username: "Username",
-                password: "Password",
-                loginButton: "Login",
-                loading: "Waiting for database connection...",
-                userId: "User ID:"
-            },
-            bn: {
-                title: "ইআরপি জিপ",
-                tagline: "অ্যাডমিন প্যানেল",
-                username: "ইউজারনেম",
-                password: "পাসওয়ার্ড",
-                loginButton: "লগইন করুন",
-                loading: "ডেটাবেস সংযোগের জন্য অপেক্ষা করা হচ্ছে...",
-                userId: "ইউজার ID:"
-            }
-        };
+  viewCustomers(){
+    return `
+      <div class="row">
+        <input id="c_name" placeholder="কাস্টমার নাম" />
+        <input id="c_phone" placeholder="ফোন" />
+        <input id="c_addr" placeholder="ঠিকানা" />
+        <button class="btn btn2" onclick="App.addCustomer()">Add</button>
+      </div>
 
-        let currentLang = 'bn'; // ডিফল্ট ভাষা বাংলা
+      <table>
+        <thead><tr><th>নাম</th><th>ফোন</th><th>ঠিকানা</th><th></th></tr></thead>
+        <tbody>
+          ${this.db.customers.map(c=>`
+            <tr>
+              <td>${c.name}</td>
+              <td>${c.phone}</td>
+              <td>${c.address}</td>
+              <td>
+                <button class="btn" onclick="App.editCustomer(${c.id})">Edit</button>
+                ${c.id===1 ? "" : `<button class="btn danger" onclick="App.delCustomer(${c.id})">Del</button>`}
+              </td>
+            </tr>
+          `).join("")}
+        </tbody>
+      </table>
+    `;
+  },
 
-        /**
-         * ইউজার ইন্টারফেসের ভাষা পরিবর্তন করে।
-         * @param {string} lang - নতুন ভাষা ('en' বা 'bn')
-         */
-        function applyTranslations(lang) {
-            const t = translations[lang];
-            
-            // টাইটেল ও ট্যাগলাইন
-            document.title = `ERP ZIP - ${t.tagline}`;
-            document.getElementById('app-title').textContent = t.title;
-            document.getElementById('tagline').textContent = t.tagline;
+  addCustomer(){
+    const name = document.getElementById("c_name").value.trim();
+    if(!name) return alert("নাম দিন");
+    const phone = document.getElementById("c_phone").value.trim();
+    const address = document.getElementById("c_addr").value.trim();
+    const id = this.nextId(this.db.customers);
+    this.db.customers.push({id,name,phone,address});
+    this.save(); this.render();
+  },
 
-            // ফর্ম লেবেল ও বাটন
-            document.getElementById('label-username').textContent = `${t.username} (Username)`;
-            document.getElementById('label-password').textContent = `${t.password} (Password)`;
-            document.getElementById('login-button').textContent = t.loginButton;
-            document.getElementById('message-box').textContent = t.loading;
-            
-            // ইউজার ID ডিসপ্লে
-            const userIdSpan = document.getElementById('current-user-id').textContent;
-            document.getElementById('user-id-display').innerHTML = `${t.userId} <span id="current-user-id">${userIdSpan}</span>`;
+  editCustomer(id){
+    const c = this.db.customers.find(x=>x.id===id);
+    if(!c) return;
+    const name = prompt("নাম", c.name); if(name===null) return;
+    const phone = prompt("ফোন", c.phone); if(phone===null) return;
+    const address = prompt("ঠিকানা", c.address); if(address===null) return;
+    Object.assign(c,{name:name.trim(), phone:phone.trim(), address:address.trim()});
+    this.save(); this.render();
+  },
 
-            // টগল বাটনের ভিজ্যুয়াল আপডেট
-            const toggleDiv = document.getElementById('language-toggle');
-            toggleDiv.querySelector('[data-lang="bn"]').classList.remove('gold-bg', 'text-white');
-            toggleDiv.querySelector('[data-lang="bn"]').classList.add('text-gray-400');
-            toggleDiv.querySelector('[data-lang="en"]').classList.remove('gold-bg', 'text-white');
-            toggleDiv.querySelector('[data-lang="en"]').classList.add('text-gray-400');
+  delCustomer(id){
+    if(!confirm("ডিলিট করবেন?")) return;
+    this.db.customers = this.db.customers.filter(x=>x.id!==id);
+    this.save(); this.render();
+  },
 
-            toggleDiv.querySelector(`[data-lang="${lang}"]`).classList.add('gold-bg', 'text-white');
-            toggleDiv.querySelector(`[data-lang="${lang}"]`).classList.remove('text-gray-400');
+  viewPOS(){
+    const today = new Date().toISOString().slice(0,10);
+    return `
+      <div class="row">
+        <select id="pos_customer">
+          ${this.db.customers.map(c=>`<option value="${c.id}">${c.name}</option>`).join("")}
+        </select>
 
-            currentLang = lang;
-        }
+        <select id="pos_product">
+          ${this.db.products.map(p=>`<option value="${p.id}">${p.name} (স্টক:${p.stock})</option>`).join("")}
+        </select>
 
-        /**
-         * ভাষা টগল করার ফাংশন।
-         */
-        function toggleLanguage() {
-            const newLang = currentLang === 'bn' ? 'en' : 'bn';
-            applyTranslations(newLang);
-        }
+        <input id="pos_qty" type="number" placeholder="Qty" value="1" />
+        <button class="btn" onclick="App.addToCart()">Add Item</button>
+        <button class="btn btn2" onclick="App.checkout()">Checkout</button>
+      </div>
 
-        // DOM লোড হওয়ার পর ডিফল্ট বাংলা ভাষা সেট করা
-        window.onload = () => {
-            applyTranslations(currentLang);
-            // Firebase Auth State পরিবর্তন মনিটর করার জন্য মকআপ
-            setTimeout(() => {
-                const userId = window.auth?.currentUser?.uid || 'MdbD-8975-Anon'; 
-                document.getElementById('current-user-id').textContent = userId;
-                document.getElementById('message-box').textContent = currentLang === 'bn' 
-                    ? `ডেটাবেস সংযোগ সফল। ইউজার ID: ${userId}` 
-                    : `Database connection successful. User ID: ${userId}`;
-            }, 3000);
-        };
+      <div class="muted" style="margin-top:8px">তারিখ: ${today}</div>
 
-        // ফর্ম সাবমিশন হ্যান্ডলার
-        document.getElementById('login-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-            
-            const messageBox = document.getElementById('message-box');
-            
-            // Madhab Das-এর জন্য একটি মকআপ লগইন লজিক
-            if (username === 'Madhab Das' && password === 'admin123') { 
-                const message = currentLang === 'bn' ? "লগইন সফল! ড্যাশবোর্ডে প্রবেশ করা হচ্ছে..." : "Login successful! Redirecting to Dashboard...";
-                messageBox.innerHTML = `<p class="text-green-600 font-bold">${message}</p>`;
-                // এখানে ড্যাশবোর্ড লোড করার কোড থাকবে
-            } else {
-                const message = currentLang === 'bn' ? "ইউজারনেম বা পাসওয়ার্ড ভুল।" : "Incorrect username or password.";
-                messageBox.innerHTML = `<p class="text-red-600 font-bold">${message}</p>`;
-            }
-        });
+      <table>
+        <thead><tr><th>পণ্য</th><th>Qty</th><th>দাম</th><th>সাবটোটাল</th><th></th></tr></thead>
+        <tbody id="cartBody">${(this.state.cart||[]).map((it,i)=>this.cartRow(it,i)).join("")}</tbody>
+      </table>
 
-    </script>
+      <div class="pill">মোট: ৳ <span id="cartTotal">${this.money(this.cartTotal())}</span></div>
+
+      <div style="margin-top:14px" class="muted">শেষ 5 বিক্রি</div>
+      <table>
+        <thead><tr><th>তারিখ</th><th>কাস্টমার</th><th>টোটাল</th></tr></thead>
+        <tbody>
+          ${this.db.sales.slice(-5).reverse().map(s=>`
+            <tr>
+              <td>${s.date}</td>
+              <td>${(this.db.customers.find(c=>c.id===s.customerId)||{name:""}).name}</td>
+              <td>৳ ${this.money(s.total)}</td>
+            </tr>
+          `).join("")}
+        </tbody>
+      </table>
+    `;
+  },
+
+  cartRow(it,i){
+    const p = this.db.products.find(x=>x.id===it.productId) || {name:""};
+    return `
+      <tr>
+        <td>${p.name}</td>
+        <td>${it.qty}</td>
+        <td>৳ ${this.money(it.price)}</td>
+        <td>৳ ${this.money(it.qty*it.price)}</td>
+        <td><button class="btn danger" onclick="App.removeCart(${i})">X</button></td>
+      </tr>
+    `;
+  },
+
+  addToCart(){
+    const productId = Number(document.getElementById("pos_product").value);
+    const qty = Math.max(1, Number(document.getElementById("pos_qty").value||1));
+    const p = this.db.products.find(x=>x.id===productId);
+    if(!p) return;
+    if(p.stock < qty) return alert("স্টক কম!");
+    if(!this.state.cart) this.state.cart = [];
+    this.state.cart.push({productId, qty, price: p.price});
+    this.render(); // quick
+  },
+
+  removeCart(i){
+    this.state.cart.splice(i,1);
+    this.render();
+  },
+
+  cartTotal(){
+    return (this.state.cart||[]).reduce((a,it)=>a+(it.qty*it.price),0);
+  },
+
+  checkout(){
+    const cart = this.state.cart||[];
+    if(!cart.length) return alert("কার্ট ফাঁকা");
+    const customerId = Number(document.getElementById("pos_customer").value);
+    // stock minus
+    for(const it of cart){
+      const p = this.db.products.find(x=>x.id===it.productId);
+      if(!p || p.stock<it.qty) return alert("স্টক সমস্যা");
+      p.stock -= it.qty;
+    }
+    const total = this.cartTotal();
+    const date = new Date().toISOString().slice(0,10);
+    const id = this.nextId(this.db.sales);
+    this.db.sales.push({id,date,customerId,items:cart,total});
+    // ledger entry
+    this.db.ledger.push({id:this.nextId(this.db.ledger), date, type:"SALE", ref:`S-${id}`, amount: total, note:"POS Sale"});
+    this.state.cart = [];
+    this.save();
+    alert("Done ✅");
+    this.render();
+  },
+
+  viewReports(){
+    const byDay = {};
+    for(const s of this.db.sales){
+      byDay[s.date] = (byDay[s.date]||0) + s.total;
+    }
+    const rows = Object.entries(byDay).sort((a,b)=>a[0]<b[0]?1:-1);
+    return `
+      <div class="pill">মোট বিক্রি: ৳ ${this.money(this.db.sales.reduce((a,b)=>a+b.total,0))}</div>
+      <table>
+        <thead><tr><th>তারিখ</th><th>টোটাল বিক্রি</th></tr></thead>
+        <tbody>
+          ${rows.map(([d,t])=>`<tr><td>${d}</td><td>৳ ${this.money(t)}</td></tr>`).join("")}
+        </tbody>
+      </table>
+    `;
+  },
+
+  viewLedger(){
+    return `
+      <div class="row">
+        <select id="l_type">
+          <option value="IN">IN (জমা)</option>
+          <option value="OUT">OUT (খরচ)</option>
+        </select>
+        <input id="l_amount" type="number" placeholder="Amount" />
+        <input id="l_note" placeholder="Note" />
+        <button class="btn btn2" onclick="App.addLedger()">Add</button>
+      </div>
+
+      <table>
+        <thead><tr><th>Date</th><th>Type</th><th>Ref</th><th>Amount</th><th>Note</th><th></th></tr></thead>
+        <tbody>
+          ${this.db.ledger.slice().reverse().map(x=>`
+            <tr>
+              <td>${x.date}</td>
+              <td>${x.type}</td>
+              <td>${x.ref||""}</td>
+              <td>৳ ${this.money(x.amount)}</td>
+              <td>${x.note||""}</td>
+              <td><button class="btn danger" onclick="App.delLedger(${x.id})">Del</button></td>
+            </tr>
+          `).join("")}
+        </tbody>
+      </table>
+    `;
+  },
+
+  addLedger(){
+    const date = new Date().toISOString().slice(0,10);
+    const type = document.getElementById("l_type").value;
+    const amount = Number(document.getElementById("l_amount").value||0);
+    const note = document.getElementById("l_note").value.trim();
+    if(amount<=0) return alert("Amount দিন");
+    const id = this.nextId(this.db.ledger);
+    this.db.ledger.push({id,date,type,ref:`M-${id}`,amount,note});
+    this.save(); this.render();
+  },
+
+  delLedger(id){
+    if(!confirm("ডিলিট করবেন?")) return;
+    this.db.ledger = this.db.ledger.filter(x=>x.id!==id);
+    this.save(); this.render();
+  }
+};
+
+// init nav
+const nav = document.getElementById("nav");
+nav.innerHTML = App.pages.map(p=>`<button data-id="${p.id}" onclick="App.setPage('${p.id}')">${p.name}</button>`).join("");
+App.setPage("dash");
+</script>
 </body>
 </html>
-
